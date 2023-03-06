@@ -1,0 +1,28 @@
+From soloviev Thu Nov 12 16:10:54 1992
+Received: by plains.NoDak.edu; Thu, 12 Nov 1992 16:10:53 -0600
+Date: Thu, 12 Nov 1992 16:10:53 -0600
+From: Valery Soloviev <soloviev>
+Message-Id: <199211122210.AA02422@plains.NoDak.edu>
+To: tjon
+Status: R
+
+Juan and I checked your programme once again.
+
+I agree with you that your programme work correct on xaction files.
+It really distinct cases of wrong syntax and records missing in 
+master files.
+
+I disagree about change/delete functions. This is a very bad style
+to write a new function per each master file. You should share them
+and have 2 functions instead of 4.
+
+Overall your comments are really pure, here I agree with Juan.
+
+As for a loss of your reports, I don't have any, and I don't have
+any reason to think that Juan lost them. But as you insists you submitted it,
+I guess we can share responsibility.
+
+I think that 12.5 is a right score for this asgn. I updated my list of grades.
+
+-valery
+

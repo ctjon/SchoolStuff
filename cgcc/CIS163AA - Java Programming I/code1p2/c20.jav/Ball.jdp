@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Ball
+Location=C:\MIKES FILES\BOOKJ11\C20.JAV
+Applet=1
+Unitcount=2
+Time=138
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Ball.java=1
+Ball.html=1
+
+[Visualforms]
+Ball.java=1
+Ball.html=0

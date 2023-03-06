@@ -1,0 +1,33 @@
+Spring 1991  CS365 Program 1     Erickson
+In this programming assignment you will see how abstraction and
+specification can help make programming easier by providing the tools
+which allow one to use modules which have been implemented by
+someone else.  You are given modules Items, SkipWhiteSpace,
+and Trees.  You will find their DEFINITION MODULEs on the
+shared disk.
+
+Your assignment is TO USE THE ROUTINES PROVIDED to convert
+simple prefix expressions into postfix by building an expression
+tree and traversing it in postorder.  The input data, which can be
+retrieved one token at a time by successive calls on GetNextChar
+from module SkipWhiteSpace, has the following form, which is
+given in EBNF.  Recall that {...} means 0 or more occurrences of ... .
+<InputData> ::=  <Prefix>  { ';' <Prefix> }  '.'
+<Prefix>    ::=  <Op> <Prefix> <Prefix> |
+                 <letter>
+<Op>        ::=     '+' | '-' | '*' | '/'
+<letter>    ::=     'a' | ... | 'z' | 'A' | ... | 'Z'
+
+You can use this grammar to help you define a recursive routine to
+build an expression tree.  BE SURE THAT YOU BUILD AND TRAVERSE
+THE TREE BY USING THE OPERATIONS PROVIDED IN THE MODULES PROVIDED.
+
+Some sample data is provided in file PROB1 DATA on the shared disk;
+and corresponding output produced by a solution program is given
+in file PROB1 OUTPUT also on the shared disk.
+
+To make use of the routines described in the modules you must
+type the following command.
+(If you get unresolved reference errors you may have forgot.)
+
+GLOBAL TXTLIB PROB1 MODWLIB

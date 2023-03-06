@@ -1,0 +1,25 @@
+        Fall 1992     CS/EE 474 - Operating System Concepts    R. Gammill
+
+
+        Homework #7: due at class time on Monday November 23, 1992
+
+        Compile      and      run      inettime      as      found     in
+        /keeper/doc/networking/netprog/inettime.  This  program  collects
+        two  kinds  of  time  from  a server, using both TCP and UDP (TCP
+        transmission  control protocol establishes a connection, gets the
+        time, and hangs up, while UDP user datagram protocol simply ships
+        packets).  As written, the code aborts as soon as a server  fails
+        to  properly handle its request, often failing to try other forms
+        of the request which would have succeeded.  In  particular,  this
+        happens  with  vm1.nodak.edu.   Fix  this  problem, and any other
+        problems you may find.  Also,  make  sure  the  output  from  the
+        program  is  explicit  in  identifying  what problem arose from a
+        particular request.  Be sure to document exactly what you had  to
+        do  to  libraries and code to get the program to compile and work
+        properly.  Speaking of libraries, you will need  the  library  of
+        source code routines found in ~gammill/cs474/lib (which came from
+        the  netprog/lib  in  /keeper).   Documenting  your changes is an
+        important skill and simulates what you would have to  do  on  the
+        job  to  document  for  the  next  systems  jock how you modified
+        things.  Test inettime on a number of kinds of servers  (such  as
+        Solbourne, Sun, IBM mainframe, AT&T 3B2, HP 300, AS400, etc.)

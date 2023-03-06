@@ -1,0 +1,17 @@
+[PROJECT]
+Name=TwoNumbers
+Location=C:\MIKES FILES\BOOKJ11\C25THRED.JAV
+Applet=1
+Unitcount=2
+Time=34
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+TwoNumbers.java=1
+TwoNumbers.html=1
+
+[Visualforms]
+TwoNumbers.java=1
+TwoNumbers.html=0

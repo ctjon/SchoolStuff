@@ -1,0 +1,111 @@
+                                                                      H-1
+                  ARITHMETIC INSTRUCTIONS
+MULTIPLY INSTRUCTION
+ . NOTE: FOR X=Y*Z, X (THE RESULT) IS USUALLY LARGER THAN Y OR Z (5*6=30)
+
+ . FOR MULTIPLY INSTRUCTION, THE OPERANDS ARE 32 BITS LONG (ONE WORD)
+   AND THE RESULT ID 64 BITS LONG (TWO WORDS).
+
+ . INSTRUCTION FORM (RX):   M   R,A
+ . R MUST BE AN EVEN-NUMBERED REGISTER.
+ . THE OPERANDS ARE REGISTER  R+1 AND A.
+ . THE RESULT (64 BITS) IS LEFT IN REGISTERS R AND R+1.
+ . EXAMPLE:
+                  __________            _____________
+    BEFORE:   R4 :       36 :       R5 :         55  :
+                 :__________:          :_____________:
+
+M   4,=F'6'
+
+                  __________            _____________
+    AFTER:    R4 :        0 :       R5 :        330  :
+                 :__________:          :_____________:
+EXAMPLE TO COMPUTE SALARY, GIVEN A RATE = $2  AND  HOURS = 55
+
+ . INSTRUCTION FORM (RX):   D   R,A
+
+ . FOR DIVIDE, THE FIRST OPERAND, R, SPECIFIES A 64 BIT LONG EVEN-ODD
+   REGISTER PAIR
+ . THE SECOND OPERAND, A, IS 32 BITS
+ . THE REMAINDER IS LEFT IN REGISTER R.
+ . THE QUOTIENT IS LEFT IN REGISTER R+1.
+ . EXAMPLE:
+                  __________            _____________
+    BEFORE:   R4 :        0 :       R5 :         38  :
+                 :__________:          :_____________:
+D   4,=F'5'
+
+                  __________            _____________
+    AFTER:    R4 :        3 :       R5 :          7  :
+                 :__________:          :_____________:
+EXAMPLE TO CCOMPUTE PAYCHECK=HOURS*RATE-GOVCUT (GOVCUT=HALF, ROUNDED UP).
+PEACE     START
+          USING *,15
+
+
+
+          BR    14
+HOURS     DC    F'40'
+RATE      DC    F'5'
+GOVCUT    DS    F
+          END
+WHY HAVE ANOTHER CODE FOR NUMBERS
+
+PACKED DECIMAL NUMBERS
+ . IN BINARY, 18   IS STORED AS = 0000 0000 0000 0000 0000 0000 0001 0010
+                10        IN HEX = 0    0    0    0    0    0    1    2
+
+ . IN PACKED DECIMAL,EACH DECIMAL DIGIT STORED AS SEPARATE 4-BIT "NIBBLE"
+
+ . NIBBLE CODE: 0=0000  4=0100   8=1000  +=1100 (or 1010 or 1110 or 1111)
+                1=0001  5=0101   9=1001
+                2=0010  6=0110           -=1101 (OR 1011)
+                3=0011  7=0111
+
+ . PACKED DECIMAL NUBER STORED 2 NIBBLES PER BYTE, SIGN IS LAST NIBBLE.
+ . IN PACKED DECIMAL,DECIMAL NUMBER +18 STORED AS: 0000 0001  1000 1100
+ . ALWAYS AN ODD NUMBER OF DIGITS                    0    1     8    C
+   (2 DIGITS/BYTE - SIGN NIBBLE)                                    /
+ . RACE:  PACKED DECIMAL = 0000 0001 0100 0011 1100           PLUS SIGN
+
+      DECIMAL =
+
+      BINARY  =
+
+PACKED DECIMAL INSTRUCTIONS
+---------------------------
+ . OPERATIONS PERFORMED BETWEEN PACKED DECIMAL NUMBERS DIRECTLY IN MEMORY
+ . INSTRUCTION SPECIFIES LENGTH OF EACH OF THE 2 OPERANDS (IN BYTES)
+ . MAXIMUM LENGTH OF EACH OPERAND IS 16 BYTES = 31 DIGITS.
+ . PRIMARY INSTRUCTIONS:
+     - ZERO AND ADD PACKED (ZAP)    ZAP   A(3),=PL2'18'
+     - ADD PACKED (AP)               AP   A(3),=PL3'1902'
+     - SUBTRACT PACKED (SP)          SP   A(3),=PL1'6'
+
+SAMPLE PROGRAM TO CALCULATE TOTAL = X - Z + 49
+
+  PROG1     START                  : PROG2     START
+            USING *,15             :           USING *,15
+            ZAP   TOTAL(4),X(1)    :           ZAP   TOTAL,X
+            SP    TOTAL(4),Z(3)    :           SP    TOTAL,Z
+            AP    TOTAL(4),=PL2'49':           AP    TOTAL,=P'49'
+            BR    14               :           BR    14
+  TOTAL     DC    PL4'0'           : TOTAL     DC    PL4'0'
+  X         DC    PL1'3'           : X         DC    P'3'
+  Z         DC    PL3'1246'        : Z         DC    P'1246'
+            END                    :           END
+
+ . PROG1 & PROG2 ARE EQUIVALENT PROGRAMS.
+ . ASSEMBLER ASSOCIATES DATA FIELD LENGTH WITH LABEL.
+ . ASSEMBLER AUTOMATICALLY FILLS IN LENGTH FIELDS IN INSTRUCTIONS.
+
+BINARY/PACKED DECIMAL CONVERSIONS
+ . CVD - CONVERT (BINARY WORD) TO 8 BYTES PACKED DECIMAL.
+       - Example: ___________                    _______________________
+                 :00 00 01 4A:   CVD  4,DATA    :00 00 00 00 00 00 33 0C:
+                 :___________:                  :_______________________:
+                  R4  (BEFORE)                   DATA   (AFTER)
+
+ . CVB - CONVERT (8BYTES PACKED DECIMAL) TO BINARY WORD (REVERSES CVD).
+ . CONVERT BINARY TO PRINTABLE (EBCDIC) BY CONVERTING BINARY TO PACKED
+   DECIMAL (CVD), THEN TO ZONED DECIMAL (UNPK), THEN TO EBCDIC.

@@ -1,0 +1,46 @@
+Justification only occurs in "fill" mode.
+In "nofill" mode, each input text line is output without modification.
+The .br command causes a line-break.
+.br
+Just like this.
+An input text line consists of a sequence of words and word-break
+characters.
+The .nf command causes a line break and changes the mode to nofill
+.nf
+Just like this.
+An unrecognized command name causes an error message and is
+otherwisse ignored.
+This command is .junk.
+.junk
+	Since the formatter is intended for general use, 
+we  have not made any assumptions about its inputs.
+The command .fi causes a line break and changes the mode to fill.
+.fi
+Spaces can be added only  between words to the
+right of all tabs.  If there is no place to add spaces, then
+no justification is performed and no error message is produced.
+Also, a period without a command  will also cause an error message.
+This is illustrated by the following command.
+.
+
+	When	design begins, we have a module dependence diagram 
+containing the abstractions identified during requirements
+analysis.  The graph may contain  arcs, since some of the 
+identified abstractions may depend on some of the others.
+When design begins we have a dependency diagram 
+containing the abstractions identified during requirements 
+analysis.  The graph may contain  arcs, since some of ssthe 
+identified abstractions may depend on some of the others.
+Now we are ready for  the second step of the  design,
+namely, firming up and documenting these
+abstractions.  In the process of producing  the
+documentation, we ofthen uncover loose ends.
+Some are simply details that need to be worked out,  but some might 
+be 
+design errors that require modifications.  That is to say that 
+ a lot of design work  is done during documentation.   For 
+example, in specifying doline, we must decide exactly where
+the input stream is positioned when doline is called and when 
+it returns.  We must also decide which module is responsible for 
+checking that the various argument streams are int the proper mode.
+

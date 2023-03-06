@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Accumulate
+Location=C:\MIKES FILES\BOOKJ11\C12.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Accumulate.java=1
+Accumulate.html=1
+
+[Visualforms]
+Accumulate.java=1
+Accumulate.html=0

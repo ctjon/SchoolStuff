@@ -1,0 +1,146 @@
+PA3 DATA A ontains programs and data from the book A Second Course in
+Computer Science with Modula-2, by Daniel D. McCracken and William I.
+Salmon, to be published June, 1987, by John Wiley and Sons, 605 Third
+Avenue, New York, NY 10158.
+
+The chapters included are:
+
+     Chapter 2: Arrays and Records
+     Chapter 3: Sets and Strings
+     Chapter 4: Stacks and Queues
+     Chapter 5: Recursion
+     Chapter 6: Linked Lists
+     Chapter 7: Trees
+
+     The programs and data for Chapters 7-9 are on a companion disk.
+
+
+     This book is more than a "Modula-2 version" of A Second Course in
+Computer Science with Pascal, published by Wiley in February.  The
+overall structure and the examples are the same, but full advantage is
+taken of the marked superiority of Modula-2 over Pascal for teaching
+data structures and algorithms.  Aside from the generality improved
+understandability of a Modula-2 program over its Pascal equivalent,
+structure in an implementation module.
+
+     This led to major changes in Chapter 3, Sets and Strings, where
+it is first appropriate to bring in the module concept.  First,
+because some first courses cannot fully develop the module concept, we
+provide an overview section for review or quick overview.  We do not
+try to teach Modula-2 in this book, but where it is reasonable to
+expect that some readers may have slightly deficient backgrounds, we
+slow down and summarize the main features.  (This applies to modules,
+recursion, and pointer variables.)  Second, we completely redid the
+approach to the two different implementations of sets (array of
+booleans and array of BITSETs).  Both are now shown, where in the
+earlier book only the array of booleans appears, but the two are
+functionally identical.  The only difference between the two
+definition modules is in the TYPE statement.
+
+     The availability of modules is also exploited in the treatment of
+stack and queues in Chapter 4, and is really used to great advantage
+in Chapter 6 on linked lists.  There, the definition module for two
+different implementations (pointer variables and arrays) is in fact
+the same module, except of course for its name; to drive the point
+home, we don't show it a second time.  We could have done the same in
+Chapter 3, of course, but only by using opaque types, which would have
+meant pointer variables, and we felt that was too much new (to some
+readers) material in a chapter that already has a lot of solid meat.
+
+     We don't ride this hobby horse to death.  Other chapters simply
+take it for granted.  In Chapter 10 on graphs, for example, we just
+import the queue operations developed earlier and use them.  This
+reinforces the point, we think, without becoming tiresome about it.
+
+     The files on these disks are organized into subdirectories as
+sketched below.  For those chapters where a program uses modules
+developed earlier, we include source for the definition module only,
+together with the other files produced by the LOGITECH system, so that
+the program can be compiled and linked.  The source for the implemen-
+tation module is of course available in the appropriate subdirectory,
+but it seemed like a nice touch to provide a hint of how the module
+capability would be used in practice.  (It is not unlikely that in the
+pressure of making up these disks a file or two got omitted in this
+process; if so, a note or a call would be greatly appreciated.)
+
+     One of the strengths of the book, we believe, is the way the
+applications chosen to illustrate concepts in data structures and
+algorithms also provide an overview of later topics in computer
+science and of applications of computers.  Those wishing to sample
+this feature as represented in these disks might look at PostEval and
+InToPost in Chapter 4; Airline (discrete simulation) in Chapter 4;
+Descent (BNF, recursive descent parsing) in Chapter 5; Queens
+(backtracking) in Chapter 5; TreeDBMS (elementary database) in Chapter
+7; AlgTree and OptTree (building and simplifying expression trees) in
+Chapter 7; WordFreq (state transition diagrams in recognizing a word)
+in Chapter 9; Dijkstra and Kruskal (the corresponding algorithms) in
+Chapter 10.
+
+
+
+    The programs were written using the LOGITECH MODULA-2/86 Software
+Development System. If you compile the programs using a different
+library, there will (inevitably) be some differences.  We believe that
+most of them will be minor, such as a Read that echoes to the terminal
+where our programs assume it doesn't, and things like that.  There is
+no perfect answer to the problem of I/O portability.
+
+    Both disks are available free of charge, by writing to the
+publisher: Gene A. Davenport, John Wiley & Sons, 605 Third Avenue,
+New York, NY 10158.
+
+    The names of the files are, we hope, reasonably close to self-
+explanatory.  They are organized into subdirectories by chapter.
+In most cases, each subdirectory is sorted by extension and file name.
+
+
+**********************************************************************
+
+
+    Cookbook for those not familiar with DOS subdirectories.  Assume
+that this disk is in drive A.
+
+    -- To see the directory of, say, the files in Chapter 4, type:
+            DIR A:\CH4
+
+    -- To copy the file named POSTEVAL.DAT to a disk in drive B, type:
+           COPY A:\CH4\POSTEVAL.DAT B:
+
+    -- To copy the file named POSTEVAL.DAT to the current directory
+       of your hard disk, type:
+           COPY A:\CH2\POSTEVAL.DAT
+
+    -- To copy all the files from Chapter 8 to the current directory
+       of your hard disk, type:
+           COPY A:\CH8\*.*
+
+   If you wish to organize the files in subdirectories on your disk as
+they are here, look up the MakeDirectory (MD) and ChangeDirectory (CD)
+commands.
+
+
+    Comments, corrections, and suggestions are solicited.
+
+
+Daniel D. McCracken
+160 Cabrini Blvd. Apt. 136
+New York, NY 10033
+
+212-781-1491
+
+
+William I. Salmon
+Computer Science Department
+3406 MEB
+The University of Utah
+Salt Lake City, UT 84112
+
+801-581-4853
+
+
+E-mail also welcome: DANCC@CUNYVM.BITNET or maybe something like
+                     DANCC%CUNYVM.BITNET@WISCVM.ARPA
+
+
+Release 1.1  April 2, 1987
+

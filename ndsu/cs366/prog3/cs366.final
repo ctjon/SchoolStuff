@@ -1,0 +1,287 @@
+********************************************************************************
+* CHRIS TJON                                                                   *
+* CS366 Program 3                                                              *
+* 11 December 1992                                                             *
+*                                                                              *
+********************************************************************************
+*                                                                              *
+* Included is a copy of the CMS cons file and the output files generated       *
+*                                                                              *
+********************************************************************************
+Ready; T=0.01/0.01 23:16:22                                                                                                         
+s-sql                                                                                                                               
+DASD 0112 DETACHED                                                                                                                  
+DASD 0112 LINKED R/O; R/W BY SQLMACH ; R/O BY    29 USERS                                                                           
+DASD 0111 DETACHED                                                                                                                  
+DASD 0111 LINKED R/O; R/W BY SQLMACH ; R/O BY    29 USERS                                                                           
+                                                                                                                                    
+You are now linked to the SQL disk as your 111 disk with filemode Q.                                                                
+                          RXSQL            112                    M                                                                 
+                                                                                                                                    
+Type     SQLINIT DBNAME(SQLDBA)  to access the test database.                                                                       
+Then type   ISQL   to begin searching.                                                                                              
+                                                                                                                                    
+Ready; T=0.03/0.06 23:16:33                                                                                                         
+isql                                                                                                                                
+ARI0320I The default server name is SQLDBA.                                                                                         
+ARI7716I User TJON connected to server SQLDBA.                                                                                      
+ARI7399I The ISQL default profile values are in effect.                                                                             
+ARI7079I ISQL initialization complete.                                                                                              
+ARI7080A Please enter an ISQL command or an SQL statement.                                                                          
+
+****> QUERY #1
+      Print the acctno, company, street, and city for suppliers located in
+      the same city where the plains department is located.
+
+select acctno,company,street,city -                                                                                                 
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.supplier,q.org -                                                                                                             
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.org.deptname = 'plains' -                                                                                                   
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+and q.supplier.city = q.org.location                                                                                                
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY1'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY1                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0011 SENT FROM TJON     PRT WAS 0011 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+
+*****> QUERY #2
+       Print the prodname and prodprice for products that are produced in
+       projects developed in the South Atlantic Department.
+
+select q.products.prodname, q.products.prodprice -                                                                                  
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.org, q.project,q.products -                                                                                                  
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.project.prodnum = q.products.prodnum and -                                                                                  
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+q.project.dept = q.org.deptnumb and -                                                                                               
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+q.org.deptname = 'south atlantic'                                                                                                   
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY2'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY2                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0012 SENT FROM TJON     PRT WAS 0012 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+
+*****> QUERY #3
+       Print the prodnum of those products which either cost more than
+       $10.00 or have started after 01/01/92.
+
+select prodnum -                                                                                                                    
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.project -                                                                                                                    
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.project.startd >= '1992-01-01' -                                                                                            
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+union -                                                                                                                             
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+select prodnum from q.products -                                                                                                    
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.products.prodprice >= 10.00                                                                                                 
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY3'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY3                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0013 SENT FROM TJON     PRT WAS 0013 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+
+*****> QUERY #4
+       Print the dividsion for departments which do produce products of
+       of the electrical group(in any project).
+
+select distinct q.org.division -                                                                                                    
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.org,q.products,q.project -                                                                                                   
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.products.prodnum = q.project.prodnum and -                                                                                  
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+q.project.dept = q.org.deptnumb -                                                                                                   
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+and q.products.prodgrp = 'electrical'                                                                                               
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY4'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY4                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0014 SENT FROM TJON     PRT WAS 0014 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+
+*****> QUERY #5
+       Print the average price of products of the tool group
+
+select avg(q.products.prodprice) -                                                                                                  
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.products -                                                                                                                   
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.products.prodgrp = 'tool'                                                                                                   
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY5'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY5                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0015 SENT FROM TJON     PRT WAS 0015 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+
+*****> QUERY #6
+       For each department with more than 5 people print the department name
+       with max and min salary of department staff.
+
+select deptname, Max(salary),min(salary) -                                                                                          
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.staff,q.org -                                                                                                                
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0016 SENT FROM TJON     PRT WAS 0016 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+
+*****> QUERY #7
+       Print the product groups which include all products developed in
+       the pacific department.
+
+return                                                                                                                              
+select distinct q.products.prodgrp -                                                                                                
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+from q.products,two -                                                                                                               
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.products.prodnum = two.prodnum                                                                                              
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY7'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY7                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0017 SENT FROM TJON     PRT WAS 0017 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+END                                                                                                                                 
+exit                                                                                                                                
+ARI7601I ISQL ended normally on your request.                                                                                       
+Ready; T=0.66/1.17 23:35:22                                                                                                         
+Ready; T=0.01/0.01 23:35:22                                                                                                         
+cons stop                                                                                                                           
+
+::::::::::::::
+query1.result
+::::::::::::::
+12/07/92                                                      QUERY1                                                       PAGE    1
+                                                                                                                                    
+                                                                                                                                    
+ACCTNO  COMPANY               STREET           CITY                                                                                 
+------  --------------------  ---------------  ------------                                                                         
+1200S   MAJOR ELECTRICS       4250 BENSON ST.  DALLAS                                                                               
+
+::::::::::::::
+query2.result
+::::::::::::::
+12/07/92                                                      QUERY2                                                       PAGE    1
+                                                                                                                                    
+                                                                                                                                    
+PRODNAME     PRODPRICE                                                                                                              
+-----------  ---------                                                                                                              
+CAM               1.15                                                                                                              
+BUSHING           5.90                                                                                                              
+
+::::::::::::::
+query3.result
+::::::::::::::
+12/07/92                                                      QUERY3                                                       PAGE    1
+                                                                                                                                    
+                                                                                                                                    
+PRODNUM                                                                                                                             
+-------                                                                                                                             
+     10                                                                                                                             
+     30                                                                                                                             
+     50                                                                                                                             
+    150                                                                                                                             
+    190                                                                                                                             
+    205                                                                                                                             
+    509                                                                                                                             
+
+::::::::::::::
+query4.result
+::::::::::::::
+12/10/92                                                      QUERY4                                                       PAGE    1
+                                                                                                                                    
+                                                                                                                                    
+DIVISION                                                                                                                            
+----------                                                                                                                          
+EASTERN                                                                                                                             
+MIDWEST                                                                                                                             
+WESTERN                                                                                                                             
+
+::::::::::::::
+query5.result
+::::::::::::::
+12/07/92                                                      QUERY5                                                       PAGE    1
+                                                                                                                                    
+                   AVG(PRODPRICE)                                                                                                   
+---------------------------------                                                                                                   
+  13.1200000000000000000000000000                                                                                                   
+
+::::::::::::::
+query6.result
+::::::::::::::
+12/10/92                                                      QUERY6                                                       PAGE    1
+                                                                                                                                    
+                                                                                                                                    
+DEPTNAME          MAX(SALARY)    MIN(SALARY)                                                                                        
+--------------  -------------  -------------                                                                                        
+PACIFIC              21000.00       10988.00                                                                                        
+PLAINS               21150.00       13369.80                                                                                        
+SOUTH ATLANTIC       18006.00       12009.75                                                                                        
+ 
+::::::::::::::
+query7.result
+::::::::::::::
+12/10/92                                                      QUERY7                                                       PAGE    1
+                                                                                                                                    
+                                                                                                                                    
+PRODGRP                                                                                                                             
+----------                                                                                                                          
+ELECTRICAL                                                                                                                          

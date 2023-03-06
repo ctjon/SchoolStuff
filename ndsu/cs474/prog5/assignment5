@@ -1,0 +1,28 @@
+  Fall 1992            CS 474 - OS Concepts                  R. Gammill
+
+  Homework #5: due at class time on Friday, October 23, 1992
+
+  Write  a  code.c  routine which puts the terminal into raw noecho mode, and
+  prints out each character typed to it in graphics mode (%c) and octal  (%o)
+  and  hexadecimal (%x).  The program should terminate and reset the terminal
+  mode, when it receives a ctrl-D. In other words, you will use stty and gtty
+  (for compatibility across all versions of UNIX, but actually ioctl  as  you
+  know from class) to set the terminal modes, and read to get your character.
+  Be  sure  when  using  stty to first use gtty, and only modify its settings
+  after saving the original flags value.   This  assures  that  whatever  the
+  original  mode  and  speeds, that you only alter from that.  When done, you
+  simply use stty to load back in the original flags value.
+
+  In addition to the above, because it is sometimes impossible  to  get  back
+  out of a bad terminal mode, and there is no way to get your ctrl-D through,
+  it is very useful to have a program like this timeout after 10 seconds with
+  no  input, and reset the terminal to its original setting.  To do this, use
+  the alarm(seconds) system call.  Alarm(10) causes an alarm to go off  after
+  10  seconds.   Alarm(0)  resets  the  alarm  so  that  it  will not go off.
+  Essentially then, you must call alarm(10) before your first call  on  read,
+  and  then call alarm(10) after each return from read, to assure that you do
+  not timeout.  When a timeout DOES occur, you must  printf("TIMEOUT\n")  and
+  abort  the program AFTER doing your stty to reset terminal settings back to
+  normal.  You will be using the signal SIGALRM (14) and  you  will  need  to
+  have an abort routine that receives control when the alarm signal goes  off
+  so that you can print your message, clean up the terminal mode, and leave.

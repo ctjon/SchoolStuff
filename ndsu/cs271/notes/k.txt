@@ -1,0 +1,205 @@
+
+                        ADVANCED ADDRESSING                       K
+. POINTER: REGISTER OR MEMORY WORD WHICH HOLDS AN ADDRESS(POINTS TO DATA)
+. INDIRECT ADDRESSING: ADDRESSING THE ADDRESS OF THE DATA
+. REASONS:
+   . OFTEN PASSED THE ADDRESS OF A LIST OF DATA (PARAMETER LIST)
+   . WANT TO LINK DATA ELEMENTS TOGETHER (DATA STRUCTUE)
+   . LIST ORDERING (LIST PROCESSING)
+
+PASSING THE ADDRESS OF DATA:
+. WRITE A PROGRAM TO GIVE A BONUS ($50) TO A PERSON'S WAGE.
+. WHEN YOUR PROGRAM IS ACTIVATED, REGISTER 2 "POINTS" TO WAGE (CONTAINS
+  THE ADDRESS OF WAGE).
+           _________                  8004________
+       R2 :  8004   :------------------>:     49  : WAGE
+          :_________:                   :_________:
+
+PROGRAM:
+                   BONUS    START
+                            USING BONUS,15
+
+                            A     3,=F'50'
+
+                            BR    14
+                            END
+
+INDIRECT ADDRESSING: ( GIVE ME WHAT HE'S HAVING.)
+                                                ___MEMORY____________
+                                               :                     :
+      ___REGISTERS__                           .                     .
+   R1:        9000  :                           _____________________
+     :______________:                      8000:               9000  :
+   R2:        8004  :                          :_____________________:
+     :______________:                      8004:                 49  :
+   R3:        8000  :                          :_____________________:
+     :______________:                      8008:                     :
+   R4:              :                          :_____________________:
+     :______________:                          .                     .
+   R5:              :                           _PARM________________
+     :______________:                      9000:                8004 :
+   R6:              :                          :_____________________:
+     :______________:
+
+. LOAD THE 49 INTO REGISTER 6:
+                                               : INDIRECT INDIRECT: ALL
+DIRECT:ALL YOU KNOW  : INDIRECT: ALL YOU KNOW  : YOU KNOW IS R3 HOLDS THE
+IS R2 HOLDS ADDRESS  : IS R1 HOLDS ADDRESS OF  : ADDR OF THE ADDR OF THE
+OF YOUR DATA.        : THE ADDRESS OF THE DATA.: ADDRESS OF YOUR DATA.
+R2 TELLS WHERE DATA  : R1 TELLS WHERE ADDR OF  :
+IS (POINTER TO DATA) :  DATA IS (PTR. TO PTR)  :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+                     :                         :
+
+LINK DATA ITEMS TOGETHER (VIA POINTERS)
+---------------------------------------
+
+. CONSIDER A TABLE OF COMPANY
+  EMPLOYEES AS SHOWN:
+
+                                 S A
+                                 E G  SPOUSE
+      ADDRESS        NAME        X E  ADDRESS (IF SPOUSE IS AN EMPLOYEE)
+               ___________________________
+ (1)   1000   :HARRY DONOVAN    :M:46:1072:
+              :_________________:_:__:____:
+ (2)   1024   :JIM DONOVAN      :M:64:   0:
+              :_________________:_:__:____:
+ (3)   1048   :JOHN DONOVAN     :M:29:1096:
+              :_________________:_:__:____:
+ (4)   1072   :JANE DONOVAN     :F:24:1000:
+              :_________________:_:__:____:
+ (5)   1096   :BOMBEY DONOVAN   :F:28:1048:
+              :_________________:_:__:____:
+ (6)   1120   :SID HUFF         :M:35:   0:
+              :_________________:_:__:____:
+ (7)   1144   :CHIP ZIERING     :M:36:1168:
+              :_________________:_:__:____:
+ (8)   1168   :MARGARET ZIERING :F:32:1144:
+              :_________________:_:__:____:
+
+               <------17------->
+               <-------------24---------->
+. TABLE COULD BE CREATED IN ASSEMBLY LANGUAGE AS FOLLOWS:
+           DC  0F'0'
+    EMP1   DC  CL17'HARRY DONOVAN',C'M',H'46',A(EMP4)
+    EMP2   DC  CL17'JIM DONOVAN',C'M',H'64',A(0)
+    EMP3   DC  CL17'JOHN DONOVAN',C'M',H'29',A(EMP5)
+    EMP4   DC  CL17'JANE DONOVAN',C'F',H'24',A(EMP1)
+    EMP5   DC  CL17'BOMBEY DONOVAN',C'F',H'28',A(EMP3)
+    EMP6   DC  CL17'SID HUFF',C'M',H'35',A(0)
+    EMP7   DC  CL17'CHIP ZIERING',C'M',H'36',A(EMP8)
+    EMP8   DC  CL17'MARGARET ZIERING',C'F',H'32',A(EMP7)
+
+.NOTE USE OF ADDRESS CONSTANTS (A) FOR "POINTERS" OR "INDIRECT ADDRESSES"
+ . FIND EMPLOYEE INFORMATION FOR JOHN DONOVAN AND ADD 49 TO HIS AGE.
+AGE49     START
+          USING AGE49,15
+          LA    2,EMP1                          SET POINTER TO RECORD
+LOOP      CLC   0(17,2),=CL17'JOHN DONOVAN'
+          BE    FOUND
+          A     2,=F'24'
+          B     LOOP
+FOUND     LH    1,18(2)
+          AH    1,=H'49'
+          STH   1,18(2)
+          BR    14
+          DC    0F'0'
+EMP1      DC    CL17'HARRY DONOVAN',C'M',H'46',A(EMP4)
+EMP2      DC    CL17'JIM DONOVAN',C'M',H'64',A(0)
+EMP3      DC    CL17'JOHN DONOVAN',C'M',H'29',A(EMP5)
+EMP4      DC    CL17'JANE DONOVAN',C'F',H'24',A(EMP1)
+EMP5      DC    CL17'BOMBEY DONOVAN',C'F',H'28',A(EMP3)
+EMP6      DC    CL17'SID HUFF',C'M',H'35',A(0)
+EMP7      DC    CL17'CHIP ZIERING',C'M',H'36',A(EMP8)
+EMP8      DC    CL17'MARGARET ZIERING',C'F',H'32',A(EMP7)
+          END
+
+. NOTE THE USE REG 2 TO POINT TO EMPLOYEE RECORDS.
+. HOW COULD EQU'S MAKE THE PROGRAM EASIER TO FOLLOW?
+
+    AGE  EQU  18    THEN      LH  1,18(2)
+    EMP  EQU  2                               BECOMES   LH  1,AGE(EMP)
+
+.ADD 49 TO WIFES' AGE TOO?
+
+AGE49     START
+AGE       EQU   18
+EMP       EQU   2
+SPOUSE    EQU   20
+          USING AGE49,15
+          LA    2,EMP1                          SET POINTER TO RECORD
+LOOP      CLC   0(17,2),=CL17'JOHN DONOVAN'
+          BE    FOUND
+          A     2,=F'24'
+          B     LOOP
+FOUND     LH    1,AGE(EMP)
+          AH    1,=H'49'
+          STH   1,AGE(EMP)
+          L     SPOUSE,SPOUSEAD(EMP)
+          LH    1,AGE(SPOUSE)
+          AH    1,=H'49'
+          STH   1,AGE(SPOUSE)
+          BR    14
+          DC    0F'0'
+EMP1      DC    CL17'HARRY DONOVAN',C'M',H'46',A(EMP4)
+EMP2      DC    CL17'JIM DONOVAN',C'M',H'64',A(0)
+EMP3      DC    CL17'JOHN DONOVAN',C'M',H'29',A(EMP5)
+EMP4      DC    CL17'JANE DONOVAN',C'F',H'24',A(EMP1)
+EMP5      DC    CL17'BOMBEY DONOVAN',C'F',H'28',A(EMP3)
+EMP6      DC    CL17'SID HUFF',C'M',H'35',A(0)
+EMP7      DC    CL17'CHIP ZIERING',C'M',H'36',A(EMP8)
+EMP8      DC    CL17'MARGARET ZIERING',C'F',H'32',A(EMP7)
+          END
+
+. USING POINTERS FOR LIST ORDERING
+                         ALPHABETICAL40 DAYS
+ LOC       NAME           POINTER  LATE      PAID UP
+        __________________________________________________
+  1    :JOHN DONOVAN     :   3      :    0     :          :
+       :_________________:__________:__________:__________:
+  2    :JAMES DONOVAN    :   1      :    1     :          :
+       :_________________:__________:__________:__________:
+  3    :STU MADNICK      :   4      :          :    4     :
+       :_________________:__________:__________:__________:
+  4    :DOUG O'HEAREN    :   0      :          :    0     :
+       :_________________:__________:__________:__________:
+  5    :AL COHEN         :   2      :          :    3     :
+       :_________________:__________:__________:__________:
+  6    :                 :          :          :          :
+       :_________________:__________:__________:__________:
+
+          START              5           2          5
+. NEED THE FIRST ELEMENT IN THE LIST.
+. SUMMARIZING USE OF POINTERS:      . PASSING DATA
+                                    . LINK DATA ITEMS TOGETHER
+                                    . LIST ORDERING
+. RECALL THE DIFFERENCE BETWEEN L & LA:
+    CONTENTS OF R1 AFTER   L   1,ONE  =
+    CONTENTS OF R1 AFTER   LA  1,ONE  =
+    IF  ONE  DC  F'49'
+. TRICKS OF THE TRADE (NOT NECESSARLY RECOMMENDED, BUT YOU WILL SEE THEM)
+
+  . INITIALIZE REG.         LA  4,138           (INSTEAD OF L  4,=F'138')
+    (TO 0 THRU 4095)
+
+  . Zero Reg.               SR  7,7             (instead of L  7,=F'0')
+
+  . ADD CONSTANT TO REG.    LA  6,193(,6)       (INSTEAD OF A  6,=F'193')
+    (CONST <= 4095)
+    (RESULT<=16,777,215)
+
+  . SUBTRACT 1 FROM REG.    BCTR  3,0           (INSTEAD OF S  3,=F'1')
+                    3
+  . MULTIPLY R5 BY 2 =8     SLA   5,3           (INSTEAD OF M  4,=F'3')
+                      4
+  . DIVIDE R5 BY 2 =16      SRA   5,4           (INSTEAD OF D  4,=F'16')

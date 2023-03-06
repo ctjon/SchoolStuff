@@ -1,0 +1,57 @@
+  Fall 1992          CS474 - OS Concepts                R. Gammill
+
+  Homework #6: due at class time on Friday, October 30, 1992
+       (NO late homework accepted without prior permission!)
+
+  This  will be a relatively simple assignment whose goal is to make sure you
+  know exactly what the inode under UNIX contains!
+
+  Write an inode dump routine  using  stat(2).   Print  out  all  the  useful
+  information  in as compact and readable a form as possible.  Be sure to use
+  ctime(3) to convert modification time to ASCII, and be sure to format  your
+  output  nicely  with  labels  for  each item so that the results are easily
+  understood.  Also, be sure to test your inode dump  on  as  many  different
+  kinds  of  inodes  as  you  can  find!   Don't  forget  character and block
+  specials, files with SETUID or SETGID, files  with  several  links,  and  a
+  directory  or  so.  If you can find a socket or other unusual type of  file
+  that will be good to!
+
+  To  do  this  assignment  right  you  will probably need the manual page on
+  stat(2).  The following is a brief summary of that from V7 UNIX.
+
+  STAT(2)
+
+  NAME
+          stat, fstat - get file status
+  SYNOPSIS
+          #include <sys/types.h>
+          #include <sys/stat.h>
+
+          stat(name,buf)
+          char *name; struct stat *buf;
+
+          fstat(fildes,buf)
+          struct stat *buf;
+
+  DESCRIPTION
+          Stat obtains detailed information about a named file.       
+          Fstat obtains the same information about an open file
+          known by the file descriptor from a successful open,
+          creat, dup or pipe(2) call.  Name points to a null
+          terminated string.  Read the included files for details
+          of the buf struct into which info is retrieved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     - 1 -
+

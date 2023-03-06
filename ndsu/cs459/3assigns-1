@@ -1,0 +1,431 @@
+							Jeff Bakke
+							CS459
+							13 April 1994
+
+
+This assignment covers three areas:
+
+	1) capture of the "Notorious 8" DNS Packets
+	2) NFS Mounts
+	3) Configuration of bourne.cs.ndsu.nodak.edu
+
+-------------------------------------------------------------------------------
+1) "Notorious 8" DNS Packets
+
+For this assignment we used netwatch 9.6 to capture information about network
+activity within the cs459 Pentium cluster(IACC 160).  The following procedure
+was followed:
+
+	 1) boot one of the systems with MS-DOS
+	 2) obtain netwatch software, netdev.sys driver, wd8003e.com driver
+	 3) install netdev.sys by adding the following line to c:\config.sys:
+	 	device=c:\net\netdev.sys
+	    install wd8003e.com packet driver by adding the following line to
+	    c:\autoexec.bat:
+	 	c:\net\wd8003e 0x60 5 0x280 0xd000  
+	    0x60   = packet int no
+	    5      = interrupt used by network card
+	    0x280  = I/O port used by network card
+	    0xd000 = memory address used by network card
+	 4) reboot the system
+	 5) initiate netwatch
+	 6) open a netwatch logfile (f)
+	 7) initiate a ping of stallman.cs.ndsu.nodak.edu(134.129.125.193)
+	    from bourne.cs.ndsu.nodak.edu(134.129.125.196)
+	 8) capture some packets and close logfile(F)
+	 9) exit netwatch
+	10) upload logfile to a unix system with real tools
+	11) use od -x to view log file in hexadecimal-human readable format
+	    (note: on FreeBSD systems the od output is little endian)
+
+Information about systems used:
+
+joy.cs.ndsu.NoDak.edu (134.129.125.192) at 0:0:c0:d8:31:48
+	IP address in hexadecimal                 = 86 81 7d c0
+	IP address in hex and little endian       = 81 86 c0 7d
+	Ethernet address in hexadecimal           = 0000 c0d8 3148
+	Ethernet address in hex and little endian = 0000 d8c0 4831
+
+stallman.cs.ndsu.NoDak.edu (134.129.125.193) at 0:0:c0:ca:f9:86
+	IP address in hexadecimal                 = 86 81 7d c1
+	IP address in hex and little endian       = 81 86 c1 7d
+	Ethernet address in hexadecimal           = 0000 c0ca f986
+	Ethernet address in hex and little endian = 0000 cac0 86f9
+
+bourne.cs.ndsu.NoDak.edu (134.129.125.196) at 0:0:c0:de:f8:86
+	IP address in hexadecimal                 = 86 81 7d c4
+	IP address in hex and little endian       = 81 86 c4 7d
+	Ethernet address in hexadecimal           = 0000 c0de f886
+	Ethernet address in hex and little endian = 0000 dec0 86f8
+
+
+Upon issuing the ping the following process occurs(assumes a ping from bourne
+to stallman)
+
+	1) bourne arps the name server(joy) to obtain its ethernet address
+	2) bourne asks the name server for IP info about stallman
+	3) bourne arps stallman to obtain its ethernet address
+	4) bourne uses ICMP to ping stallman
+
+The following is the structure of an ARP packet.  This is taken directly
+from /usr/include/netinet/if_ether.h
+/*
+ * Ethernet Address Resolution Protocol.
+ *
+ * See RFC 826 for protocol description.  Structure below is adapted
+ * to resolving internet addresses.  Field names used correspond to 
+ * RFC 826.
+ */
+struct	ether_arp {
+	struct	arphdr ea_hdr;	/* fixed-size header */
+	u_char	arp_sha[6];	/* sender hardware address */
+	u_char	arp_spa[4];	/* sender protocol address */
+	u_char	arp_tha[6];	/* target hardware address */
+	u_char	arp_tpa[4];	/* target protocol address */
+};
+
+The following are the first two ethernet packets transmitted along the net.
+These are ARP packets.  You can tell this by the 0x0806 shown in the 13th and
+14 bytes(note 0x0806 is 0608 in little endian).
+
+ffff    ffff    ffff    0000    dec0    86f8    0608    0100
+0008    0406    0100    0000    dec0    86f8    8186    c47d
+0000    0000    0000    8186    c07d    0100    0001    0100
+0000    0000    0000    3103    3239    3103    0000    0040
+
+0000    dec0    86f8    0000    d8c0    4831    0608    0100
+0008    0406    0200    0000    d8c0    4831    8186    c07d
+0000    dec0    86f8    8186    c47d    0100    0001    0100
+0000    0000    0000    3103    3239    3103    0068    0040
+
+
+The following is the structure of the ethernet packet.  This is taken
+directly from /usr/include/netinet/if_ether.h
+
+	struct	ether_header {
+		u_char	ether_dhost[6];
+		u_char	ether_shost[6];
+		u_short	ether_type;
+	};
+	
+	#define	ETHERTYPE_PUP	0x0200		/* PUP protocol */
+	#define	ETHERTYPE_IP	0x0800		/* IP protocol */
+	#define ETHERTYPE_ARP	0x0806		/* Addr. resolution protocol */
+	
+	/*
+
+In the case of the first packet we see the following ethernet header:
+	ffff    ffff    ffff    0000    dec0    86f8    0608
+Or in english:
+	ether_dhost(to):     unknown because it is an arp
+	ether_shost(from):   00:00:c0:de:f8:86
+	ether_type:          0x0806 = ARP Packet
+
+For the purpose of this assignment and ethernet from address is defined as
+the physical and permanent hardcoded address stored in the ethernet hardware 
+roms.  The same is true for the ethernet to addresses.  IP to and from
+addresses are defined as a logical mapping between an ethernet address and a
+dynamic system address.  This allows flexible host and location addressing
+independent of the ethernet hardware.
+
+Here we show 10 packets from the logfile(values are in hex).  The First two 
+are the arp packets(arp of the Name server - joy) and the 8 DNS resolution
+packets.
+
+RED = Ethernet Headers and Trailers
+
+0000000     ffff    ffff    ffff    0000    dec0    86f8    0608    0100
+0000020     0008    0406    0100    0000    dec0    86f8    8186    c47d
+0000040     0000    0000    0000    8186    c07d    0100    0001    0100
+0000060     0000    0000    0000    3103    3239    3103    0000    0040
+
+0000100     0000    dec0    86f8    0000    d8c0    4831    0608    0100
+0000120     0008    0406    0200    0000    d8c0    4831    8186    c07d
+0000140     0000    dec0    86f8    8186    c47d    0100    0001    0100
+0000160     0000    0000    0000    3103    3239    3103    0068    0040
+
+0000200     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0000220     5a00    d900    0000    111e    3393    8186    c47d    8186
+0000240     c07d    2a04    3500    4600    aa79    0100    0001    0100
+0000260     0000    0000    0000    7308    6174    6c6c    0000    0068
+
+0000300     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0000320     9600    6b30    0000    111e    6563    8186    c07d    8186
+0000340     c47d    3500    2a04    8200    90b4    0100    8385    0100
+0000360     0000    0100    0000    7308    6174    6c6c    0000    00a4
+
+0000400     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0000420     5700    da00    0000    111e    3593    8186    c47d    8186
+0000440     c07d    2b04    3500    4300    4fb1    0200    0001    0100
+0000460     0000    0000    0000    7308    6174    6c6c    0000    0065
+
+0000500     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0000520     9300    6c30    0000    111e    6763    8186    c07d    8186
+0000540     c47d    3500    2b04    7f00    1612    0200    8385    0100
+0000560     0000    0100    0000    7308    6174    6c6c    0000    00a1
+
+0000600     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0000620     5200    db00    0000    111e    3993    8186    c47d    8186
+0000640     c07d    2c04    3500    3e00    0dbb    0300    0001    0100
+0000660     0000    0000    0000    7308    6174    6c6c    0000    0060
+
+0000700     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0000720     8e00    6d30    0000    111e    6b63    8186    c07d    8186
+0000740     c47d    3500    2c04    7a00    fbfd    0300    8385    0100
+0000760     0000    0100    0000    7308    6174    6c6c    0000    009c
+
+0001000     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0001020     4800    dc00    0000    111e    4293    8186    c47d    8186
+0001040     c07d    2d04    3500    3400    5dd3    0400    0001    0100
+0001060     0000    0000    0000    7308    6174    6c6c    0000    0056
+
+0001100     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0001120     5800    6e30    0000    111e    a063    8186    c07d    8186
+0001140     c47d    3500    2d04    4400    e538    0400    8085    0100
+0001160     0100    0000    0000    7308    6174    6c6c    0000    0066
+
+Why are there 8 DNS Packets?  This question will be answered by one of the
+groups solving this problem as part of thier group project.
+
+
+-------------------------------------------------------------------------------
+2) NFS Mounts
+
+	For the purpose of this assignment we will do the following:
+	1) invoke script to caputure terminal output
+	2) use the "df" command to show what filesystems are mounted
+	3) nfs mount several file systems on remote hosts
+	4) use the "df" command to show that the filesystems are mounted
+	5) unmount the mounted filesystems
+	6) use the "df" command to show that the filesystems are unmounted
+	7) terminate the script
+
+Script started on Tue Apr 12 23:04:29 1994
+bourne# df
+Filesystem  1K-blocks    Used   Avail Capacity  Mounted on
+/dev/wd0a       14591    8115    5016    62%    /
+/dev/wd0e      383831  154038  191409    45%    /usr
+/dev/wd0h       81942   22920   59022    28%    /dos
+bourne# mount -t nfs plains:/contrib /contrib
+bourne# mount -t nfs plains:/keeper /keeper
+bourne# df
+Filesystem      1K-blocks    Used   Avail Capacity  Mounted on
+/dev/wd0a           14591    8115    5016    62%    /
+/dev/wd0e          383831  154038  191409    45%    /usr
+/dev/wd0h           81942   22920   59022    28%    /dos
+plains:/contrib    512319  275747  185340    60%    /contrib
+plains:/keeper     199016  172676    6438    96%    /keeper
+bourne# umount /contrib
+bourne# umount /keeper
+bourne# df
+Filesystem  1K-blocks    Used   Avail Capacity  Mounted on
+/dev/wd0a       14591    8115    5016    62%    /
+/dev/wd0e      383831  154038  191409    45%    /usr
+/dev/wd0h       81942   22920   59022    28%    /dos
+bourne# exit
+Script done on Tue Apr 12 23:07:02 1994
+
+
+-------------------------------------------------------------------------------
+3: Configuration of bourne.cs.ndsu.nodak.edu
+
+For this exercise we will do a walk through of /usr/src/sys/i386/conf/BOURNE.
+This file is the kernel configuration file for bourne.  Also we will display
+the output generated when the kernel initializes the system.
+
+Bourne's ethernet address: 0:0:c0:de:f8:86
+Bourne's IP address: 134.129.125.196
+Bourne's Domain Name: bourne.cs.ndsu.NoDak.edu 
+
+The following is bourne's kernel configuration file:
+/usr/src/sys/i386/conf/BOURNE
+Lines of commentary about this file will be prefixed with "**"
+
+#
+# GENERICAH -- Generic machine with WD/AHx family disks
+#
+#	$Id: GENERICAH,v 1.16 1993/10/19 01:28:07 rgrimes Exp $
+#
+
+** state kernel is for i386 architecture machines
+machine		"i386"
+
+** compile in support for i386 and i486 processors
+cpu		"I386_CPU"
+cpu		"I486_CPU"
+
+** state the name of the kernel to be built(note that this is internal
+	 system nameing)
+ident		BOURNE
+
+** set the timezone for timezone 6 using daylight savings time
+timezone	6 dst
+
+** set the maxusers parameter to 10
+maxusers	10
+
+** set the maximum file descriptors per process to 2048
+maxfdescs	2048			#Max file descriptors per process
+
+** inclusion of this will allow for floating point emulation - not necessary
+	on a 486
+#options		MATH_EMULATE		#Support for x87 emulation
+
+** include kernel support for networking
+options		INET			#InterNETworking
+
+** include kernel support for CDROM file systems
+options		ISOFS			#ISO File System
+
+** include kernel support for NFS file systems
+options		NFS			#Network File System
+
+** include kernel support for MSDOS file systems
+options		PCFS			#MSDOS File System
+
+** set compatible to BSD 4.2 and 4.3
+options		"COMPAT_43"		#Compatible with BSD 4.3
+options		"TCP_COMPAT_42"		#TCP/IP compatible with 4.2
+
+** include kernel support for an Xserver Xconsole support
+options		XSERVER			#Xserver
+options		UCONSOLE		#X Console support
+
+** inclusion of this would make host capable of being a gateway
+#options		GATEWAY		#Host is a Gateway (forwards packets)
+
+** include kernel support for bidirectional com ports
+options		"COM_BIDIR"
+
+** name the kernel 386bsd
+config		"386bsd"	root on sd0 swap on sd0
+
+** define the motherboard
+controller	isa0
+
+** define the floppy disk controller and floppy disks
+controller	fd0	at isa? port "IO_FD1" bio irq 6 drq 2 vector fdintr
+disk		fd0	at fd0 drive 0
+#disk		fd1	at fd0 drive 1
+
+** define any winchester controllers and drives
+#controller	wd0	at isa? port "IO_WD1" bio irq 14 vector wdintr
+#disk		wd0	at wd0 drive 0
+#disk		wd1	at wd0 drive 1
+
+** define any scsi controllers 
+#controller	ahb0	at isa? bio irq 11 vector ahbintr
+controller	aha0	at isa? port "IO_AHA0" bio irq 15 drq 6 vector ahaintr
+controller	scbus0
+
+** define any scsi disk drives
+device		sd0
+device		sd1
+device		sd2
+device		sd3
+
+** define any scsi tape drives
+device		st0
+device		st1
+
+** define any scsi cd drives
+#device		cd0	#Only need one of these, the code dynamically grows
+
+** define non-scsi QIC tape controller/drive
+#device		wt0	at isa? port 0x300 bio irq 5 drq 1 vector wtintr
+
+** define non-scsi cd drive
+device		mcd0	at isa? port 0x340 bio irq 11 vector mcdintr
+
+
+** define the PC keyboard/console
+device		pc0	at isa? port "IO_KBD" tty irq 1 vector pcrint
+device          psm0    at isa? port "IO_KBD" tty irq 12 vector psmintr
+
+** define the numeric floating point processor
+device		npx0	at isa? port "IO_NPX" irq 13 vector npxintr
+
+#The old drivers are rarely needed anymore...
+#device		com0	at isa? port "IO_COM1" tty irq 4 vector comintr
+#device		com1	at isa? port "IO_COM2" tty irq 3 vector comintr
+#device		com2	at isa? port "IO_COM3" tty irq 5 vector comintr
+#device		com3	at isa? port "IO_COM4" tty irq 9 vector comintr
+
+** define the serial I/O ports
+#For high speed serial lines.
+device		sio0	at isa? port "IO_COM1" tty irq 4 vector siointr
+device		sio1	at isa? port "IO_COM2" tty irq 3 vector siointr
+#device		sio2	at isa? port "IO_COM3" tty irq 5 vector siointr
+#device		sio3	at isa? port "IO_COM4" tty irq 9 vector siointr
+
+** define the parallel ports
+device		lpt0	at isa? port "IO_LPT1" tty irq 7 vector lptintr
+#device		lpa0	at isa? port "IO_LPT1" tty
+#device		lpa1	at isa? port "IO_LPT2" tty
+
+** define the ethernet adapter
+device ed0 at isa? port 0x280 net irq 5 iomem 0xd8000 vector edintr
+#device ed1 at isa? port 0x300 net irq 5 iomem 0xd0000 vector edintr
+#device ie0 at isa? port 0x360 net irq 7 iomem 0xd0000 vector ieintr
+#device is0 at isa? port 0x280 net irq 10 drq 7 vector isintr
+
+
+** define localhost network
+pseudo-device	loop
+pseudo-device	ether
+
+** define log file
+pseudo-device	log
+
+** define maximum slip connections
+pseudo-device	sl	2
+
+** define maximum psuedo ttys
+pseudo-device	pty	12
+
+** define speaker
+pseudo-device	speaker
+
+** berkeley packet filter
+pseudo-device	bpfilter 4
+
+** define the virtual memory pseudo devices
+pseudo-device	swappager
+pseudo-device	vnodepager
+pseudo-device	devpager
+
+
+
+
+The following is to output from the kernel initialization of the system:
+
+FreeBSD 1.0e (BOURNE) #2: Tue Feb  8 22:21:59 CST 1994
+  root@bourne:/usr/src/sys/compile/BOURNE
+CPU: i486DX (486-class CPU)
+real mem  = 16773120
+avail mem = 15241216
+using 358 buffers containing 2932736 bytes of memory
+Probing for devices on the ISA bus:
+sc0 at 0x60-0x6f irq 1 on motherboard
+VGA color <8 virtual consoles>
+psm0 at 0x60-0x63 irq 12 on motherboard
+sio0 at 0x3f8-0x3ff irq 4 on isa
+sio0: type <16550A>
+sio1 at 0x2f8-0x2ff irq 3 on isa
+sio1: type <16550A>
+lpt0 not found at 0x3bc
+fd0 at 0x3f0-0x3f7 irq 6 drq 2 on isa
+fd0: unit 0 type 1.44MB 3.5in
+wd0 at 0x1f0-0x1f7 irq 14 on isa
+wd0: unit 0 type WDC AC2540H
+Mitsumi drive NOT detected
+Mitsumi drive detected
+mcd0 at 0x340-0x343 irq 11 on isa
+ed0 at 0x280-0x29f irq 5 maddr 0xd0000 msize 16384 on isa
+ed0: address 00:00:c0:de:f8:86, type WD8013EPC (16 bit) 
+bpf: ed0 attached
+npx0 on motherboard
+biomask 4840 ttymask 103a netmask 103a
+bpf: sl0 attached
+bpf: sl1 attached
+bpf: lo0 attached

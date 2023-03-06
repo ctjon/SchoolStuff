@@ -1,0 +1,3 @@
+Donald Duck's average is 86.0
+Minnie Mouse's average is 93.0
+Homer Simpson's average is 68.0

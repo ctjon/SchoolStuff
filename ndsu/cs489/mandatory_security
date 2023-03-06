@@ -1,0 +1,3647 @@
+SECURITY ISSUES IN DBSs
+
+Most of the notes that follow are from "A Retrospective on the VAX VMM Security
+Kernel" by Karger, Zurko, Bonin, Mason and Kahn in IEEE Xctions on Software
+Engineering, November 1991, Vol 17 Number 11.
+
+Security/Privacy in Computer Systems :
+--------------------------------------
+
+	Components :
+	----------
+		Subjects : User, process etc.
+		Objects  : File, piece of memory etc.
+
+	Types of Security Controls :
+	---------------------------
+		Discretionary Security Controls - determined at the discretion
+						  of object owner.
+		Mandatory Security Controls     - security officer may constrain
+						  owner in determining access
+						  rights.
+
+	Confinement Problem [CP] (courtesy Lampson):
+	-------------------------------------------
+		To determine if there exists a series of operations which could
+		leak information to unauthorized users.
+
+		Harrison et. al. has shown that there is no solution to CP for
+		fully general discretionary access controls ( the reason for
+		interest in mandatory security controls).
+
+		A fully general discretionary access control==> a fully general
+		access matrix model.
+
+		Covert channels exist for discretionary security controls.
+
+	Covert Channels:
+	---------------
+		storage channels : changing values of state variables,
+				   asynchronous, no timing dependencies.
+				   eg : contents of a file, names of files
+				   (existence revealed), deducements from
+				   amounts  of disk spaces etc.
+
+		timing channels  : modify length of time system function takes
+				   to complete.
+				   eg : synchronous communication.
+
+		Other classifications include inference channels, signalling
+		channels, aggregation channels - retracing info. from
+		statistical information.
+
+	Lattice Security Model [LSM] (courtesy Lipner and Denning) :
+	-----------------------------------------------------------
+
+	Possible to solve CP.
+
+	Most (all?) mandatory controls to date have used this model.
+
+		LSM consists of :
+
+		set of access classes ( forms a partial ordered set.
+				      eg: Unclass. < Class. < Secret < Top.Sec.
+					    U	   <   C    <   S    <    T  )
+
+		system low access class (= less than each other class).
+
+		system high access class (= greater than each other class).
+
+	No requirement of strict hierarchical structure as shown in above
+	example.
+
+
+		modeling categories : possibly overlapping subsets of objects.
+
+
+	National Computer Security Center's (NCSC) criteria :
+	---------------------------------------------------
+
+	The NCSC has developed computer security evaluation criteria for aiding
+	Dept. of Defense (DoD) in the procurement of secure computer systems.
+	For more details refer to DoD's Orange book.
+
+	Division D : Minimal Protection - those that fail to meet higher
+	----------		  	  divisions.
+	Division C : Discretionary Protection - need to know basis.
+	----------
+
+		Class C1 : Discretionary Security Protection.
+		--------------------------------------------
+			minimum security features to separate subjects from
+			objects.
+
+		Class C2 : Controlled Access Protection.
+		----------------------------------------
+			Class C1 + improved audit trails and login controls.
+
+	Division B : Mandatory Protection - implemented mandatory LSM (MLSM).
+	----------
+
+		Class B1 : Labeled Security Protection.
+		---------------------------------------
+			label all objects, enforce MLSM on those objects.
+
+		Class B2 : Structured Protection.
+		---------------------------------
+			label all subjects and objects.
+			covert channels eliminated or bandwidth <= threshold.
+			trusted communication path between user-system providing
+			two-way authentication.
+
+		Class B3 : Security Domains.
+		----------------------------
+			Isolated security kernel (trusted computer base).
+			required access control lists.
+			Informal description of top level specification (DTLS)
+			of the design required.
+
+	Division A : Verified Protection - uses formal mathematics to assure
+	----------   correctness of design and the implementation.
+
+		Class A1 : Verified Design.
+		---------------------------
+			Preparation and verification of formal top level spec.
+			(FTLS) of the security kernel design.
+			Informal techniques must be used to show correspondence
+			between FTLS and implementation.
+
+		Beyond Class A1.
+		----------------
+			requires formal verification of code, microcode and
+			hardware. Considered beyond the scope of current
+			technologies and so requirements are not stated.
+		---------------------------
+
+
+
+                        INTRODUCTION TO DB SECURITY
+
+                         By : S.Jajodia & R.Sandhu
+                          George Mason University
+                                                          pages 1-40 
+
+	       CURRENT COMMERCIAL SYSTEMS AND THEIR LIMITATIONS
+
+DISCRETIONARY ACCESS CONTROLS:  
+		       *  Users can protect what they own.
+		       *  The owner may grant access to others.
+		       *  The owner may define the type of access
+			   (read/write/execute) given to others.
+
+IDENTIFICATION AND AUTHENTICATION:
+                       *  I&A provided by DBMS is distinct from I&A
+			    provided by the underlying OS.
+       For example, in SQL/DS,    CONNECT <user> IDENTIFIED BY <password>
+
+       (Not necessarily true in some systems (e.g. AS/400) where there
+	 is no separation between OS & DBMS layers.)
+
+>From the relations different views can be created.  Views are ideal for 
+security, but ...
+		       *  Code required to implement views is very large,
+			   and therefore, inappropriate for DBMSs above 
+			   class B1 (the more the code, the lower the
+			   assurance).
+                       *  Many views cannot be updated. 
+		       *  Other views can be updated but we need to
+			   polyinstantiate. 
+          Also ...
+		       *  It has been shown that it is generally very
+			   difficult to determine who has access to what
+			   (the safety problem).
+                       *  Cannot withstand sophisticated attacks.
+
+MILITARY SECURITY REQUIREMENTS
+		       *  MAC (Mandatory Access Control)
+				    and
+		          DAC (Discretionary Access Control)
+		       *  Covert Channels
+		       *  Inference and aggregation 
+		       *  Assurance
+		       *  Non-Military applications
+
+SECURITY REQUIREMENTS
+		       *  Protect data from unauthorized modification
+		       *  Protect data form unauthorized access
+		       *  Protect system from unauthorized attacks 
+			   resulting in a loss of service (physical security).
+
+COMMERCIAL SYSTEMS
+		       *  Use descretionary access control (users decide
+			   who has access to what)
+                       *  These mechanisms are adequate for most honest
+			   users, but cannot withstand sophisticated
+			   attacks from malicious users
+                       *  Vulnerable to Trojan horses.
+		       *  Safety probelm (who has acces to what & assurance)
+
+TOWARD A SOLUTION
+	 So we decompose the problem into 3 subproblems:
+		       *  Policy
+		       *  Mechanisms
+		       *  Assurance
+
+MANDATARY ACCESS CONTROLS
+	 Enforce a label-bases policy.
+	               *  Assign security levels to all data
+		       *  Assign a security clearance to each user
+		       *  DBMS should make sure that all users have access
+			   to only those data for which they have a 
+			   clearance 
+     Let's once again consider the Trojan Horse example.  We can require
+     that all software that is run on the system is TH free.  But this is
+     hardly practical!  We need to be better.
+
+POLICY
+		       *  Based on Bell-LaPadula model which is stated in 
+                           terms of subjects and objects
+                       *  An object is a passive entity (such as a data 
+			   file, record, or a field within a record)
+                       *  A subject is an active process that can request
+			   access to objects.
+                       *  Every object is assigned a classification and each
+			   subject a clearance.  We use a security class
+			   (or level) to refer to either of these 
+                       *  A security calss consists of two components: a
+			    hierarchical component and a set of categories.
+			    The latter set could be empty
+                       *  Security classes are partially ordered as follows:
+			    C1 >= C2 if the hierarchical component of C1 is
+			    greater than or equal of that of C2 and the
+			    categories in C1 contain thse in C2
+     We say C1 dominates C2 (and C2 is dominated by C1) if C1 >= C2.
+
+SECURITY LATTICE
+     Directed Acyclic Graph
+
+                      Sj       ,-> O --,           Si
+                      O       /        |     ,--> O 
+                       \     /         v    /
+                        `-> O--> O <-- O --'
+			                
+    Si < Sj if there is a path from Sj to Si.
+
+For example:   TS --> S --> C --> U
+
+        (Secret,{Nuclear, Conventions}) ----> (Secret,{Nuclear})  
+	   |                                     | 
+	   `--,  ,-------------------------------'
+	      |  |
+	      v  v
+        (Confidential,{Nuclear})
+
+BELL-LAPADULA RESTRICTIONS
+		     *  The simple Security Property:
+			    A subject S is allowed a read acess to an object
+			    O if L(S) is greater than or equal to L(O).
+                     *  The *-Property:
+			    A subject S is allowed a write access to an 
+			    object O if L(S) is less than or equal to L(O).
+                         (Allows to alter at same level and append at same
+			  or higher level)
+
+    These restrictions together ensure that there is no flow of information
+    from high to low subjects!
+
+MECHANISMS
+		     *  It contains security classes of all objects and
+			subjects.  (small DB)
+                     *  Whenever a subject accesses an object, it must do
+			so via the reference monitor.
+                     *  It enforces the two BLP restrictions faithfully.
+		     *  It is always running, cannot be bypassed, and 
+			cannot be tampered with.
+
+REFERENCE MONITOR
+                     S1           S2          Sn
+		     ^            ^           ^
+		     |            |           |
+		     v            v           v
+		  _______________________________
+                  |       Reference Monitor     |
+		  |_____________________________|
+                       ^         ^        ^
+		       |         |        |
+		       v         v        v
+		       O1        O2       Om
+
+TRUSTED COMPUTING BASE
+		     *  Includes all protection mechanisms (hardware,
+			firmware, and software) that is responsible for
+			enforcing the security policy.
+                     *  Includes Reference Monitor.
+      RF = TCB   (also called Security Kernel)
+      It is a subsystem which handles security issues.
+
+DISCRETIONARY ACCESS CONTROLS
+		     *  In addition to MAC, additional access controls
+			(in the form of DAC) can also be imposed.
+
+INFORMATION FLOW
+      Highly sensitive information should not flow into low sensitivity
+      objects.
+
+          If (a <> 1)
+             y := x;
+          else
+             y := z;
+      
+      Information flows from a to y because the future value of y depends 
+      on the value of a.
+
+INFORMATION FLOW CHANNELS
+      A secure system should not only protect direct revelation of data,
+      but also against ciolations that produce illegal information flow
+      through indirect means.
+       
+		     *  Inference Channels:  A user at a low security
+					     class uses the low data to
+					     infer info about high security
+					     class.
+
+		     *  Covert Channels:     Require two (cooperating) active
+					     agents, one at a low level and
+					     the other at a high level and an
+					     encoding shceme.
+       (Reference Monitor does not prevent inference and covert channels.)
+
+DATABASE SECURITY ISSUES
+		     *  Granularity of Protection
+			 -  In operating systems, protected objects are files.
+			 -  In databases, there are several possibilities:
+			    relations,attirbutes, tuples, data elements.
+        Which of these should be a DBMS implement?
+		     *  Relation level is easier to implement, but
+		        may be too inflexible.
+                     *  Data element level aggravates many problems
+		        (such as polyinstantiation).
+                     *  Access Control System (such as an OS).
+			  -  Identification and Authentication - Associate
+			      a password and a unique id with each person.
+                          -  Access contorls - Check the user's authorization
+			      for the type of access and the object requested.
+        These only control which subjects have access to which objects.  They
+	do not control what values are read or how the contents are modified.
+
+
+
+                        INTRODUCTION TO DATABASE SECURITY 
+			---------------------------------
+
+                        MULTILEVEL RELATIONAL DATA MODEL I
+
+A FACT OF LIFE 
+       Multilevel DBs are inherently more complex than ordinary single-level
+       ones!
+
+       The Research Challenge:  What can a multilevel DBMS do to cope with
+				this added complexity?
+
+ORDINARY RELATIONS
+       Relation scheme :  Relation Structure
+       Relation :         Relation Instance
+
+            (key)        
+	      |
+	      v
+           STARSHIP          OBJECTIVE         DESTINATION
+
+	   Enterprise        Exploration       Talos
+	   Voyager           Spying            Mars 
+
+MULTILEVEL RELATINS
+       Relation scheme :  Relation Structure 
+			   (includes classification attributes)
+       Relation :         Relation Instance
+			   (one relation per access class)
+
+A MULTILEVEL RELATION
+       A secret user sees:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Spying       S    Mars    S       S
+
+       An unclassified user sees:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Null         U    Null    U       U
+
+QUESTION I
+	  Should these different instances of a multilevel relation
+	  scheme be related in some way?
+
+UPDATES BY A LOW USER
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Null         U    Null    U       U
+
+        Suppose a U-user wishes to replace the 2nd tuple by:
+	    (Voyager, Exploration, Talos).
+
+	If we allow this insertion, the U-relation becomes:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Exploration  U    Talos   U       U
+
+WHAT SHOULD WE SHOW THE HIGH USER?
+        If we just append the low tuple to his/her view:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Exploration  U    Talos   U       U
+	   Voyager      U    Spying       S    Mars    S       S
+
+        But this violates the key integrity!
+
+ON THE OTHER HAND ...
+	 If the DBMS rejects the low update, we have a signalling channel!
+
+	 Two Trojan Horses, one at the high level and the other at the low
+	 level can use this to establish an encoding scheme.
+	 
+	 Somehow, both tuples for the 'Voyager' must coexist in the high
+	 relation.
+
+	 This is called POLYINSTANTIATIN:  There are two or more tuples in a
+	 ML relation with the same primary key.
+
+QUESTION II:  How?
+
+         Apparent Primary Key
+             |
+	     v
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Spying       S    Mars    S       S
+
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Null         U    Null    U       U
+
+CORE INTEGRITY PROPERTIES
+		  *  Entity Integrity
+		  *  Inter-Instance Integrity
+                  *  Null Integrity
+		  *  Polyinstantiation Integrity
+
+    ENTITY INTEGRITY
+	              *  The apparent key cannot have any nulls.
+		      *  The apparent key must be uniformly classified.
+		      *  Classification of non-key attributes >= classification
+			   of key.
+    INTER-INSTANCE INTEGRITY
+	   Let C1 > C2.  R(C2) is uniquely determined by filtering out
+	     sensitive data from R(C1)  (i.e., those data vales in R(C1)
+	     that are classifed above C2).
+
+       EXAMPLE
+         A secret user sees:
+       
+    	   STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Spying       S    Mars    S       S
+
+         An unclassified user sees:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Voyager      U    Null         U    Null    U       U
+
+    NULL INTEGRITY
+		    *  Nulls are classified at the level of the key.
+		    *  Nulls are subsumed by non-null values, independent
+			of the classification.
+                    *  All relations are subsumption-free.
+
+      EXAMPLE
+	Suppose U instance is this:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Null         U    Talos   U       U
+
+        S instance should not look like this:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Null         U    Talos   U       U
+	   Enterprise   U    Exploration  S    Talos   U       S
+
+	It should look like this:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  S    Talos   U       S
+    
+    POLYINSTANTIATION INTEGRITY
+	   There is no polyinstantiation within the same access class.
+		       AK, CK, CI --> AI
+
+	ALLOWED
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Enterprise   U    Spying       S    Rigel   S       S
+
+        NOT ALLOWED
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   S       S
+	   Enterprise   U    Spying       S    Rigel   S       S
+
+
+
+SEAVIEW DEFINITION OF POLYINSTANTIATION
+    It has a second multi-valued dependecy requirement:
+		  AK, CK -->--> AI, CI
+		      (they also use dynamic MVD)
+
+    As a consequence...
+      Using SeaView a user cannot model Instances such as this:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   S       S
+	   Enterprise   U    Spying       S    Rigel   S       S
+
+      SeaView will convert it to:
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Enterprise   U    Exploration  U    Rigel   S       S
+	   Enterprise   U    Spying       S    Talos   S       S
+	   Enterprise   U    Spying       S    Rigel   S       S
+
+    Spurious Tuples Multiply Rapidly
+	   
+           STARSHIP          OBJECTIVE         DESTINATION    TC
+
+	   Enterprise   U    Exploration  U    Talos   U       U
+	   Enterprise   U    Exploration  U    Rigel   S       S
+	   Enterprise   U    Spy          S    Talos   S       S
+	   Enterprise   U    Spy          S    Rigel   S       S
+           Enterprise   U    Coup         TS   Talos   U       TS
+	   Enterprise   U    Coup         TS   Rigel   S       TS
+	   Enterprise   U    Exploration  U    Orion   TS      TS
+	   Enterprise   U    Spy          S    Orion   TS      TS
+	   Enterprise   U    Coup         TS   Orion   TS      TS
+
+    CORE INTEGRITY PROPERTIES
+	    *  Entity Integrity
+	    *  Inter-Instance Integrity
+	    *  Null Integrity
+	    *  Polyinstantiation Integrity
+                 (SeaView MVD requirement is a bad idea!!!)
+
+
+
+    Course 4: Introduction to Database Security
+               Multilevel Relational Model ll          -Pages - 41 to 47
+
+
+
+                      _________________________________
+                     |          COURSE 4               |
+                     |       INTRODUCTION TO           |
+                     |       DATABASE SECURITY         |
+                     |_________________________________|
+
+
+                     __________________________________
+                    |              SESSION             |
+                    |       MULTILEVEL RELATIONAL      |
+                    |              MODEL ll            |
+                    |__________________________________|
+
+
+
+
+
+
+
+
+                        ____________________________
+                       |        Updates to          |
+                       |    Multilevel Relations    |
+                       |____________________________|
+
+
+          Sushil jajodia and Ravi sandhu, "A novel decomposition of
+          multilevel relations into single-level relations into single
+          level relations," Proc.IEEE Symp.on Research in Security and
+          Privacy,May 1991.
+
+
+
+
+______________________________________________________________________________
+                            _________________
+                           | The Problem    |
+                           |________________|
+
+             Consider a user U logged on at access class C
+
+             In view of * -property, In Instances with
+                Security Levels < C  No effect
+                Security Levels ~ C  No effect    => incomparable
+             Thus any changes must be confined to Instances
+             with security level = C (write at own level)
+             To preserve Inter-Instance property,all changes
+             must be reflected in Instances with security level > C
+            This latter effect is partly determined by core Integrity
+            properties ,leaving room for different Interpretations.
+
+
+
+
+
+
+                         ________________________________
+                        |     Underlying Philosophy      |
+                        |________________________________|
+
+
+            *  keep update semantics as close to standard SQL
+            *  Polyinstantiate to preserve * -property and to avoid
+              signalling channel
+            *   Add fewest tuple possible
+
+
+________________________________________________________________________________
+                        ______________________
+                       |   Standard   SQL     |
+                       |______________________|
+
+                         ship        obj         Dest
+                     ______________________________________
+                        Ent         Exp          Talos
+                        Voy         spy          Talos
+
+           User:        UPDATE     SOD
+                        SET        DEST = 'Rigel'
+                        WHERE      SHIP = 'Ent'
+
+                         ship        obj          Dest
+                     ________________________________________
+                        Ent          Exp          Rigel
+                        Voy          spy          Talos
+
+
+    
+
+                         _____________________
+                        |  Standard  SQL      |
+                        |_____________________|
+
+
+                     ship      obj      Dest
+                 __________________________________
+                     Ent       Exp      Talos
+                     Voy       Spy      Talos
+
+          User:    UPDATE     SOD
+                   SET        OBJ = 'Mine'
+                   WHERE      DEST = 'Talos'
+
+        
+                    ship       obj       Dest
+                ___________________________________
+                    Ent       Mine       Talos
+                    Voy       Mine       Talos
+
+
+_______________________________________________________________________________
+
+                     ____________________________
+                    |  Update  Semantics         |
+                    |____________________________|
+
+
+                     ship       obj        Dest
+                   _______________________________
+
+                     Ent U      Exp   U     null U
+
+          S-user:    UPDATE    SOD
+                     SET       DEST = 'Rigel'
+                     WHERE     SHIP = 'Ent'
+
+
+                     ship       obj         Dest
+          'u'       _________________________________
+
+                     Ent U      Exp  U      Rigel S
+
+                      
+                     ship        obj         Dest
+           's'        ___________________________________
+ 
+                      Ent U       Exp  U      Rigel S
+
+
+
+
+
+                      ______________________________
+                     |   Update  Semantics          |
+                     |______________________________|
+
+        'u'             ship        obj         Dest
+                     _______________________________      's'
+                    
+                     Ent U       Exp U        null  U    Ent U   Exp U  Rigel S
+            
+
+        U-user:       UPDATE     SOD
+                      SET        DEST = 'Talos'
+                      WHERE      SHIP = 'Ent'
+
+           'u'        ship         obj         Dest
+                    __________________________________
+     
+                      Ent U        Exp  U       Talos  U
+
+           's'        ship         obj          Dest
+                   ____________________________________
+
+                      Ent U        Exp  U        Talos U
+                      Ent U        Exp  U        Rigel S
+________________________________________________________________________________
+
+
+                      ________________________
+                     |  Update Semantics      |
+                     |________________________|
+
+      ship      obj       Dest               ship       obj       Dest
+    _______________________________          ____________________________
+     Ent U     Exp U      Talos U             Ent U      Exp  U    Talos U
+                                              Ent U      Exp  U    Rigel S
+
+    S-User:
+           UPDATE    SOD
+           SET       OBJ = 'spy'
+           WHERE     SHIP = 'Ent' AND DEST = 'Rigel'
+
+      ship     obj        Dest               ship       obj        Dest
+    _____________________________            ___________________________
+     Ent U    Exp U      Talos U             Ent U     Exp U      Talos U
+                                             Ent U     spy S      Rigel S
+
+
+
+                       ____________________
+                      |  Update Semantics  |
+                      |____________________|
+
+      ship      obj        Dest               ship      obj      Dest  
+    ______________________________         _______________________________
+     Ent U     Exp U      Talos U             Ent U      Exp U    Talos U
+                                              Ent U      Exp U    Rigel S
+
+
+     S-User:
+            UPDATE   SOD
+            SET      OBJ = 'spy'
+            WHERE    SHIP = 'Ent'                POLYINSTANTIATE
+                                                 
+     ship        obj      Dest                  ship       obj       Dest
+  ______________________________                ____________________________
+     Ent U     Exp U      Talos U               Ent U     Exp U      Talos U
+                                                Ent U     spy S      Talos U
+                                                Ent U     spy S      Rigel S
+    
+ _______________________________________________________________________________      
+
+                    
+                       _____________________________________
+                      |  Above User's  Access class         |
+                      |_____________________________________|
+
+     ship      obj        Dest
+   ______________________________
+    Ent  U     Exp U       Talos U
+
+   S-User:    UPDATE      SOD                  ship      obj       Dest
+              SET         DEST = 'Rigel'      Ent U      Exp U    Talos  U
+              WHERE       SHIP = 'Ent'        Ent U      Exp U    Rigel  S
+
+                                          {  depending on the way you want
+                                             to implement things, the first
+                                             tuple can be removed}
+
+    C-User:   UPDATE      SOD
+              SET         OBJ = 'spy'
+              WHERE       SHIP = 'Ent'         ship      obj       Dest
+                                              _____________________________
+                                              Ent U     Exp U      Talos U
+                                              Ent U     spy C      Talos U
+                                              Ent U     Exp U      Rigel S
+
+
+
+
+                     ____________________________
+                    |  Update semantics summary  | 
+                    |____________________________|
+
+                           Update by a C-User
+                 Levels < C     No effect
+                 Levels ~ C     No effect
+                 Levels = C     Minimal necessary polyinstantiation
+                                                   { because of DAC compartments                 Levels > C     Minimal propagation
+
+
+
+________________________________________________________________________________
+
+                           ______________
+                          | SUMMARY      |
+                          |______________|
+
+            * Update semantics should be as close to SQL as possible.
+    
+            *  Minimal polyinstantiation . ( rather minimal addition of
+                                            tuples )
+
+
+=============================
+Jajodia Sandhu Workshop Notes:
+=============================
+
+Pages 48-75 
+-------------------------------cut here----------------------------------------
+
+		SESSION : DECOMPOSITION AND RECOVERY
+		------------------------------------
+
+	DECOMPOSITION OF MULTILEVEL RELATIONS INTO SINGLE LEVEL RELATIONS
+	----------------------------------------------------------------
+ ---
+| SeaView Decomposition
+| ---------------------
+| NAME        SL        MISSION       SL        DEST    SL  TUPLE-SL
+| ----------  --        -----------   --        -----   --  -------
+| Enterprise  U		Exploration   U	 	Talos	U   U
+| Enterprise  U		Spying	      S	 	Rigel   S   S
+|
+| Enterprise  U
+| Enterprise  U	  Explore  U
+| Enterprise  U	  Spying   S
+| Enterprise  U	  Talos    U
+| Enterprise  U   Rigel    S
+ ---
+
+ ---
+| SeaView Recovery
+| ----------------
+| Enterprise  U           Exploration   U         Talos   U   U
+| Enterprise  U           Spying        S         Talos   U   S 
+| Enterprise  U           Exploration   U         Rigel   S   S
+| Enterprise  U           Spying        S         Rigel   S   S
+|
+| Enterprise  U
+| Enterprise  U   Explore  U
+| Enterprise  U   Spying   S
+| Enterprise  U   Talos    U
+| Enterprise  U   Rigel    S
+ ---
+
+
+ ---
+| Enterprise  U           Exploration   U         Talos   U   U
+| Enterprise  U           Spying        S         Talos   U   S
+| Enterprise  U           Exploration   U         Rigel   S   S
+| Enterprise  U           Spying        S         Rigel   S   S
+|
+|	| /\ 
+|	|  |   	SEAVIEW DECOMPOSITION & RECOVERY
+|       |  |    --------------------------------
+|      \/  |
+| Enterprise  U
+| Enterprise  U   Explore  U
+| Enterprise  U   Spying   S
+| Enterprise  U   Talos    U
+| Enterprise  U   Rigel    S
+ --- 
+
+ ---
+| PROBLEMS WITH SEAVIEW DECOMPOSITION & RECOVERY
+| ---------------------------------------------
+| 
+|	- Vertical fragmentation of ML relation
+|		- Repeated natural joins of several SL relations during recovery
+|		- Many disk accesses
+|	- Spurious Tuples
+|		- sever limitations on the Expressive Capability of the DB
+|	- Left outer Joins
+|		- Many theoretical complications
+ ---
+
+ ---
+|	JAJODIA/SANDHU (OAKLAND '90)
+|	----------------------------
+|	1. Drop MVD as a requirement from the definition of PI.
+|	2. Use full key when a ML relation is decomposed into SL relations
+|	
+|	Given R(AK, CK, A2, C2, ..., An, Cn),
+|	PI definition requires:
+|	   AK, CK, CI ---> AI
+|	Therefore, the full key is
+|	   AK, CK, C2, ..., Cn
+ ---
+
+ ---
+|
+| Enterprise  U         Exploration   U         Talos   U   U
+| Enterprise  U         Spying        S         Rigel   S   S
+|
+|	| /\
+|       |  |	JAJODIA/SANDHU (OAKLAND '90)
+|	|  |	DECOMPOSITION & RECOVERY
+|	\/ |  
+| Enterprise  U   U	   U	 
+| Enterprise  U   S        S
+| Enterprise  U   Explore  U
+| Enterprise  U   Spying   S
+| Enterprise  U   Talos    U
+| Enterprise  U   Rigel    S
+ ---
+
+ ---
+|       JAJODIA/SANDHU (OAKLAND '90)
+|       ----------------------------
+|	 ---
+|	|
+|	|	- Vertical fragmentation of ML relation
+|	|		- Repeated natural joins of several SL relations
+|	|		  during recovery
+|	|		- Many disk accesses
+|	 ---
+|
+|	- Spurious Tuples
+|	- Severe Limitations on the expressive capability of the DB
+|	- Left outer joins
+|	   - Many theoretical complications
+ ---
+
+ ---
+|
+| Enterprise  U         Exploration   U         Talos   U   U
+| Enterprise  U         Spying        S         Rigel   S   S
+|
+|       | /\
+|       |  |    JAJODIA/SANDHU (OAKLAND '90)
+|       |  |    DECOMPOSITION & RECOVERY
+|       \/ |
+|
+| Enterprise  U		Exploration  U		Talos	U   U
+|
+| Enterprise  U     	Spying       U		Rigel   S   S
+|
+ ---
+
+ ---
+|
+|	OUR NEW DECOMPOSITION
+|	---------------------- 
+|
+|	- No vertical fragmentation
+|		- fewer SL relations
+|		- Fewer disc accesses
+|		- No natural joins
+|	- Defined in terms of operational semantics of the update operations
+ ---
+
+ ---
+|
+|	STANDARD SQL
+|	------------
+|	
+|	Ship	obj	Dest
+|	--------------------
+|	Ent	Exp	Talos
+|	Voy  	Spy	Talos
+|
+| User:	UPDATE SOD
+|    	SET    DEST = 'Rigel'
+|	WHERE  SHIP = 'Ent'    
+|
+|	ship	obj	Dest
+|	--------------------
+|	Ent	Exp	Rigel
+|	Voy	Spy	Talos
+ ---
+
+ ---
+|
+|       STANDARD SQL
+|       ------------
+|
+|       Ship    obj     Dest
+|       --------------------
+|       Ent     Exp     Talos
+|       Voy     Spy     Talos
+|
+| User: UPDATE SOD
+|       SET    OBJ = 'Mine'
+|       WHERE  DEST = 'Talos'
+|
+|       ship    obj     Dest
+|       --------------------
+|       Ent     Mine    Talos
+|       Voy     Mine    Talos
+ ---
+
+ ---
+|
+|		UPDATE SEMANTICS 
+| 		----------------
+|
+|	ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|	Ent U	Exp  U  null U	    Ent U   Exp U   null U	
+|
+|	S-User: UPDATE SOD
+|       SET    DEST = 'Rigel'
+|       WHERE  SHIP = 'Ent'
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  null U      Ent U   Exp U   null U
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Rigel S     Ent U   ? U   Rigel S 
+|
+ --- 
+
+ ---
+|
+|               UPDATE SEMANTICS
+|               ----------------
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  null U      Ent U   Exp U   null U
+|
+|       S-User: UPDATE SOD
+|       SET    DEST = 'Talos'
+|       WHERE  SHIP = 'Ent'
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   Exp U   Talos U
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   ? U   Rigel S
+|	Ent U	Spy  S	Rigel S
+|
+ ---
+
+---
+|
+|               UPDATE SEMANTICS
+|               ----------------
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  null U      Ent U   Exp U   null U
+|
+|       S-User: UPDATE SOD
+|       SET    OBJ = 'Spy'
+|       WHERE  SHIP = 'Ent' AND DEST = 'Rigel'
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   Exp U   Talos U
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   Spy S   Rigel S
+|       Ent U   Spy  S  Rigel S
+|
+ ---
+
+ ---
+|		UPDATE SEMANTICS
+|		________________
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   Exp U   Talos U
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   ? U   Rigel S
+|       Ent U   Exp  U  Rigel S
+|	
+|       S-User: UPDATE SOD
+|       SET    OBJ = 'Spy'
+|       WHERE  SHIP = 'Ent'
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   Exp U   Talos U
+|
+|       ship    obj     Dest        ship    obj     Dest
+|       --------------------        --------------------
+|       Ent U   Exp  U  Talos U     Ent U   Spy S   ? U 
+|       Ent U   Spy  S  Talos U     Ent U   Spy S   Rigel S
+|	Ent U	Spy  S  Rigel S
+|
+ ---
+
+ ---
+|
+|		UPDATE SEMANTICS SUMMARY
+|		------------------------
+|
+|		update by a C-User
+|	Levels < C No effect
+|	Levels ~ C No effect 
+|	Levels = C Minimal necessary polyinstantiation
+|	Levels > C Minimal propagation
+|
+ ---
+
+ ---
+|
+| 		SUMMARY
+|		-------
+|
+|	* Superior and flexible decomposition and recovery 
+|	  algorithims based on update semantics
+|
+|	* We can accomodate any reasonable update semantics,
+|	  including 
+|		- Seaview MVD
+|		- Seaview Dynamic MVD
+|		- LDV Single maintainence Level
+ ---
+
+
+		SESSION: SECURE DBMS ARCHITECTURES
+		---------------------------------- 
+ --- 
+|
+|		SECURE DBMS ARCHITECTURES
+|               -------------------------
+|	- System High
+|	- 4 Multilevel Architectures
+|	  Woods Hole study( summer1982)
+|		- Integrity lock architecture
+|		- Kernelized architecture
+|		- Replicated architecture
+|		The fourth architecture
+|		- Trusted subject architecture
+ ---
+
+ ---
+|
+|		SYSTEM HIGH DBMS'S
+|		__________________
+|
+|	Data				    people
+|		 -------------------------------
+|	  	|				|
+|		|				|
+|	 <----------->				|
+| High	 <----------->			<-------------->
+|		|			<-------------->  High
+| Low	 - - - - - - >                  <-------------->
+|		|				|
+|		 ------------------------------
+|			security perimeter
+|
+ ---
+
+ ---
+|
+|		SYSTEM HIGH DBMS'S
+|		------------------
+|
+|       Data                                people
+|                -------------------------------
+|               |                               |
+|               |                               |
+|        <----------->                          |
+| High   <----------->                  <-------------->
+|               |                       <-------------->  High
+| Low    - - - - - - >                  <-------------->
+|		|------------			|
+| low	<- - - -|\\ GAURD \\ | 			|
+| 	<- - - -|------------                   |
+|                -------------------------------
+|	 		Security perimeter
+ ---
+
+ ---
+|		SYSTEM HIGH DBMS'S
+|		__________________
+|
+|	Advantages
+|	   - Existing DBMS's can be used with no change
+|	Disadvanatages
+|	   - Cost of clearance procedure
+|		- investigation costs
+|		- oppurtunity costs
+|	   - Increased security risk due to more people being cleared 
+|	     at higher levels
+|	   - Manual supervision of data below system high released from the 
+|        	system
+|		- costly , slow
+|		- does a "human in the loop " make it secure ?
+|
+ ---
+ 
+ ---
+|		WOODSHOLE STUDY SUMMER 1982
+|		----------------------------
+|	- near-term (2-5 yrs)
+|	- reuse of existing DBMS technology
+|	
+|	 ---
+|	|	can we build a multilevel secure DBMS using an
+|	|	using an existing untrusted DBMS ?
+|	|                -------
+|	 ---
+ ---
+
+ ---
+|	WOODS HOLE ARCHITECTURES
+|  	-------------------------
+|
+|	- Integrity lock architecture (also called spray paint architecture)
+|	- Kernelized architecture
+|	- Replicated architecture (called "distributed architecture"
+|		in the woods hole report )
+|
+ ---
+
+ ___
+|			High user			low user
+|			  /\  				   /\
+l                          |				    |
+|			   |				    |
+|			  \/			           \/
+| Untrusted		 -----				 ------
+| Front end		| UFE |				| UFE  |
+|			 -----		 		 ------
+|			  /\				   /\
+|			   | 				    |
+|			  \/				   \/
+|			 ---------------------------------------
+| Trusted 		|		TFE			|
+| Front End		 ---------------------------------------
+|			  /\	/\	/\	/\	/\
+|  WOODS HOLE 		   |	 |	 |	 |	 |
+|  ---------		   |	 |	 |	 |	 |
+|  ARCHITECTURES	  \/	\/	\/	\/	\/
+| -------------- 	 ---------------------------------------	
+|			|	Untrusted back end DBMS		|
+|			 --------------------------------------- 
+|			  	/\	/\	/\
+|				 |	 |	 |
+|				\/	\/	\/
+|				--	--	--
+| Disks			       |  |    |  |    |  |
+|        			--	--	--
+ ---
+
+ ___
+|		WOODS HOLE ARCHITECTURES
+|		------------------------
+|	- TFE cannot be bypassed i.e., TFE is the reference monitor
+|	- UFE will not be shown in subsequent diagrams
+|	- For simplicity we show only one high & on elow user in each diagram
+|	- The basic elements of each architecture can be understood by
+|	  considering just two levels- high and low
+ ---
+
+ ___
+|		TRUSTED SUBJECT ARCHITECTURE
+|		----------------------------
+|
+|	- Outside scope of the woodes hole study
+|	- Requires that DBMS be either
+|		- built from scratch or
+|		- built by extensive retrofit of an existing DBMS
+ ---
+
+ ___
+|		PROTOTYPES AND IMPLEMENTATIONS
+|		------------------------------
+|
+|  			Research	  Commercial
+|			--------	  ---------
+|		   ___________________________________
+| Integrity Lock  | Mitre	    |	Trudata	       |
+|		   -----------------------------------  
+| Kernelized	  | Seaview         |    Oracle        |
+|		   -----------------------------------
+| Replicated	  | NRL		    |	 	       |
+|		   ------------------------------------
+| Trusted 	  | ASD		    |	 sybase	       |
+| Subject	  |     	    |	 Rubix	       |
+|		  |		    |	 Informix      |
+|		   ____________________________________ 
+ ---
+
+ ---
+|			high user			low user
+|                         /\                               /\
+|                          |                                |
+|                         \/                               \/
+|                        ---------------------------------------
+|                       |               TFE                     |
+|                        ---------------------------------------
+|                         /\    /\      /\      /\      /\
+|  INTEGRITY LOCK          |     |       |       |       |
+|  --------------          |     |       |       |       |
+|  ARCHITECTURE           \/    \/      \/      \/      \/
+| --------------         ---------------------------------------
+|                       |       Untrusted back end DBMS         |
+|                        ---------------------------------------
+|					/\
+|					 |
+|					\/
+|			    	      ------
+|				     |High +|
+|				     |Low   |
+|				     |data  |
+|				      ------
+ ---
+
+ ---
+|		INTEGRITY LOCK TFE
+|		___________________
+|
+|	High user				Low user
+|	   /\					   /\
+|     - - - | - - - - - - - - - - - - - - - - - - - | - - - - - -
+|    |	    |					    |		 |
+|    |     \/					   \/		 |
+|    |	  _____________________________________________________  |
+|    |	 |		Security Front end		       | |	
+|    |   |_____________________________________________________| |
+|    |  store |			|		/\		 |
+|    |	     \/			|		 |		 |
+|    |	  ________		|	      _______		 |
+|    |	 | Append |		|	     | Check |		 |
+|TFE |	 | Stamp  |		|	     | Stamp |           |
+|    |	  ________		|	      _______		 |
+|     - - - /\  - - - - - - - - | - - - - - - - /\ - - - - - - -  
+|    Store   |			| Retrieve	 |
+|	    \/  	       \/ (Querry)	 |
+|        _______________________________________________________
+|	|		Untrusted back End DBMS			|
+|	 _______________________________________________________
+ ---
+
+ ---
+|		INTEGRITY LOCK ARCHITECTURE
+|		----------------------------
+|	High user Querry		Show me starship data
+|	
+|				Data			Stamp
+|			     __________________________________
+|	Untrusted DBMS	    |Enterprise Rigel  	|	Low    |
+|	response	    |Voyager    Mars	|	High   |
+|			    |__________________________________|
+|
+|				Data			Stamp
+|			     __________________________________
+|	Filtered 	    |Enterprise  Reigel	|	Lo     | 
+|	response	    |Voyager     Mars	|	High   |
+|			    |__________________________________|
+ ---
+
+ ---
+ |               INTEGRITY LOCK ARCHITECTURE
+|               ----------------------------
+|       Low user Querry                Show me starship data
+|
+|                               Data                    Stamp
+|                            __________________________________
+|       Untrusted DBMS      |Enterprise Rigel   |       Low    |
+|	response            |__________________________________|
+|
+|                               Data                    Stamp
+|                            __________________________________
+|       Filtered            |Enterprise  Reigel |       Lo     |
+|	response            |__________________________________|
+ ---
+
+ ---
+|               INTEGRITY LOCK ARCHITECTURE
+|               ----------------------------
+|       Low user Querry                Show me starship data
+|
+|                               Data                    Stamp
+|                            __________________________________
+|       Untrusted DBMS      |Enterprise Rigel   |       Low    |
+|       DBMS trojan         |Voyager    Mars    |       Low    |
+|                           |__________________________________|
+|
+|                               Data                    Stamp
+|                            __________________________________
+|       Filtered            |Enterprise  Reigel |       Lo     |
+|	response            |__________________________________|
+ ---
+
+ ---
+|		INTEGRITY LOCK VULNERABILITY
+|		-----------------------------
+|	Low User Query 		Is the voyager going to Mars ?
+|
+|                               Data                    Stamp
+|                            __________________________________
+|		   Yes      | Enterprise  Rigel	|	Low    |
+|		  /\   	    |			|	       |
+| Untrusted DBMS --' 	    | Battlestar  Talos |	Low    |
+| trojan horse   --          ----------------------------------
+|		   |
+|		   |
+|		   |            Data                    Stamp
+|                  |         __________________________________
+|		    -> No   | Enterprise  Rigel |	Low    |
+|	 		     ----------------------------------
+|
+|	Filtering the response for incorrect stamps is not sufficient
+ ----
+
+ ----
+|	INTEGRITY LOCK LIMITED USE OF BACK-END DBMS
+|	--------------------------------------------
+|				Users
+|				 /\
+|				  |
+|				 \/
+| Query processing &    --------------------------------
+| optimization,        |    Untrusted Front End         |
+| projections	        --------------------------------
+|				 /\				
+|				  |
+|				 \/
+| Placement and 	 -------------------------------	
+| verification of 	|   Trusted front end		|
+| checksums		 -------------------------------
+|				 /\
+|				  |
+|				 \/
+| Tuple retrieval	 -------------------------------
+| and storage		|   Untrusted Back-end DBMS	|
+|			 -------------------------------
+ ---
+
+ ---
+|		INTEGRITY LOCK SUMMARY
+|		---------------------
+|	- Eliminates only a specific class of covert channels
+|	- Cannot detect some rather obvious and high bandwidth covert channels
+|	- Suited for B1 at best
+|	- Uses backend untrusted DBMS as a tuple storage and retrieval machine
+|	- Query optimization, subquery handling, projections must all be done
+|	  in the UFE or TFE
+ ---
+
+ ---
+|		INTEGRITY LOCK EXAMPLES
+|		----------------------
+|	- Research prototype MISTRESS (Mitre)
+|	- Commercial	TRUDATA
+ ---
+
+ ---
+|		KERNELIZED ARCHITECTURE
+|		-----------------------
+|	
+|		High user				Low user
+|		  /\					  /\
+|		   |					   |
+|		  \/					  \/
+|		 ----				  	 -----
+|		|TFE |					| TFE |
+|		 ----					 -----
+|		  /\					  /\
+|		   |					   |
+|		  \/					  \/
+|	     -------------			    ------------
+|	    | High DBMS	  |			   | Low DBMS   |
+|	     ------------			    ------------
+|		 /\					/\
+|		  |					 |
+|		 \/					\/ 
+|	      ---------------------------------------------------
+|	     |			Trusted OS			|
+|	      --------------------------------------------------
+|		/\					/\
+|		 |					 |
+|		 ---------------	-----------------
+|			       |	|
+|			     ---------------
+|			    |High + Low Data|
+|			     ---------------]
+ ---
+
+ ---
+|		KERNELIZED ARCHITECTURE
+|		-----------------------
+|	
+|	                       Data                    Class
+|                            __________________________________
+| Multilevel relation	    |Enterprise  Rigel	|	Low 	|
+| High view		    |Voyager 	 Mars	|	High	|
+|			     ----------------------------------
+|				|			/\
+|		 		|			 | 
+|			 --------------- 	-----------------
+|		         |Decomposition |	| Recovery       |
+|			 _______________	_________________
+|				|			 |
+|			       \/			 |
+|			 - - - - - - - - - - - - - - - - - - - - - - 
+|			|  Low          -------------------------   |
+|			| 		|Enterprise	Rigel    |  |
+| Single level		|	  	 ------------------------   |
+| relations		|		 -------------------------  |
+|			| High		|Voyager	Mars	 |  |
+|			|		 -------------------------  |
+|			 - - - - - - - - - - - -  - - - - - - - - -   
+ ---
+
+ ---
+|               KERNELIZED ARCHITECTURE
+|               -----------------------
+|
+|                              Data                    Class
+|                            __________________________________
+| Multilevel relation       |Enterprise  Rigel  |       Low     |
+| High view                 |Voyager     Mars   |       High    |
+|                            ----------------------------------
+|                               |                       /\
+|                               |                        |
+|                        ---------------        -----------------
+|                        |Decomposition |       | Recovery       |
+|                        _______________        _________________
+|                               |                        |
+|                              \/                        |
+|                        - - - - - - - - - - - - - - - - - - - - - -
+|                       |  Low          -------------------------   |
+|                       |               |Enterprise     Rigel    |  |
+| Single level          |                ------------------------   |
+| relations             |                		            |
+|                        - - - - - - - - - - - -  - - - - - - - - -
+ ---
+
+ ---
+|		KERNELIZED ARCHITECTURE SUMMARY
+|		-------------------------------
+|	
+|	- Decomposition and recovery algorothms must be carefully constructed 
+|	  to be
+|	 	- correct 
+|		- efficient
+|	- Can be as secure as underlying trusted OS
+|	- Some portion of the DAC must be handled by trusted front end since
+|	  DAC cannot be decomposed in the same way as MAC
+|	- View based DAC are a problem
+ ---
+  
+ ---
+|		KERNELIZED ARCHITECTURE EXAMPLES
+|		--------------------------------
+|	- Research Prototype SEAVIEW (SRI) : element-level labelling 
+|	- Commercial Systems ORACLE : relation-level labelling
+ ---
+
+ ---
+|		REPLICATED ARCHITECTURE
+|		-----------------------
+|		High user				Low User
+|                 /\                                      /\
+|                  |                                       |
+|                 \/                                      \/
+|		 -------------------------------------------
+|		|		TFE			   |
+|		 ------------------------------------------
+|                 /\                                      /\
+|                  |                                       |
+|                 \/                                      \/
+|            -------------                          ------------
+|           | High DBMS   |                        | Low DBMS   |
+|            ------------                           ------------
+|                 /\                                      /\
+|                  |                                       |
+|                 \/                                      \/
+|		-------					-----
+|	       |High + |				|Low |
+|	       |Low    |				|Data|
+|	       |Data   |				 ---- 
+|		-------
+ ---
+
+ ---
+|		REPLICATED ARCHITECTURE
+|		----------------------
+|		
+|	- Need secure synchronization algorithims for consistent replication 
+|	- Cost of replication increases with increased size of the security
+|	  lattice
+|	- Is in tune with the current technological trends
+ ---
+
+ ---
+|		REPLICATED ARCHITECTURE EXAMPLES
+|		-------------------------------
+|
+|	- Research Prototypes 	NRL
+|	- Commercial Systems 	None
+ ---
+
+ ---
+|		TRUSTED SUBJECT ARCHITECTURE
+|		----------------------------
+|
+|               High user                               Low user
+|                 /\                                      /\
+|                  |                                       |
+|                 \/                                      \/
+|                ----                                    -----
+| labels: High  |UFE |                                  | UFE |
+|                ----                                    -----
+|                 /\                                      /\
+|                  |                                       |
+|                 \/                                      \/
+|            ----------------                          ----------------
+|labels:DBMS| Trusted DBMS   |                        | Trusted DBMS   |
+|            ----------------                          ----------------
+|                /\                                     /\
+|                 |                                      |
+|                \/                                     \/
+|             ---------------------------------------------------
+|            |                  Trusted OS                      |
+|             --------------------------------------------------
+|               /\                                      /\
+|                |                                       |
+|                ---------------        -----------------
+|                              |        |
+|                            --------------------
+|                           |DBMS + non-DBMS Data|
+|                            --------------------
+ ---
+
+ ---
+|		TRUSTED SUBJECT SECURITY LATTICE
+|	 	-------------------------------
+|
+|		  HIGH
+| 			*
+|			|
+|			|	* DBMS
+|			|
+|		 Low	*
+|
+|	HIGH dominates LOW
+|	DBMS incomparable with HIGH and LOW
+ ---
+
+ ---
+| 		TRUSTED SUBJECT ARCHITECTURE 
+|		----------------------------
+|	
+|	- All DBMS data is stored with DBMS label
+|	- ONly DBMS code can be executed by a subject with label DBMS
+|	- Subjects labelled DBMS are exempt from OS MAC controls (ie.,they 
+|	  are trusted ) so as to communicate with HIGH and LOW users
+|	- No user can directly access files
+ ---
+
+ ---
+|			TRUSTED SUBJECT ARCHITECTURE EXAMPLES
+|			--------------------------------------
+|	- Research Prototypes	ASD (TRW) :A1 target
+|	- Commercial Systems 
+|		SYBASE : B1 target 
+|		INFORMIX : B1 target
+|		RUBIX : B2 target
+ ---
+
+ ---
+|		SECURE DBMS ARCHITECTURE
+|		-------------------------
+|
+|	- System high 
+|	- 4 Multilevel Architectures
+|	  Woods Hole study (summer 1982)
+|		- Integrity Lock Architecture
+|		- Kernelized architecture
+|		- Replicated architecture
+|		The fourth architecture 
+|		- trusted subject architecture
+ ---
+
+ ---
+|		SECURE DBMS ARCHITECTURES	CONCLUSION
+|		------------------------------------------
+|	- The 4 multilevel represent 4 extreme points
+|	- Hybrid architectures are possible and may be the most likely
+|	  to succeed
+|	  Eg., replicated architecture still requires integrity of labels 
+|	  so Integrity lock techniques can be used .
+ ---
+
+
+
+
+MLS RESEARCH PROTOTYPES AND COMMERCIAL SYSTEMS  (pages 76-93)
+----------------------------------------------
+
+	RESEARCH PROTOTYPES
+	-------------------
+
+		Secure Data View (SeaView)
+
+		Lock Data Views (LDV)
+
+		Advance Secure DBMS (ASD)
+
+
+	SEAVIEW
+	-------
+
+		Joint effort by SRI, Gemini, Oracle
+
+		Sponsored by RADC
+
+		Objective: Build an A1 MLS/DBMS
+
+		Lunt et. al., "Secure Distributed Data Views", RADC-TR-89-313
+		Volume I,II,IIIa,IIIb,IV,V
+
+		Lunt et. al., "The SeaView Security Model", IEEE Transactions
+		on Software Eng., June 1990, pp.593-607.
+
+
+		IMPORTANT FEATURES
+		------------------
+
+		Permits element-level classification.
+
+		Multilevel relations are created as views from single-level
+		relations. Single-level relations are stored and managed by
+		an underlying mandatory reference monitor.
+
+		Users do not have direct access to single-level relations.
+
+		Trusted Oracle is used to manage single-level relations. SRI
+		added an additional software layer to provide multilevel
+		relations.
+
+
+	SEAVIEW ARCHITECTURE
+	--------------------
+
+		GEMSOS TCB (currently under evaluation) - designed to meet
+		requirements for Class A1.
+
+		Resource Manager - contains OS functions needed to support
+		Oracle DBMS and SeaView.
+
+		MSQL processor - allows users to manipulate multilevel
+		relations.
+
+		      +---------------------------------------------+
+		      |	   	     SeaView Users		    |
+		      +---------------------------------------------+
+		      |	   	     MSQL Processor		    |
+		      +---------------------------------------------+
+		      |          Oracle Mandatory Prototype	    |
+		      +---------------------------------------------+
+		      |     Resource Manager (accomodate ORACLE)    |
+		      +---------------------------------------------+
+		      |	    	       Gemsos TCB		    |
+		      | (primitive - no mem. mgmt., no file system) |
+		      +---------------------------------------------+
+
+
+	MSQL
+	----
+
+		Extends SQL to handle multilevel relations (not yet fully
+		define, however).
+
+		Example : Select flt, dest from flights.
+
+			       +------------+
+			       |fit	dest|
+			       +============+
+			       |75	sfo |
+			       |98	iad |
+			       |44	lax |
+			       +------------+
+
+			  Select flt, dest from flights show class.
+
+			 +-----------------------------------------+
+			 |flt  class	dest  class	tuple-class|
+			 +=================-=-=====================+
+			 |75     S	sfo     S	    S 	   |
+			 |98	 TS	iad	TS	    TS 	   |
+			 |44	 S	lax	TS	    TS 	   |
+			 +-----------------------------------------+
+
+
+	MORE MSQL
+	---------
+
+		select flt, sec(flt. class) from flights.
+		(will display the secrecy component of flights)
+
+		select employee,job-title from employees
+		where employees.class str-dom 'C'
+
+		select highest-tuple(employee,salary)
+		from employees
+
+		create relation projects
+		(projno number[U:S] primary key,
+		projname char(10)[U:S],
+		budget number(8,2)[U:TS A,B])
+
+
+		Notion of Attribute Groups :
+			create relation flights
+			(group(flightno number,flightdate date [U:S],
+			primary key,
+			dest char(10)[U:TS])
+		Each group is uniformly classified.
+
+		For single classification for an attribute:
+			create relation flights
+			(group (flightno number, flightdate date) [S]
+			primary key,
+			dest char(10) [U:TS])
+		Each group is uniformly classified.
+
+
+	SEAVIEW LIMITATIONS
+	-------------------
+
+		Using Seaview a user cannot model instances such as :
+
+	       +--------------------------------------------------+
+	       |Starship	Objective	Destination	TC|
+	       +==================================================+
+	       |Enterprise  U	Exploration  U	Talos	U	U |
+	       |Enterprise  U	Spying       S	Rigel	S	S |
+	       +--------------------------------------------------+
+
+		SeaView will convert it to:
+	       +--------------------------------------------------+
+	       |Starship	Objective	Destination	TC|
+	       +==================================================+
+	       |Enterprise  U	Exploration  U	Talos	U	U |
+	       |Enterprise  U	Exploration  U	Rigel	S	S |
+	       |Enterprise  U	Spying       S	Talos	S	S |
+	       |Enterprise  U	Spying       S	Rigel	S	S |
+	       +--------------------------------------------------+
+	
+	LDV
+	---
+		
+		Honeywell, now Secure Computing Tech. Corp. (SCTC)
+
+		Hosted on SCTC's LOCK TCB
+
+		Paul Stachour and Bhavani Thuraisingham, "Design of LDV:
+		A Multilevel secure database management system," IEEE
+		transctions on Knowledge and Data Engg, June 1990. pp 190-209.
+		(This paper describes complete design of LDV.)
+
+		Project supported by NSA.
+
+
+		IMPORTANT FEATURES
+		------------------
+
+		User classification rules to classify data :
+
+			Name Dependent Classification - rules that refer to
+			data items by name ("all salary values in EMP are
+			secret".)  These can be used to classify an entire
+			relation or an attibute within a relation.
+
+			Content Dependent Classification - rules that refer to
+			contents of data ("all names in EMP are Secret if the
+			corresponding salary entry > 100K.) These provide tuple-
+			and element-level classification.
+
+			Context Dependent Classifiation - rules that refer to
+			combination of data items ("each name value-salary value
+			pair is secret in EMP".)
+
+			Aggregation Classification - rules that classify
+			collections of values ("more than 10 telephone nos. are
+			Secret".) - history mechanism to handle this.
+
+			Inference Control - rules that classify values based on
+			potential Inferences that can be derived from a sequence
+			of access requests.
+
+	Example
+	-------
+
+				EMPLOYEE
+
+		SSN	Name	Address		Salary
+		1	PD	St.Paul		100K
+		2	BT	Mpls		100K
+		3	EO	Mpls		110K
+		4	ON	Wash		100K
+
+
+		Constraints on EMPLOYEE are :
+
+		SSN is the key
+		Default level for Name is (U) Name is (TS) where Name=ON
+		Def. level for Address is (S) Address is (TS) where Name = ON
+		Def. level for Salary is  (S) Salary is (TS) where Name = ON
+		(Name,Salary) is (TS) when taken together.
+
+
+	LDV DECOMPOSITION
+	-----------------
+
+		Name - U  	Name - TS	Address - S
+		1     PO	4      ON	1   St.Paul
+		2     BT			2   Mpls
+		3     EO			3   Mpls
+
+
+		Address - TS	Salary - S	Salary - TS
+		4       Wash    1     100K	4      200K
+				2     110K
+				3     110K
+
+	If a query asks for both Name and Salary together, the file manager will
+	upgrade the response to TS.
+
+
+	UPDATE PIPELINE
+	---------------
+
+		When the database is updated, classification of the updated
+		data is not determined by the user's session level; DBMS uses
+		classification constraints to determine the exact
+		classification. (DBMS classification can only be higher than
+		the user's session level, never lower.) => write down.
+
+
+	JAJODIA's CONCLUSION ABOUT LDV
+	------------------------------
+
+		Many important details are yet to be worked out.
+
+	
+	ASD
+	---
+
+		TRW's A1 MLS Relational Prototype
+
+		Hinke, Garvey, Jensen, Wilson, Wu, "A1 Secure DBMS Design,"
+		Proceedings of the 11th National Computer Security Conf.,
+		October 1988 (Published in the addendum)
+
+
+	ASD, VERSION 0
+	--------------
+		
+		Written in Ada
+
+		Version 0 runs on Unix on the Sun
+
+		Tuple level labeling
+
+		Bell-LaPadula MAC
+
+		DAC - Tuples inherit DAC from the relations in which they are
+		contained.
+
+
+	USER PRIVILEGES
+	---------------
+
+			Normal User	DBA	SSO	Table Owner
+Read,Add,Remove,Modify	    X
+Row Info
+
+Create DB				 X
+
+Create Table				 X		    FP
+
+Add Users					 X
+
+Delegate Table Creation		 	 FP
+Privilege to Owners
+
+Change Disc. Access Rights		 #	 	    FP
+
+Declassification				 X
+
+
+	where X = current capabilty	FP = Future Plans
+	      # = current capability that is to be changed.
+
+
+	COMMERCIAL SYSTEMS
+	------------------
+
+		INTEGRITY LOCK
+			
+			TRUDATA		B1 TARGET
+
+		TRUSTED SUBJECT
+			
+			SYBASE		B1 TARGET
+			RUBIX		B2 TARGET
+			INFORMIX	B1 TARGET
+
+		KERNELIZED
+
+			ORACLE		B1 TARGET
+					A1 TARGET
+
+	TRUDATA
+	-------
+
+		Ronald B. Knode and Roger A. Hunt. "Making Databases Secure
+		with TRUDATA Technology.", Proceedings of the 4th Aerospace
+		Computer Security Applications Conference, Orlando, FL, Dec
+		12-16, 1988, pp 82-90, IEEE Computer Society Press.
+
+		Based on Denning's technique of commutative filtering
+
+		Dorothy E. Denning., "Commutative FIlters for Reducing Inference
+		Threats in Multilevel Database Systems.", Proceedings of the
+		IEEE Symposium on Security and Privacy, Oakland, CA, April 22-
+		24, 1985, pp 134-146, IEEE Computer Society Press.
+
+	
+	THREATS
+	-------
+
+		Without Trojan Horse in back-end DBMS
+			Integrity Lock Architecture does address these.
+
+		With Trojan Horse in back-end DBMS
+			Integrity Lock Architecture does not address these.
+
+
+	THE INFERENCE PROBLEM
+	---------------------
+
+		Inferring information by trial and error.
+
+		Ex:
+		--
+
+		EMP				TRIPS
+
+	       +---------------------+         +---------------------+
+	       |Name 	ID	Class|	       |ID	Dest	Class|
+	       +---------------------+         +---------------------+
+	       |Sununu	13	  S  |	       |13	Aspen	  TS |
+	       +---------------------+         +---------------------+
+
+
+	       SELECT EMP.Name, EMP.ID
+	       FROM   EMP, TRIPS
+	       WHERE  EMP.ID = TRIPS.ID AND TRIPS.Dest = "Aspen"
+	       AND    EMP.Class = S AND TRIPS.Class = S
+
+	       RESPONSE		Name	ID	Class
+				Sununu  13	  S
+
+
+	RESTRICT QUERIES TO MAXIMAL AUTHORIZED VIEW
+	-------------------------------------------
+
+		Integrity Lock - have to be careful about cryptography
+				 fields (boolean?)
+				 recommend row level labeling.
+
+
+	   q   --------     --------maxmimal--------      --------
+	------>|FRONT | qsec|      |authori-| BACK |      | DATA |
+	       | END  |<--->| DBMS |<-------|  END |<-----| BASE |
+	<------|FILTER|     |      |zed view|FILTER|      |      |
+	  qsec --------     --------        --------      --------
+
+
+		easy for retrieval
+
+		harder to update
+
+
+	COMMUTATIVE FILTERING
+	---------------------
+
+	   q   --------     --------	  --------
+	------>|FRONT |     |      |      | DATA |
+	       | END  |<--->| DBMS |<-----| BASE |
+	<------|FILTER|     |      |      |      |
+	  qsec --------     --------      --------
+
+
+		Commutate the DBMS and the filter, and then combine
+		the two filters in one.
+
+		Can be done for row, column or data element labels (or
+		some combination of these)
+
+		Does not solve Inference channels involving a Trojan Horse
+		in the back-end DBMS.
+
+
+	TRUDATA VIEWS
+	-------------
+
+		baseview 
+		base relations
+
+		pviews (primitive views) - unit of storage and retrieval.
+		non-overlapping projections of a baseview (to allow column
+			level labeling)
+		must be defined a priori.
+
+		mview (multiviews)
+		joins of pviews, read only.
+
+		The basic unit of labeling is the view.
+
+	
+	SYBASE
+	------
+
+		B1 target
+
+		Client Server architecture
+
+			server is multi threaded, single process architecture
+			with a single shared buffer area for all clinets
+
+		tuple level labels
+
+
+		POLYINSTANTIATION
+		-----------------
+
+			On Insertion
+
+			On Update
+				
+				relaxation property off
+				polyinstantiation occurs
+
+				relaxation property on
+				polyinstantiation does not occur, instead
+				data is overwritten in place.
+
+		No distinction between  polyhigh and polylow.
+
+		Concurrency control is based on locking woth attendant covert
+		channels.
+
+
+		SANDHU's OVERALL ASSESSMENT
+		---------------------------
+
+		Basically a B1 system. Would require extensive modification to
+		achieve B2.
+
+
+	RUBIX
+	-----
+
+		B2 target
+
+		UNIX application architecture
+
+			different RUBIX process for each user, ie. the user
+			process is the RUBIX process also with appropraite
+			change in subject identity.
+
+		tuple level labels.
+
+
+		POLYINSTANTIATION
+		-----------------
+
+			On Insertion Only
+				Options :
+					Only by low subjects.
+					By low subjects as well as by high
+					subjects.
+
+			No polyinstantiation on update.
+
+
+		Distinguishes between polyhigh and polylow.
+
+		Concurrency control is based on multiversion time-stamping,
+		therefore does not have covert channels associated with locking.
+
+
+		SANDHU's OVERALL ASSESSMENT
+		---------------------------
+
+		Suitably targeted as B2.
+
+
+	ORACLE
+	------
+
+		Relation level labeling
+
+		targeted at same class as underlying operating system
+			
+			UNIX version at B1
+
+			GEMSOS version at A1 (under evaluation)
+
+			above B1 requires modification of concurrency control
+			algorithm.
+
+
+
+  
+  -------------------- Pages 94 - 102 -------------------------------
+
+  Course 4: Introduction to Database Security
+  Session : Evaluation of Trusted Systems
+  
+  --------------------------------------------------------------------
+
+
+
+                     COURSE 4
+                  INTRODUCTION TO 
+                 DATABASE SECURITY
+
+                     SESSION
+                  EVALUATION OF
+                 TRUSTED SYSTEMS
+
+
+ ------------------------------------------------------------------------
+
+ ------------------------------------------------------------------------
+
+                   TOPIC OUTLINE
+
+              * Orange Book (TCSEC)
+              * Evaluation by parts
+                 * Trusted database Interpretation (TDI)
+                 * Trusted Network Interpretation  (TNI)
+                   ( red book )
+              * Auditing Requirements
+
+
+ -----------------------------------------------------------------------
+
+ ------------------------------------------------------------------------
+
+
+
+                   ORANGE BOOK CLASSES
+           - DOD standard - existed since 1983
+           - Written by NSA ( Shell and Schaefer )
+           - Attends secrecy, but no integrity
+           - Have to use judgement
+           - No explicit details  e.g, granularity
+           - Written for OS
+
+
+     High Security
+
+         ^             
+         |
+         |                A1  Verified Design
+         |                B3  Security Domains
+         |                B2  Structured Protection
+         |                B1  Labeled Security Protection
+         |                C2  Controlled Access Protection
+         |                C1  Discretionary Security Protection
+         |                D   Minimal Protection
+         |
+         |
+
+
+     No Security
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                ORANGE BOOK CRITERIA
+
+                       * Security Policy
+                       * Accountability ( auditing )
+                       * Assurance
+                       * documentation
+
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+                        SECURITY POLICY
+
+          - Have it all by B1
+          - C1 : DAC in terms of groups
+          - C2 : DAC in terms of individuals
+          - B1 : MAC
+          - B2 : Label devices ( secret printer )
+
+                                          C1   C2   B1   B2   B3   A1
+   Discretionary Access Control            +    +   nc   nc    +   nc
+   Object Reuse                            0    +   nc   nc   nc   nc
+   Labels                                  0    0    +    +   nc   nc
+   Label Integrity                         0    0    +   nc   nc   nc
+   Exportation of Labeled Information      0    0    +   nc   nc   nc
+   Labeling Human-Readable Output          0    0    +   nc   nc   nc
+   Mandatory Access Control                0    0    +    +   nc   nc
+   Subject Sensitivity Labels              0    0    0    +   nc   nc
+   Device labels                           0    0    0    +   nc   nc
+
+
+                            
+          0   -- no requirement
+          +   -- added requirement
+          nc  -- no change
+
+
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                       ACCOUNTABILITY
+
+
+                                         C1   C2   B1   B2   B3   A1
+
+  Identification and Authentication       +    +    +   nc   nc   nc
+
+  Audit ( coupled with assurance )        0    +    +    +    +   nc
+
+  Trusted Path                            0    0    0    +    +   nc
+
+       ^
+       |
+       |
+  ( guarentee talking to correct users or OS )
+  (  e.g, cntrl C )
+  ( hit it first because it would be somebody's program with a prompt -
+    says somewhat late ( C2) )
+                            
+                            
+                0   -- no requirement
+                +   -- added requirement
+                nc  -- no change
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+                        ASSURANCE
+
+         - Hard to achieve
+         - B2 : analysis of storage channels
+         - B3 : analysis of both storage and timing channels
+         - A1 : formal way or model to do this
+
+
+                                          C1   C2   B1   B2   B3   A1
+   System Architecture                     +    +    +    +    +   nc
+   System Integrity                        +   nc   nc   nc   nc   nc
+   Security Testing                        +    +    +    +    +    +
+   Design specification and Verification   0    0    +    +    +    +
+   Covert Channel Analysis                 0    0    0    +    +    +
+   Trusted Facility Management             0    0    0    +    +   nc
+   Configuration Management                0    0    0    +   nc    +
+   Trusted Recovery                        0    0    0    0    +   nc
+   Trusted distribution                    0    0    0    0    0    +
+
+
+                            
+          0   -- no requirement
+          +   -- added requirement
+          nc  -- no change
+
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                    DOCUMENTATION
+
+                                             C1   C2   B1   B2   B3   A1
+
+  Security Features User's Guide              +   nc   nc   nc   nc   nc
+
+  Trusted Facility Manual                     +    +    +    +    +   nc
+
+  Test Documentation                          +   nc   nc    +   nc    +
+
+  Design Documentation                        +   nc    +    +    +    +
+
+
+
+                0  -- no requirement
+                +  -- added requirement
+                nc -- no change
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+                    COVERT CHANNEL ANALYSIS
+
+    - Timing channel : e.g, trying to dial in through a phone. The first
+                       I get 1 ring and the second time 10 rings
+                       - solved by fast CPU ( due to lack of money to buy
+                         Cray ), also by separation
+
+    - Monitoring system load
+
+    - Timing channel could be removed from data replication approach
+
+
+
+              B1     No requirement
+              B2     Covert storage channels
+                     e.g, disk full
+              B3     Covert channels (i.e. storage and timing channels)
+                     e.g, single user on the system witnessing heavy CPU
+                     usage
+                        - fuzzy differentiation
+                        - timing channel - fastest channel
+                                             e.g, 1 meg /sec bus contention
+                                         - identified by DEC VMS
+                                         - computer architecture dependent
+                                         - solving them require reconstructing
+                                           architecture from scratch
+                                         - todays systems - there is lots of
+                                           timing channels
+
+
+
+              A1    Formal methods - lots of math and complexity
+                   
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                     SYSTEM ARCHITECTURE
+
+        - TCB : kept tamper proof through hardware & isolation & supervised
+                user mode of operation & memory management
+
+
+            C1   The TCB shall maintain a domain for its own execution
+                 that protects it from tampering
+
+            C2   The TCB shall isolate the resources to be protected
+      
+            B1   The TCB shall maintain process isolation
+
+            B2   The TCB shall be internally structured into well-defined
+                 largely independent modules
+                 ( TCB must be modular )
+
+           B3    The TCB shall incorporate significant use of layering, 
+                 abstraction and data hiding
+
+           A1    No change
+
+
+     B2, B3, A1 : does not require hardware stuff - it is more on how 
+                  system is to be written
+
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+               DESIGN SPECIFICATION AND VERIFICATION
+
+
+         C2      No requirement
+         B1      Informal or formal model of the security policy
+         B2      Formal model of the security policy that is proven consistent
+                 with its axioms
+
+                 DTLS ( descriptive top-level specification ) of the TCB
+                      - more close to implementation
+
+         B3      A convincing argument shall be given that the  DTLS is
+                 consistent with the model
+
+         A1      FTLS (formal top-level specification) of the TCB
+                 ( abstract implementation )
+
+                 A combination of formal and informal techniques shall be used
+                 to show that the FTLS is consistent with the model
+
+                 A convincing argument shalll be given that the DTLS is
+                 consistent with the model
+                 - show that model and FTLS match only
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                  ORANGE BOOK CLASSES
+                   UNOFFICIAL VIEW
+
+
+          C1,C2     Simple enhancement of existing systems
+                    No breakage of applications
+
+          B1        Relatively simple enhancement of existing systems. 
+                    Will break some applications
+
+          B2        Relatively major enhancement of existing systems.
+                    Will break some applications
+
+          B3        Falled A1
+
+          A1        Top down design and implementation of a new system
+                    from scratch
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+                  EVALUATION PROCESS
+
+
+        Vendor Request
+          - to National Computer Security Center (proposal only)
+          - Rubix recieved an answer after 6 months !!
+          - strictly business decision ( can we back it up )
+
+        Development Evaluation
+          - NCSC will guide through this to prevent wrong decisions
+
+        Formal Evaluation
+          - product is done - time to evaluate it
+
+        Evaluated Product List
+          - published by NSA
+            ( lots of secrets involved )
+
+        Rating Maintenance Program
+          - if a new version comes up, don't have to go through the whole
+            process again
+
+
+   -  vendors are unhappy with this
+   -  British approve evaluations done by private companies
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+              EVALUATION PROCESS
+
+
+     
+       EVALUATION         NSA
+
+       CERTIFICATION      System Owner
+
+       ACCREDITATION      Designated Accreditation Authority
+                          e.g, Defence Intelligence Agency (DIA)
+                               ( don't have to obey NSA findings )
+
+
+  - just because we have a secure DBMS, it does not mean that we have
+    a secure system. It could be employed incorrectly ( management and
+    physical security )
+
+
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                   NCSC RAINBOW SERIES
+                     SELECTED TITLES
+
+
+     Orange          Trusted Computer System Evaluation Criteria
+
+     Yellow          Guidance for Applying the Orange Book
+
+     Red             Trusted Network Interpretation
+
+     ??              Trusted Database Interpretation (in preparation)
+
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                   ORANGE BOOK CRITICISMS
+
+
+
+
+       * Mixes various levels of abstraction in a single document
+         e.g, objects and subjects
+
+       * does not address integrity of data except on labels of data
+
+       * Combines functionality and assurance in a single linear rating
+         scale
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                      FUNCTIONALITY VS
+                         ASSURANCE
+
+   * functionality is multi-dimensional
+
+   * assurance has a linear progression
+
+   * better of multi-dimensional rating
+
+
+
+                         ^
+                         |            B3  A1
+                         |         
+                         |          B2
+                         |      
+         functionality   |       B1
+                         |
+                         |    C2
+                         |
+                         |  C1
+                         |
+                         ------------------------------->
+                                  assurance
+      
+
+
+ ------------------------------------------------------------------------
+
+
+ ------------------------------------------------------------------------
+
+
+                 BALANCED ASSURANCE
+
+
+     KERNELIZED ARCHITECTURE
+
+              * High assurance MAC can be achieved in a DBMS by building
+                on top of the high assurance MAC of the underlying Operating
+                system TCB
+
+              * High assurance DAC for a DBMS cannot be similarly achieved
+
+
+
+  - Therefore high assurance MAC + low assurance DAC should be considered
+    as a legitimate option
+
+
+
+
+
+  Pages 103 -126
+
+  -----------------------------------------------------------------------
+
+                    BALANCED ASSURANCE
+                   ( big issue in TDI )
+                    
+
+      * REPLICATED ARCHITECTURE
+          Similar considerations apply although the proponents
+          of this architecture have not been very vocal on
+          this issue
+
+      * INTEGRITY LOCK ARCHITECTURE
+          Is inherently low assurance so there is no issue of
+          combining high and low assurance
+
+      * TRUSTED SUBJECT ARCHITECTURE
+          use the underlying Operating System only for isolation.
+          They are fully responsible for MAC and DAC and do not
+          raise this issue
+
+ -------------------------------------------------------------------------
+
+                 EVALUATION BY PARTS
+
+                          ^
+                          |
+                          |
+    ---------------------------------------------
+    |                                           |
+    |                                           |
+    |                                           |
+    
+   TDI                                         TNI
+ LAYERED                                     DISJOINT
+COMPOSITION                                 COMPONENTS
+
+- evaluate OS                              - evaluate components
+- then evaluate DBMS                         separately
+- then application
+  
+( complexity increases )
+
+ 
+--------------------------------------------------------------------------
+
+                  THE TDI VIEW
+
+
+   LESS PRIMITIVE
+
+                 ---------------------------------
+                 |  TCB SUBSET C ( X - Window )  |
+                 ---------------------------------
+                 |  TCB SUBSET ( DBMS )          |
+                 ---------------------------------
+                 |  TCB SUBSET A ( OS )          |
+                 ---------------------------------
+                          
+   MORE PRIMITIVE
+
+ ------------------------------------------------------------------------
+
+                 CONSTRAINED VS
+             UNCONSTRAINED SUBSETS
+
+              
+             --------------------
+             |   TCB SUBSET B   |
+             --------------------
+             |   TCB SUBSET A   |
+             --------------------
+
+
+      -  A is constrained if B has no trusted subjects of A
+
+      -  A is unconstrained if B has trusted subjects of A
+         ( one that violates the * property )
+
+ ------------------------------------------------------------------------
+
+                TRUSTED SUBJECT
+       ( special guy or process where the rules
+         of the game change for him )
+
+
+       -  A trusted subject of A is exempt from one or more
+          aspects of the security policy of A  ( * property )
+       
+       -  Usually we are most concerned about MAC exemptions
+
+ ------------------------------------------------------------------------
+
+                 CONSERVATIVE ANALYSIS OF THE TDI
+             ( because they do not understand this )
+
+      
+        " Thus, a TCB that contains an unconstrained TCB subset will
+          be subject to the full gamut of penetration testing and covert
+          channel analysis appropriate to the target evaluation class for
+          the entire TCB, including any previously or separately evaluated
+          TCB subsets."
+
+   
+       * DBMS  - no trusted subjects
+       * if trusted subject -  get cooperation from underlying OS
+       * anything above B2, it becomes a problem
+
+    
+ ------------------------------------------------------------------------
+
+                  REACTIONS TO THE TDI
+
+         * The TDI is too radical
+             It allows the unsound concept of unconstrained
+             TCB subsets
+
+         * The TDI is too conservative
+             It requires global analysis for penetration testing and 
+             covert channel analysis
+            
+ ----------------------------------------------------------------------------
+
+                   THE TNI VIEW
+
+
+               () - - - - - - - - ()
+                 \                /
+                   \            /
+                     \        /
+                       \    /
+                         \/
+                        /  \
+                      /      \
+                    /          \
+                  /              \
+                () - - - - - - - ()
+
+
+
+       ()      ------->  COMPONENT
+
+       - - -   ------->  LABELED SECURE COMMUNICATION LINK
+
+ ---------------------------------------------------------------------------
+
+                       TNI COMPONENTS
+                               
+                              - daveloped by MITRE
+                              - not very well understood
+                                         e.g, circuit, transistor
+
+            M        Mandatory access control
+
+            D        Discretionary access control
+
+            I        Identification and authentication
+          
+            A        Audit
+
+    * Overall system can get A1 rating even though we have
+      components of lower classes
+
+         
+           ---------------------------------------
+          | A DBMS can be evaluated under the TNI |
+           ---------------------------------------
+
+
+ --------------------------------------------------------------------------
+
+                     AUDIT REQUIREMENTS
+
+          C1          No requirement
+
+          C2          Audit trail with selective auditing
+
+          B1          Auditing will include security levels of objects
+
+          B2          Auditing of identified events that may be used
+                      in exploitation of covert storage channels
+
+          B3          Monitor occurence or accumulation of security
+                      auditable events that may indicate an imminent
+                      violation of security policy
+
+                      Immediately notify the security officer when
+                      thresholds are exceeded
+
+                      Take least disruptive action to terminate the
+                      ( imminent violation ) event 
+
+          A1          No additional requirement
+
+ --------------------------------------------------------------------------
+
+                 AUDIT REQUIREMENTS
+                  TDI OBSERVATIONS
+
+
+        * When a user enters a query, the construction of the
+          response may involve a search over many records that 
+          are not returned to the user because they did not
+          satisfy the query. Records which do satisfy the query
+          but to which the user does not have access should be
+          auditable. Records that do not even satisfy the query
+          nedd not be auditable.
+
+ -------------------------------------------------------------------------
+
+               AUDIT REQUIREMENTS
+                TDI OBSERVATIONS
+
+       * Separate audit logs may be maintained by the
+         operating system and the database management
+         system
+
+       * Likewise, separate identification for the same
+         user may be maintained by the operating system
+         and the database management system
+
+       * There is no requirement to integrate the audit
+         log with the backup and recovery log, although
+         such an integrated log is not prohibited. 
+
+ ------------------------------------------------------------------------
+
+               AUDIT REQUIREMENTS
+                TDI OBSERVATIONS
+
+       * Each visible discretionary access control decision
+         and each mandatory access control decision shall be
+         auditable
+
+       * Individual operations performed by trusted software,
+         if totally transparent to the user, need not be
+         audited
+
+       * If the total audit requirement is met by the use of
+         more than one audit log, a method of correlation
+         must be available
+
+ -----------------------------------------------------------------------
+
+                SUMMARY
+
+        * Orange Book ( TCSEC )
+
+        * Evaluation by parts
+             - Trusted Database interpretation ( TDI )
+             - Trusted Network Interpretation  ( TNI )
+
+        * Auditing Requirements
+
+  ---------------------------------------------------------------------
+
+   Course 4: Introduction to Database Security
+   Session : Integrity Models and Mechanisms
+
+
+                 COURSE 4
+             INTRODUCTION TO 
+            DATABASE SECURITY
+
+       - includes secrecy, integrity and denial of service
+
+                 SESSION
+             INTEGRITY MODELS
+              AND MECHANISMS
+
+ ----------------------------------------------------------------------
+
+                INTEGRITY MECHANISMS
+                   TOPIC OUTLINE
+
+       * What is integrity
+            - solved by higher classes (some people)
+            - not T (other people)
+
+       * The insider threat
+
+       * Principles, Mechanisms and Assurance
+
+       * Clark-Wilson Integrity Model
+             - introduce something new not in the
+               Orange Book
+
+ ----------------------------------------------------------------------
+
+               WHAT IS INTEGRITY
+
+        * There has been much dabate but little consensus
+
+        * We will adopt a pragmatic approach
+
+    
+      INTEGRITY IS CONCERNED WITH PREVENTING, DETERRING, DETECTING
+      IMPROPER MODIFICATION OF INFORMATION
+
+ -----------------------------------------------------------------------
+
+               "THERMOSTAT" MODEL
+               ( by Ravi sandhu )
+
+
+                                     
+        ......................................      <-------- TOLERABLE
+                                                              DEVIATION
+
+
+
+
+        =======================================    <-------- PERFECT STATE
+                                                             OF INTEGRITY
+
+
+
+        .......................................     <------- TOLERABLE
+                                                            DEVIATION
+
+   Note : The above picture is incomplete -- pl look at page # 111 of
+          the notes for the complete picture
+
+ -------------------------------------------------------------------------
+
+                 IS INTEGRITY BINARY
+                  OR "CONTINUOUS"?
+
+            ( 1987 conference of 30 people for 3 days could not 
+              reach an agreement )
+
+      Binary view :         A system has integrity if its actual
+                            state differs from the ideal state by
+                            less than the tolerable limits of 
+                            deviation
+
+      Continuous view :     A system has integrity in inverse 
+                            relationship to the extent that its
+                            actual state differs from the ideal 
+                            state
+
+            IN OTHER WORDS THIS IS A NON-ISSUE
+
+ ----------------------------------------------------------------------
+
+                THE INSIDER THREAT
+                 CONFIDENTIALITY
+
+     - Orange Book : main threat is a TH
+     - Confidentiality : main threat inside users
+     - do a background investigation to give users
+       high classes ( could cost $ 50,000 )
+
+       
+       1  corrupt user legitimately uses the computer to
+          access confidential information
+
+       2  corrupt user passes this information to improper
+          destination by some "non-computer" means of
+          communication
+
+
+              * The computer cannot decide if step 1 was followed
+                by step 2
+
+              * Principal threat is corrupt programs (Trojan Horses)
+                rather than corrupt high clearance users
+
+ ------------------------------------------------------------------------
+
+                      THE INSIDER THREAT
+                           INTEGRITY
+
+            ( worried about authorized users misusing the privileges )
+            ( errors and malicious activity )
+
+                               ^
+                               |
+                               |
+                               |
+      ---------------------------------------------------
+      |                                                 |
+      |                                                 |
+      |                                                 |
+  
+   corrupt user can falsify                      corrupted user can manipulate
+   source or output documents                    data stored in the computer
+  
+   e.g, data input -  W2 tax forms
+
+  * computer system cannot detect                * cannot be done without
+    this by itself                                 using the computer, so
+                                                   is in principle detectable
+                                                   and preventable
+
+ ----------------------------------------------------------------------------
+
+                 THE INSIDER THREAT 
+                      INTEGRITY
+
+             
+          * Principal threat is the corrupt user
+
+          * The Trojan Horse threat ( i.e., the threat of
+            corrupted programs ) can itself be viewed as a
+            problem of corrupt users
+             
+          * The Virus threat (i.e, Trojan Horses which 
+            proliferate) can be minimized by reasonable
+            mechanisms
+
+
+ --------------------------------------------------------------------------
+
+               THE INTEGRITY PROBLEM
+                    2 VIEWPOINTS
+
+    
+      Clark and Wilson 1987       "First, there is a distinct set of
+                                   security policies, related to integrity
+                                   rather than disclosure ... Second, some
+                                   separate mechanisms are required for
+                                   enforcement of these policies disjoint 
+                                   from those of the Orange Book."
+
+      Gasser 1988                 "Fortunately, techniques to protect
+                                   against information modification are
+                                   almost always the same as (or a subset
+                                   of) techniques to protect against 
+                                   information disclosure."
+
+ 
+ ------------------------------------------------------------------------
+
+               THE INTEGRITY PROBLEM
+
+       * What mechanisms can/should/must a 
+         general-purpose multi-user DBMS
+         provide to support the integrity
+         objectives of information systems?
+
+ ----------------------------------------------------------------------
+
+              INTEGRITY MECHANISMS
+               BELONG IN THE DBMS
+
+        - most commercial software is C2
+        - OS cannot solve integrity problems
+          but it helps
+        - DAC is done by it
+
+       
+        *  DBMSs provide significant data
+           semantics beyond the usual Operating
+           Syste (OS) notion of life
+
+        *  DBMSs can express and manipulate complex
+           relationships
+
+ ---------------------------------------------------------------------
+
+              THE DBMS CANNOT DO IT ALL
+
+       ( needs some help from OS - nobody knows what specific
+         things it should provide )
+
+       *  Integrity policies are inherently application specific.
+          The DBMS can only provide general-purpose mechanisms. It
+          cannot force the application developers and the database
+          administrator to use these mechanisms correctly.
+
+       *  The DBMS requires some minimal support from the Operating
+          System. At the very least the OS should enable to encapsulate
+          its data and isolate it from other applications in the 
+          system
+          ( cannot access DB without the DBMS )
+
+ ---------------------------------------------------------------------
+
+              THE TRIAD MODEL
+
+
+
+     Principles                                     Mechanisms
+     ( What )                                       ( How )
+     - abstract statements                          - implements principles
+       of intent                       
+
+                 - - - - - - - - - - - - - - - - - -
+                 \ - - - - - - - - - - - - - - - - /
+                   \ - - - - - - - - - - - - - - /
+                     \ - - - - - - - - - - - - /
+                       \- - - - - - - - - - -/
+                         \- - - - - - - - -/
+                           \- - - - - - -/
+                             \- - - - -/
+                               \- - -/
+                                 \ /
+
+                             Assurance
+                          ( What guarantee )
+                          - how well mechanisms are
+                            implemented
+            
+
+ -------------------------------------------------------------------------
+
+                  INTEGRITY PINCIPLES
+
+    - integrity and secrecy get in conflict when integrity constraints
+      have to come across security levels
+
+
+
+        CLASSICAL                              - Well formed transactions
+        ( matured in current systems )         - Continuity of operation
+
+
+        ACCESS CONTROL                         - Least privilege
+        ( not so well established )            - Separation of duties
+                                              - Delegation of authority
+
+
+        AUDIT                                  - Reconstruction of events
+
+
+        NON-DBMS                               - Authenticated users
+                                               - Reality checks
+                                               - ease of safe use
+
+ ------------------------------------------------------------------------
+
+                  WELL FORMED TRANSACTIONS
+
+   - motivated by commercial data processing techniques
+   - retrieving is a concern of secrecy and not integrity
+   - cannot apply in real-time environment
+                          e.g, air traffic controller
+
+
+              
+             -------------------------------------
+            |               TRANSACTIONS          |  
+            |                                     |
+            |          ------------------         |
+            |         |                  |        |
+            |         |                  |        |
+            |         |     DATABASE     |        |
+            |         |                  |        |
+            |          ------------------         |
+            |                  ^                  |
+            |                  |                  |
+             -------------------------------------
+                               |
+                               |
+                               |
+                               |
+                             USERS
+           ( should use transactions to input data )
+
+
+
+  ----------------------------------------------------------------------
+
+                    WELL FORMED TRANSACTIONS
+
+
+                     * Serializability
+                       - developed by DBMS people
+
+                     * Failure atomicity
+                       - evaded by OS ( too much overhead )
+
+                     * Data consistency
+                       - burden on application programmer to
+                         ensure it
+
+                     * Data abstraction
+
+ 
+  ---------------------------------------------------------------------
+
+                    CONTINUITY OF OPERATION
+
+   ( used to be called disaster recovery - switched because of name )
+
+
+                    * Mentioned for the sake of completeness
+
+                    * Can be viewed as stepping into the scope of
+                      availability
+
+  ---------------------------------------------------------------------
+
+                    LEAST-PRIVILEGE
+                 VIEW-BASED MECHANISMS
+
+            - dynamic snapshot
+            - current DBMS give nice mechanisms to handle DAC ( views )
+
+
+              RETRIEVAL        View-based mechanisms are very 
+                               useful
+
+              UPDATE           View-based mechanisms are not so
+                               useful because in general views 
+                               cannot be updated unambiguously
+
+
+            - assurance is zero ( assume compiler correct, optimizer, DBMS )
+            - not suitable for MAC
+
+  -----------------------------------------------------------------------
+
+                      LEAST-PRIVILEGE
+                     TRANSACTION-BASED
+
+            *  The ability to update a relation should be controlled
+               in terms of abstract operations such as DEBIT, CREDIT
+               rather than a blanket permission to WRITE
+
+            *  Applies to Processes (i.e., executing programs ) as well
+               as to Users
+
+  -----------------------------------------------------------------------
+
+                      SEPARATION OF DUTIES
+
+
+            *  n-man rules
+                     - it takes n people to do an application
+
+            *  static versus dynamic separation of duties
+                     - order is important
+                     - static : everything is pre-assigned
+                     - dynamic: little difficult
+
+             
+       Current DBMSs ( and Operating Systems ) provide very little
+       support in this area
+
+  -----------------------------------------------------------------------
+
+                     DELEGATION OF AUTHORITY
+
+              - mostly seen in budgeting in an organization
+                because it is done in a de-centralized way
+              - DBA (existing systems)
+
+              
+         *  In most organizations the ability to grant authorization
+            is never completely unconstrained
+
+         *  E.g., a department manager may be able to delegate 
+            substantial authority over departmental resources to
+            project managers with in his department, and yet be
+            prohibited to delegate this authority to project
+            managers outside his department
+
+         *  E.g., project members can freely share documents with
+            each other, but only the project manager can allow
+            non-members to access project documents
+
+  -----------------------------------------------------------------------
+
+                       DELEGATION OF
+                         AUTHORITY
+
+         *  Traditional concepts of ownership is inadequate in an 
+            Organization - there is no clear notion of who owns a 
+            file
+
+         *  The classic distinction between discretionary and
+            mandatory policies is no longer so clear cut
+            ( separation of duties )
+
+         *  It should be possible to delegate privileges without
+            having the ability to exercise these privileges
+
+  -----------------------------------------------------------------------
+
+                 RECONSTRUCTION OF EVENTS
+
+         *  Deter improper behavior by threatening its discovery
+
+         *  It is a necessary adjunct to least privilege
+
+         *  Typically implemented by means of a audit trail
+
+         *  Current mechanisms are limited in the extent to which
+            the audit trail can be queried
+            ( only meaningful action - not keystrokes )
+         
+         *  Can mesh this with the recovery mechanism
+
+  ----------------------------------------------------------------------
+
+                AUTHENTICATED USERS
+
+         *  Obviously required
+
+         *  Authentication should be supported by the Operating
+            System
+
+         *  Each user should have only one ID on the system ( confuses
+            otherwise separation of duty mechanisms )
+
+  -----------------------------------------------------------------------
+
+               REALITY CHECKS
+
+         * Smart cards ( better than passwords )
+
+         * Integrity is meaningful only in terms of the relation
+           of data to the external world
+
+         * If an internal inventory record does not correctly reflect
+           the number of items in stock, it makes little difference if
+           the value of the recorded inventory has been correctly
+           reflected on the balance sheet
+
+         * By definition reality checks entail activity external to
+           the computer
+           e.g., warehouse inventory
+           ( shut down one day to get accurate count )
+
+  ----------------------------------------------------------------------
+
+                EASE OF SAFE USE
+             ( human factors issue )
+
+         * The "easy" ways to operate a system should also be the
+           safest ones
+
+         * Ease of safe use is more an evaluation of the DBMS mechanisms
+           rather than something that the mechanisms enforce
+
+         * Security measures are all too often incorrectly applied or
+           simply bypassed by system managers due to
+
+                 - poorly designed defaults
+                 - awkward and cumbersome interfaces
+                 - lack of tools for authorization review
+                 - mismatched policy and mechanism
+
+  ----------------------------------------------------------------------
+
+               CLARKSON-WILSON
+               INTEGRITY MODEL
+
+   ( maintain integrity through high order abstract statements ( Xact)
+     rather than r and w )
+
+          
+             CDI      Constrained Data Item
+                      - users cannot manipulate
+
+             UDI      Unconstrained Data Item
+                      - users can manipulate directly
+
+             TP       Transformation Procedure
+                      - users cannot directly manipulate except 
+                        through translations
+
+             IVP      Integrity Verification Procedure
+                      - do reality checks
+
+  ----------------------------------------------------------------------
+
+                   CDIs, UDIs, TPs, IVPs
+
+
+
+       ------------------------
+      |           TPs      ----|--------> operate internally
+      |                        |
+      |       -----------      |                 ----------
+      |      |    USERS  |     |                |   USERS  |        
+      |      |           |     |                |          |
+      |      |   CDIs    |     |                |   UDIs   |
+      |      |           |     |                |          |
+      |      |           |     |                |          |
+      |------------------------|                 ----------
+      |                        |
+      |          IVPs     -----|--------> operate internally as well as
+       -----------------------            externally
+                     
+
+
+                 Internal and external consistency of CDIs
+
+
+  ---------------------------------------------------------------------
+
+                     CERTIFICATION
+
+            C1    IVPs are correct, i.e., all CDis are in a valid
+                  state ( corresponding to external reality )
+                  ( not known how to establish it yet )
+
+            C2    TPs are correct, i.e., given CDIs in a correct state
+                  they update the CDIs to be in a correct state
+
+            C3    Relations in E2 satisfy (static) separation of duties
+
+            C4    TPs write (append) to an audit log
+
+            C5    TPs that map UDIs to CDIs are correct, i.e., they
+                  either take the UDI to a valid CDI or reject the UDI
+
+
+  ----------------------------------------------------------------------
+
+                   ENFORCEMENT
+         - enforced at run time by reference monitor
+         - Xacts can be used by different users
+
+     
+      E1    The system enforces a list of relations which defines
+            for each TP the list of CDIs that it can manipulate
+
+                 (TPI, (CDIa, CDIb, CDIc, ... ))
+
+            - also called dobles
+
+      E2    The system enforces a list of relations which defines 
+            for each user and TP the list of CDIs that the TP can
+            manipulate on behalf of that TP
+             ( could be an access matrix )
+
+                 (UserID, TPI, (CDIa, CDIb, CDIc, ....))
+                  - this user can execute this Xact on this data item
+
+            - also called triples
+
+      E3    The system must authenticate the identity of each user
+            attempting to execute a TP
+
+      E4    Only the agent permitted to certify TPs may change the 
+            lists in E1 and E2
+
+            An agent that can certify an entity must not have any
+            execute rights with respect to that entity
+            ( separation of duty )
+
+  -----------------------------------------------------------------------
+               
+                CLARK-WILSON INTERPRETED
+                   IN OUR FRAMEWORK
+
+          
+            C1      Reality checks
+ 
+            C2      Well formed transactions are correct
+
+            C3      Static separation of duties
+
+            C4      Reconstruction of events
+
+            C5      Well-formed transactions are correct
+
+                    - auditing is done by Xacts
+
+            E1      Transaction-based least privilege
+
+            E2      Transaction-based least privilege
+
+            E3      Authenticated users
+
+            E4      Dynamic authorization
+
+  -----------------------------------------------------------------------
+
+                LIMITATIONS OF CLARK-WILSON
+
+
+            *  Static authorization relations (E1, E2)
+
+            *  static separation of duties
+
+            *  Dynamic authorization centralized in a security
+               administrator
+
+            *  Auditing by certification rather than enforcement
+
+            *  Auditing to an audit log, so no structure on audit
+               data
+
+  ------------------------------------------------------------------------
+
+
+                     SUMMARY
+
+            *  What is Integrity
+
+            *  The insider threat
+
+            *  Principles, Mechanisms and Assurance
+
+            *  Clark-Wilson Integrity Model
+
+
+  ========================================================================

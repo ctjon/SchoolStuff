@@ -1,0 +1,267 @@
+tg3: creating mutual exclusion semaphore
+tg3: creating G1 threads
+tg3: creating G1 thread 1
+tg3: created G1 thread tid=2
+tg3: readying G1 thread tid=2
+tg3: G1 thread tid=2 ready
+tg3: creating G1 thread 2
+tg3: created G1 thread tid=3
+tg3: readying G1 thread tid=3
+tg3: G1 thread tid=3 ready
+tg3: creating G1 thread 3
+tg3: created G1 thread tid=4
+tg3: readying G1 thread tid=4
+tg3: G1 thread tid=4 ready
+tg3: creating G1 thread 4
+G1 thread: identifying self thread_t=425744
+G1 thread_t=425744 opening semaphore
+G1 thread_t=425744 getting buffers
+G1 thread: identifying self thread_t=450320
+G1 thread_t=450320 opening semaphore
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 170064, count=1
+G1 thread_t=450320 got buffer 169952, count=2
+G1 thread_t=450320 got buffer 169840, count=3
+G1 thread_t=450320 got buffer 169728, count=4
+G1 thread_t=450320 got buffer 169616, count=5
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 170064, count=4
+G1 thread_t=450320 released buffer 169952, count=3
+G1 thread_t=450320 released buffer 169840, count=2
+G1 thread_t=450320 released buffer 169728, count=1
+G1 thread_t=450320 released buffer 169616, count=0
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 169728, count=1
+G1 thread_t=450320 got buffer 169840, count=2
+G1 thread_t=450320 got buffer 169952, count=3
+G1 thread_t=450320 got buffer 169928, count=4
+G1 thread_t=450320 got buffer 169704, count=5
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 169728, count=4
+G1 thread_t=450320 released buffer 169840, count=3
+G1 thread_t=450320 released buffer 169952, count=2
+G1 thread_t=450320 released buffer 169928, count=1
+G1 thread_t=450320 released buffer 169704, count=0
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 170712, count=1
+G1 thread_t=450320 got buffer 169952, count=2
+G1 thread_t=450320 got buffer 169840, count=3
+G1 thread_t=450320 got buffer 169728, count=4
+G1 thread_t=450320 got buffer 169816, count=5
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 170712, count=4
+G1 thread_t=450320 released buffer 169952, count=3
+G1 thread_t=450320 released buffer 169840, count=2
+G1 thread_t=450320 released buffer 169728, count=1
+G1 thread_t=450320 released buffer 169816, count=0
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 169728, count=1
+G1 thread_t=450320 got buffer 169840, count=2
+G1 thread_t=450320 got buffer 169952, count=3
+G1 thread_t=450320 got buffer 169704, count=4
+G1 thread_t=450320 got buffer 170688, count=5
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 169728, count=4
+G1 thread_t=450320 released buffer 169840, count=3
+G1 thread_t=450320 released buffer 169952, count=2
+G1 thread_t=450320 released buffer 169704, count=1
+G1 thread_t=450320 released buffer 170688, count=0
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 170712, count=1
+G1 thread_t=450320 got buffer 169952, count=2
+G1 thread_t=450320 got buffer 169840, count=3
+G1 thread_t=450320 got buffer 169728, count=4
+G1 thread_t=450320 got buffer 169928, count=5
+G1 thread_t=450320 releasing buffers
+G1 thread: identifying self thread_t=474896
+G1 thread_t=474896 opening semaphore
+G1 thread_t=474896 getting buffers
+G1 thread_t=474896 got buffer 169504, count=6
+G1 thread_t=474896 got buffer 169392, count=7
+G1 thread_t=474896 got buffer 169280, count=8
+G1 thread_t=474896 got buffer 169168, count=9
+G1 thread_t=474896 got buffer 169056, count=10
+G1 thread_t=474896 releasing buffers
+G1 thread_t=474896 released buffer 169504, count=9
+G1 thread_t=474896 released buffer 169392, count=8
+G1 thread_t=474896 released buffer 169280, count=7
+G1 thread_t=474896 released buffer 169168, count=6
+G1 thread_t=474896 released buffer 169056, count=5
+G1 thread_t=474896 getting buffers
+G1 thread_t=474896 got buffer 169168, count=6
+G1 thread_t=474896 got buffer 169280, count=7
+G1 thread_t=474896 got buffer 169256, count=8
+G1 thread_t=474896 got buffer 169704, count=9
+G1 thread_t=474896 got buffer 169032, count=10
+G1 thread_t=474896 releasing buffers
+G1 thread_t=474896 released buffer 169168, count=9
+G1 thread_t=474896 released buffer 169280, count=8
+G1 thread_t=474896 released buffer 169256, count=7
+G1 thread_t=474896 released buffer 169704, count=6
+G1 thread_t=474896 released buffer 169032, count=5
+G1 thread_t=474896 getting buffers
+G1 thread_t=474896 got buffer 169704, count=6
+G1 thread_t=474896 got buffer 169480, count=7
+G1 thread_t=474896 got buffer 169280, count=8
+G1 thread_t=474896 got buffer 169056, count=9
+G1 thread_t=474896 got buffer 169816, count=10
+G1 thread_t=474896 releasing buffers
+G1 thread_t=474896 released buffer 169704, count=9
+G1 thread_t=474896 released buffer 169480, count=8
+tg3: created G1 thread tid=5
+tg3: readying G1 thread tid=5
+tg3: G1 thread tid=5 ready
+tg3: creating G1 thread 5
+tg3: created G1 thread tid=6
+tg3: readying G1 thread tid=6
+tg3: G1 thread tid=6 ready
+tg3: creating G1 thread 6
+tg3: created G1 thread tid=7
+tg3: readying G1 thread tid=7
+tg3: G1 thread tid=7 ready
+tg3: creating G1 thread 7
+tg3: created G1 thread tid=8
+tg3: readying G1 thread tid=8
+tg3: G1 thread tid=8 ready
+tg3: creating G1 thread 8
+tg3: created G1 thread tid=9
+tg3: readying G1 thread tid=9
+tg3: G1 thread tid=9 ready
+tg3: creating G1 thread 9
+G1 thread_t=450320 released buffer 170712, count=7
+G1 thread_t=450320 released buffer 169952, count=6
+G1 thread_t=450320 released buffer 169840, count=5
+G1 thread_t=450320 released buffer 169728, count=4
+G1 thread_t=450320 released buffer 169928, count=3
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 169728, count=4
+G1 thread_t=450320 got buffer 169840, count=5
+G1 thread_t=450320 got buffer 169952, count=6
+G1 thread_t=450320 got buffer 170712, count=7
+G1 thread_t=450320 got buffer 169280, count=8
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 169728, count=7
+G1 thread_t=450320 released buffer 169840, count=6
+G1 thread_t=450320 released buffer 169952, count=5
+G1 thread_t=450320 released buffer 170712, count=4
+G1 thread_t=450320 released buffer 169280, count=3
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 170712, count=4
+G1 thread_t=450320 got buffer 169952, count=5
+G1 thread_t=450320 got buffer 169840, count=6
+G1 thread_t=450320 got buffer 169728, count=7
+G1 thread_t=450320 got buffer 169928, count=8
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 170712, count=7
+G1 thread_t=450320 released buffer 169952, count=6
+G1 thread_t=450320 released buffer 169840, count=5
+G1 thread_t=450320 released buffer 169728, count=4
+G1 thread_t=450320 released buffer 169928, count=3
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 169728, count=4
+G1 thread_t=450320 got buffer 169840, count=5
+G1 thread_t=450320 got buffer 169952, count=6
+G1 thread_t=450320 got buffer 170712, count=7
+G1 thread_t=450320 got buffer 169280, count=8
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 169728, count=7
+G1 thread_t=450320 released buffer 169840, count=6
+G1 thread_t=450320 released buffer 169952, count=5
+G1 thread_t=450320 released buffer 170712, count=4
+G1 thread_t=450320 released buffer 169280, count=3
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 170712, count=4
+G1 thread_t=450320 got buffer 169952, count=5
+G1 thread_t=450320 got buffer 169840, count=6
+G1 thread_t=450320 got buffer 169728, count=7
+G1 thread_t=450320 got buffer 169928, count=8
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 170712, count=7
+G1 thread_t=450320 released buffer 169952, count=6
+G1 thread_t=450320 released buffer 169840, count=5
+G1 thread_t=450320 released buffer 169728, count=4
+G1 thread_t=450320 released buffer 169928, count=3
+G1 thread_t=450320 getting buffers
+G1 thread_t=450320 got buffer 169728, count=4
+G1 thread_t=450320 got buffer 169840, count=5
+G1 thread_t=450320 got buffer 169952, count=6
+G1 thread_t=450320 got buffer 170712, count=7
+G1 thread_t=450320 got buffer 169280, count=8
+G1 thread_t=450320 releasing buffers
+G1 thread_t=450320 released buffer 169728, count=7
+G1 thread_t=450320 released buffer 169840, count=6
+G1 thread: identifying self thread_t=507664
+G1 thread_t=507664 opening semaphore
+G1 thread_t=507664 getting buffers
+G1 thread: identifying self thread_t=532240
+G1 thread_t=532240 opening semaphore
+G1 thread_t=532240 getting buffers
+G1 thread: identifying self thread_t=556816
+G1 thread_t=556816 opening semaphore
+G1 thread_t=556816 getting buffers
+G1 thread: identifying self thread_t=581392
+G1 thread_t=581392 opening semaphore
+G1 thread_t=581392 getting buffers
+G1 thread: identifying self thread_t=605968
+G1 thread_t=605968 opening semaphore
+G1 thread_t=605968 getting buffers
+tg3: created G1 thread tid=10
+tg3: readying G1 thread tid=10
+tg3: G1 thread tid=10 ready
+tg3: creating G1 thread 10
+tg3: created G1 thread tid=11
+tg3: readying G1 thread tid=11
+tg3: G1 thread tid=11 ready
+tg3: all done
+G1 thread: identifying self thread_t=638736
+G1 thread_t=638736 opening semaphore
+G1 thread_t=638736 getting buffers
+G1 thread: identifying self thread_t=663312
+G1 thread_t=663312 opening semaphore
+G1 thread_t=663312 getting buffers
+G1 thread_t=474896 released buffer 169280, count=5
+G1 thread_t=507664 got buffer 169728, count=6
+G1 thread_t=532240 got buffer 169928, count=7
+G1 thread_t=556816 got buffer 169480, count=8
+G1 thread_t=581392 got buffer 169032, count=9
+G1 thread_t=605968 got buffer 169496, count=10
+G1 thread_t=425744 got buffer 170176, count=11
+G1 thread_t=450320 released buffer 169952, count=10
+G1 thread_t=638736 got buffer 169840, count=11
+G1 thread_t=663312 got buffer 168944, count=12
+G1 thread_t=474896 released buffer 169056, count=11
+G1 thread_t=507664 got buffer 169952, count=12
+G1 thread_t=532240 got buffer 168832, count=13
+G1 thread_t=556816 got buffer 168720, count=14
+G1 thread_t=581392 got buffer 168608, count=15
+G1 thread_t=605968 got buffer 168496, count=16
+G1 thread_t=425744 got buffer 168384, count=17
+G1 thread_t=450320 released buffer 170712, count=16
+G1 thread_t=638736 got buffer 169056, count=17
+G1 thread_t=663312 got buffer 168272, count=18
+G1 thread_t=474896 released buffer 169816, count=17
+G1 thread_t=474896 getting buffers
+G1 thread_t=507664 got buffer 170712, count=18
+G1 thread_t=532240 got buffer 168160, count=19
+G1 thread_t=556816 got buffer 168048, count=20
+G1 thread_t=450320 released buffer 169280, count=19
+G1 thread_t=450320 done
+G1 thread_t=581392 got buffer 132000, count=20
+DEADLOCK - HALTING ON ERROR CONDITION 3
+current process scheduling subsystem status
+--------------------------------------------------------
+   created  completed      ready    blocked
+        11          2          0          9
+	The following threads remain on blocked queue
+	tid9 tid2 tid10 tid11 tid4 tid5 tid6 tid7 tid8 
+
+current semaphore subsystem status
+--------------------------------------------------------
+       SID    InitCnt    CurrCnt       Name     #opens
+         1          1          1        100          9
+	blocked ->
+
+--------------------------------------------------------
+       SID    InitCnt    CurrCnt       Name     #opens
+         0         20         -9          1          9
+	blocked -> tid9  tid2  tid10  tid11  tid4  tid5  tid6  tid7  tid8 

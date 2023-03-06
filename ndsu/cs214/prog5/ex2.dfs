@@ -1,0 +1,7 @@
+$1 This is the FORTRAN definitions file
+$0'
+'$1 This macro allows a $ at the end of line to kill the new line char
+$0=n012$0=e033$0'b      '$0'S$n$b'$0'E$Send'$
+$0.L(%(i),i=1,$%).$0*I$%integer *$0'T$%$%,1%%) $L'$
+$0/Wwrite(6/$0:Rread(5:$0'F$n  1%% format('$0'A$n   %% '$
+$0-D$Sdo %% %=1,-$

@@ -1,0 +1,2 @@
+rm -f /var/log/tracker/debug/*
+cp -f tracker.cgi /var/www/cgi-bin/tracker.next.cgi

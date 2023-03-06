@@ -1,0 +1,13 @@
+/*PROG5 exec*/
+set msg off
+cons start
+type prog5 exec a
+type readtext mod a
+modw readtext mod a
+push 'prog5 output a'
+push 'prog5 data a'
+run readtext text a
+type prog5 data b
+type prog5 output a
+cons stop
+set msg on

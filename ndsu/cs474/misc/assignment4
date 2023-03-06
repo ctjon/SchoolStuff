@@ -1,0 +1,45 @@
+Article 80 of ndhecn.cs474:
+Path: plains!plains.NoDak.edu!gammill
+From: gammill@plains.NoDak.edu (bob gammill)
+Newsgroups: ndhecn.cs474
+Subject: CS474 Assignment 4
+Message-ID: <20671@plains.NoDak.edu>
+Date: 23 Sep 92 22:53:47 GMT
+Sender: Unknown@plains.NoDak.edu
+Distribution: ndhecn.cs474
+Organization: North Dakota Higher Education Computing Network
+Lines: 30
+Nntp-Posting-Host: plains.nodak.edu
+
+WELCOME TO THE FOURTH NET ASSIGNMENT FOR CS/EE 496 (Local Area Networks).
+	(late night and weekend use makes Internet more responsive)
+
+   1. First you are to use "ping".  Ping is slightly hidden, to keep the
+      masses from using it wastefully.  You should run it carefully, and
+      interrupt out of it after between 5 and 10 packets have been sent.
+      To use it, start with "/etc/ping vm1".  Then go to "/etc/ping ndgate"
+      and finally "/etc/ping cobber.cord.edu".  To interrupt use ctrl-C.
+
+   2. Now run "traceroute cordgate.cord.edu".  Interrupt out of this one 
+      if it malfunctions by hitting ctrl-C.  I have substituted cordgate
+      for cobber because being a Solbourne and running Sun-OS it fails to
+      handle traceroute packets correctly.  It is only one step past cordgate.
+
+   3. Now run "gopher" on plains.  This gives you access to different
+      data bases  at other sites.  Try some things.  See if you understand
+      the user interface.  Tell me the number of "european gophers."
+
+Send me mail telling me:
+	1. The min/avg/max times for pinging cobber.
+	2. How many steps it takes to get to cordgate.
+	3. The number of European gophers.
+Have fun:  Bob
+-- 
+     __    ____  ______      ________  ____  ____
+    / /\  / / / / / __ \    / / ____/ / / / / / /  Prof. Robert Gammill (Bob)
+   / /  \/ / / / / /\ \ \  / / /___  / / / / / /  Dept. of Computer Science
+  / / /\ \/ / / / / / / / /_/___  / / / / / / /  North Dakota State University
+ / / /\ \  / / / /_/_/ / ____/_/ / / / /_/_/ /  Fargo, ND 58105-5075
+/_/_/  \_\/ /_/_______/ /_/_____/  \_\______/  gammill@plains.NoDak.edu
+
+

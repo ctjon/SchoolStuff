@@ -1,0 +1,25 @@
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    1
+
+
+     1        00001000     	ORG $1000                                           
+     2 001000 327c0900     	MOVE.W #$900,A1                                     
+     3 001004 4282         	CLR.L D2                                            
+     4 001006 14380901     	MOVE.B $901,D2                                      
+     5 00100a 307c0902     	MOVE.W #$902,A0                                     
+     6 00100e 4281         	CLR.L D1                                            
+     7 001010 1010         CHK	MOVE.B (A0),D0                                   
+     8 001012 6f02         	BLE.S SKIP                                          
+     9 001014 5241         	ADDQ.W #1,D1                                        
+    10 001016 5288         SKIP	ADDQ.L #1,A0                                    
+    11 001018 5302         	SUBQ.B #1,D2                                        
+    12 00101a 66f4         	BNE.S CHK                                           
+    13 00101c 1281         	MOVE.B D1,(A1)                                      
+    14 00101e 60fe         STOP	BRA.S STOP                                      
+    15                     	END                                                 
+
+ ****** TOTAL ERRORS    0--   15 -- TOTAL LINES   15
+
+
+ APPROX  2116 UNUSED SYMBOL TABLE ENTRIES
+
+ CHK      001010 SKIP     001016 STOP     00101e

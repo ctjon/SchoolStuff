@@ -1,0 +1,26 @@
+UNIT TEST 8
+;
+; Program tests auto incrementing
+; and auto decrementing addressing
+; modes.
+;
+PROGRAM  TEST8
+STACK   DH    8       
+X1      DH    (52)    
+Y       DH    (0)     
+;
+; First operand
+;
+START   MOVH    [SP]+,R2  
+        MOVH    -[SP],R2  
+        MOVH    -[R1],R2 
+        MOVH    [R1]+,R2 
+;        
+; Second operand
+;
+        MOVH    R2,[SP]+
+        MOVH    R2,-[SP]
+        MOVH    R2,-[R1]
+        MOVH    R2,[R1]+
+ENDP 
+END 

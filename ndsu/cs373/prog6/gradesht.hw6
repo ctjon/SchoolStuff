@@ -1,0 +1,54 @@
+Fall 1993                     EE / CS 373               Gammill
+                             Home Work #6
+                             Grading Sheet
+
+                                        Name:__________________
+
+        ITEM                                       POINTS
+        ----                                 -------------------
+                                               Maximum   Score
+1. Written Description
+
+        Overview (Problem Description):          5 pts
+                                                        --------
+
+        Problem Solution and Verification:       5 pts
+          (and operating instructions)                  --------
+
+2. Program Design and Documentation 
+
+  a) Flowcharts of TRAP #14 and timer           10 pts
+        interrupt handling.                             --------
+      
+  b) Use of semaphores (FLAG and SFLAG)         10 pts
+        to prevent scheduling while inside              -------- 
+        TRAP #14.
+
+  c) Program Listings
+
+        Clarity (good names and readability)    10 pts
+          (main program, interrupt routines,            --------
+           and PRINT program all clear)
+
+        Comments (brief, relevant, readable)    10 pts
+                                                        --------
+
+
+3. Program Results (TESTING!)
+
+        First run (LG file shows asynchronous   20 pts
+          scheduling - prints merged by chars)          --------
+
+        Second run (LG file shows asynchronous  20 pts
+          scheduling - prints merged by lines)          --------
+
+
+4. Miscellaneous (appearance and readability)   10 pts
+        e.g. grammar, folder, etc.                      --------
+
+                                       ----------------------------
+
+                                       TOTAL:  100 pts
+                                                        --------
+
+

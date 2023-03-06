@@ -1,0 +1,27 @@
+[PROJECT]
+Name=Voting
+Location=C:\MIKES FILES\BOOKJ11\C7.JAV
+Applet=1
+Unitcount=2
+Time=41
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Voting.java=1
+Voting.html=1
+
+[Visualforms]
+Voting.java=1
+Voting.html=0
+
+[Voting.java]
+Time=23
+Height=150
+Width=300
+
+[Voting.html]
+Time=15
+Height=150
+Width=300

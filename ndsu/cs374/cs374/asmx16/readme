@@ -1,0 +1,4 @@
+This program must be compiled with cc on an IBM RS/6000.  On plains it 
+compiles ok but core dumps upon run
+
+Chris

@@ -1,0 +1,209 @@
+// JOB 2550130,'NAME',TYPRUN=COPY,MSGCLASS=A
+                                                               J-1
+                    BIT PROCESSING
+    __________________________________________________________
+   : NAME:  JOHN DOE                                          :
+   :       -----------------------                            :
+   :    (1) LEVEL:           ___UNDERGRAD (0) _X_GRAD (1)     :
+   :    (2) SEX:             _X_MALE (0)      ___FEMALE (1)   :
+   :    (3) HIGH SCHOOL DEG: _X_NO (0)        ___YES (1)      :
+   :    (4) U.S. CITIZEN:    ___NO (0)        _X_YES (1)      :
+   :    (5) FINANCIAL NEED:  ___NO (0)        _X_YES (1)      :
+   :    (6) MINORITY:        ___NO (0)        _X_YES (1)      :
+   :    (7) SMART:           _X_NO (0)        ___YES (1)      :
+   :__________________________________________________________:
+
+. ANSWERS TO QUESTIONS (1)-(7) CAN BE STORED IN A SINGLE BYTE.
+. EACH 0/1 BIT CORRESPONDS TO THE ANSWER TO A QUESTION.
+. FOR JOHN DOE'S APPLICATION FORM THE DATA BYTE WOULD BE:
+. WHAT DOES THE DATA BYTE = 11110010 MEAN?
+
+. ASSUME WE GIVE SCHOLARSHIPS TO UNDERGRAD - CITIZEN - FINANCIAL NEED
+. WHICH OF THE FOLLOWING GET SCHOLARSHIPS:
+          JOHN DOE:         1 0 0 1 1 1 0 0
+          JOE DOE:          0 1 1 1 1 0 1 0
+          NANCY WONG:       0 1 1 0 1 1 1 0
+          DOUG O'BRIEN:     0 0 0 1 1 0 1 0
+. HOW DO YOU WRITE A PROGRAM TO DETERMINE IF SOMEONE IS ELIGIBLE?
+. SO FAR ALL INSTRUCTIONS MANIPULATE BYTES, NOT BITS.
+. HOW DO YOU MODIFY DATA BYTE TO INDICATE: DOUG WAS PUT BACK TO UNDERGRAD
+  JOHN FINALLY RECIEVED A HIGH SCHOOL DIPLOMA, DOUG HAD A SEX CHANGE?
+. THERE ARE MANY APPLICATIONS OF BIT ENCODING
+
+BIT MANIPULATION:   BINARY (BOOLEAN) OPERATIONS
+              . B:   :
+   A AND B    A. : 0 : 1         USED TO TURN OFF SELECTIVE BITS
+             ___.:___:___
+               0 : 0 : 0
+             ____:___:___
+               1 : 0 : 1
+                 :   :
+
+              . B:   :
+    A OR B    A. : 0 : 1         USED TO TURN ON SELECTIVE BITS
+             ___.:___:___
+               0 : 0 : 1
+             ____:___:___
+               1 : 1 : 1
+
+              . B:   :
+  A X-OR B    A. : 0 : 1         USED TO CHANGE SELECTIVE BITS
+             ___.:___:___
+               0 : 0 : 1
+             ____:___:___
+               1 : 1 : 0
+                                    L     1,WORD1   LOAD WORD1 INTO REG1
+                                    O     1,MASK1   OR WITH MASK1
+                                    N     1,MASK2   AND WITH MASK2
+                                    X     1,MASK3   X-OR WITH MASK3
+                                    .
+                                    .
+                          WORD1     DC    X'00001ABC'
+                          MASK2     DC    X'00001111'
+                          MASK2     DC    X'00000101'
+                          MASK3     DC    X'00000101'
+
+SAMPLE PROGRAM 1 TO DETERMINE WHETHER DATA BYTE INDICATES SCHOLARSHIP
+                 ELIGIBILITY
+. THAT IS,  BIT   1 = 0
+            bits  4 & 5 = 1
+. DATA BYTE:    DATA  DC   B'01011100'
+
+LOC  OBJECT CODE      ADDR1 ADDR2  STMT   SOURCE STATEMENT
+000000                             1  TESTBYTE  START
+                            00000  2            USING *,15
+000000 1B11                        3            SR    1,1
+000002 1B22                        4            SR    2,2
+000004 4310 F035      00035        5            IC    1,DATA
+000008 4320 FO36      00036        6            IC    2,B1
+00000C 1712                        7            XR    1,2
+00000E 1B22                        8            SR    2,2
+000010 4320 F037      00037        9            IC    2,B145
+000014 1412                        10           NR    1,2
+000016 1912                        11           CR    1,2
+000018 4770 F024      00024        12           BNE   NOPE
+00001C D202 F02C F02F 0002C 0002F  13           MVC   ANSWER,YES
+000022 07FE                        14           BR    14
+000024 D202 F02C F032 0002C 00032  15           MVC   ANSWER,NO
+00002A 07FE                        16           BR    14
+00002C 6F6F6F                      17 ANSWER    DC    CL3'???'
+00002F E8C5E2                      18 YES       DC    CL3'YES'
+000032 D5D640                      19 NO        DC    CL3'NO'
+000035 5C                          20 DATA      DC    B'01011100'
+000036 80                          21 B1        DC    B'10000000'
+000037 98                          22 B145      DC    B'10011000'
+                                   23           END
+
+020000    1B111B22  4310F035  4320F036  17121B22     /CORE DUMP
+020010    4320F037  14121912  4770F024  D202F02C    / PRIOR TO
+020020    F02F07FE  D202F02C  F03207FE  6F6F6FE8    . EXECUTION
+020030    C5E2D5D6  405C8098  00000000  00000000     .OF TESTBYTE
+
+020000    1B111B22  4310F035  4320F036  17121B22     /CORE DUMP
+020010    4320F037  14121912  4770F024  D202F02C    / AFTER
+020020    F02F07FE  D202F02C  F03207FE  E8C5E2E8    . EXECUTION
+020030    C5E2D5D6  405C8098  00000000  00000000     .OF TESTBYTE
+
+. Other alternatives
+  A)  XI  DATA,B'10000000'
+      NI  DATA,B'10011000'
+      CLI DATA,B'10011000'
+      BNE NOPE
+
+   . REPLACES 8 INSTRUCITONS WITH 4.
+   . DESTROYS ORIGINAL CONTENTS OF DATA.
+
+  B)  TM  DATA,B'10000000'
+      BO  NOPE
+      TM  DATA,B'00011000'
+      BNO NOPE
+
+   . TEST UNDER MASK (TM)
+     . ONLY LOOKS AT BITS WHERE CORRESPONDING MASK BITS ARE 1
+     . IN CASE OF B'10000000', ONLY LOOKS AT FIRST BIT.
+     . REPLACES 8 INSTRUCTIONS BY 4
+     . DOES NOT DESTROY THE ORIGINAL CONTENTS OF DATA.
+SHIFTING OPERATIONS:
+. OPERATE ON REGISTERS
+. SHIFTS (I.E., MOVES) BITS LEFT OR RIGHT
+        _________________________________________
+    R2 : 0000 0000 0000 0000 1100 1111 1000 1001 :
+       :_________________________________________:
+
+SLL  2,5 - SHIFT LEFT LOGICAL THE CONTENTS OF REG 2,  5 BIT POSITIONS.
+
+       R2________________________________________
+      _: 0000 0000 0001 1001 1111 0001 0010 0000 :<--0  PAD WITH ZERO'S
+     : :_________________________________________:
+     V
+   :0 0 0 :
+   : 0 0  : <--BIT BUCKET
+   :______:
+ . WHAT WOULD SRL  2,5 (SHIFT RIGHT LOGICAL C(R2) 5 BIT POSITIONS) DO?
+
+ . DOUBLE REGISTER SHIFTS  (EVEN/ODD PAIR)
+ ___________________________________ ___________________________________
+:00000000 00000000 00001100 11111000:00000000 00000000 00000000 00000000:
+:___________________________________:___________________________________:
+ REG 2 (BEFORE)                      REG 3 (BEFORE)
+
+SRDL  2,4 - SHIFT RIGHT LOGICAL THE CONTENTS OF R2 & R3, 4 BIT POSITIONS.
+ ___________________________________ ___________________________________
+:00000000 00000000 00000000 11001111:10000000 00000000 00000000 00000000:
+:___________________________________:___________________________________:
+ REG 2 (AFTER)                       REG 3 (AFTER)
+                                                                  : 0 0 :
+                                                                  :0 0  :
+                                                                  :_____:
+SAMPLE PROGRAM 2 TO DETERMINE THE NUMBER OF 0'S IN MEMORY (WASTED MEMORY)
+. CONSIDER 10 WORDS OF MEMORY:  WORDS    DC   F'1,2,3,4,5,6,7,8,9,10'
+. HOW MANY 0'S IN THOSE 10 WORDS?
+. HOW CAN PROGRAM PERFORM THIS CALCULATION.
+
+*R0=BIT TO BE TESTED   R1=REST OF BITS IN CURRENT WORD  R2=INDEX IN WORDS
+*R3=COUNTS 32 BITS/WD      R4=COUNTS # OF 0'S FOUND    R5=COUNTS 10 WORDS
+LOC    OBJECT CODE  ADDR1ADDR2 STMT  SOURCE STATEMENT
+000000                            1  ZEROS  START
+                          00000   2         USING *,15
+000000 1B22                       3         SR    2,2
+000002 1B44                       4         SR    4,4
+000004 58F060       00060         5         L     5,=F'10'
+000008 5812 F038    00038         6  LOOP1  L     1,WORDS(2)
+00000C 5830 F064    00064         7         L     3,=F'32'
+000010 1B00                       8  LOOP2  SR    0,0
+000012 8D00 0001    00001         9         SLDL  0,1
+000016 1200                       10        LTR   0,0
+000018 4720 F020    00020         11        BP    NOZERO
+00001C 5A40 F068    00068         12        A     4,=F'1'
+000020 4630 F010    00010         13 NOZERO BCT   3,LOOP2
+000024 5A20 F06C    0006C         14        A     2,=F'4'
+000028 4650 F008    00008         15        BCT   5,LOOP1
+00002C 5040 F034    0034          16        ST    4,COUNT
+000030 07FE                       17        BR    14
+000032 0000
+000034 00000000                   25 COUNT  DC    F'0'
+000038 0000000100000002           26 WORDS  DC    F'1,2,3,4,5,6,7,8,9,10'
+                                  27        END
+000060 0000000A                   28              =F'10'
+000064 00000020                   29              =F'32'
+000068 00000001                   30              =F'1'
+00006C 00000004                   31              =F'4'
+
+
+020000    1B221B44 5850F060 5812F038 5830F064   .
+020010    1B008D00 00011200 4720F020 5A40F068    .
+020020    4630F010 5A20F06C 4650F008 5040F034     .  CORE DUMP
+020030    07FE0000 00000000 00000001 00000002      . PRIOR TO
+020040    00000003 00000004 00000005 00000006      / EXECUTION
+020050    00000007 00000008 00000009 0000000A     /
+020060    0000000A 00000020 00000001 00000004    /
+020070    00000000 00000000 00000000 00000000   /
+
+020000    1B221B44 5850F060 5812F038 5830F064   .
+020010    1B008D00 00011200 4720F020 5A40F068    .
+020020    4630F010 5A20F06C 4650F008 5040F034     .  CORE DUMP
+020030    07FE0000 0000012F 00000001 00000002      . PRIOR TO
+020040    00000003 00000004 00000005 00000006      / EXECUTION
+020050    00000007 00000008 00000009 0000000A     /
+020060    0000000A 00000020 00000001 00000004    /
+020070    00000000 00000000 00000000 00000000   /

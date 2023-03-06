@@ -1,0 +1,76 @@
+*** ./xusers.c	Wed Jan 26 00:08:22 1994
+--- ../xload-virgin/xload.c	Tue Jan 25 22:12:24 1994
+***************
+*** 21,28 ****
+  #include "xload.bit"
+  
+  char *ProgramName;
+- char *System; /* added */
+- char title[10];
+  
+  extern void exit(), GetLoadPoint();
+  static void quit();
+--- 21,26 ----
+***************
+*** 112,118 ****
+      exit(1);
+  }
+  
+! void main(int argc, char **argv)
+  {
+      XtAppContext app_con;
+      Widget toplevel, load, pane, label_wid, load_parent;
+--- 110,118 ----
+      exit(1);
+  }
+  
+! void main(argc, argv)
+!     int argc;
+!     char **argv;
+  {
+      XtAppContext app_con;
+      Widget toplevel, load, pane, label_wid, load_parent;
+***************
+*** 121,130 ****
+      char *label, host[256];
+  
+      ProgramName = argv[0];
+-     System = argv[1]; 
+-     strcpy(title,"Users * 0.1");
+-     argv[0] = title;
+-     
+  
+      /* For security reasons, we reset our uid/gid after doing the necessary
+         system initialization and before calling any X routines. */
+--- 121,126 ----
+***************
+*** 132,140 ****
+      setgid(getgid());		/* reset gid first while still (maybe) root */
+      setuid(getuid());
+  
+!     toplevel = XtAppInitialize(&app_con, title, options, XtNumber(options),
+  			       &argc, argv, NULL, NULL, (Cardinal) 0);
+!     if (argc != 2) printf("usage: xusers <system>\n"),exit(1);
+  
+      XtGetApplicationResources( toplevel, (XtPointer) &resources, 
+  			      my_resources, XtNumber(my_resources),
+--- 128,136 ----
+      setgid(getgid());		/* reset gid first while still (maybe) root */
+      setuid(getuid());
+  
+!     toplevel = XtAppInitialize(&app_con, "XLoad", options, XtNumber(options),
+  			       &argc, argv, NULL, NULL, (Cardinal) 0);
+!     if (argc != 1) usage();
+  
+      XtGetApplicationResources( toplevel, (XtPointer) &resources, 
+  			      my_resources, XtNumber(my_resources),
+***************
+*** 195,201 ****
+        	  
+        	  if ( strcmp("label", label) == 0 ) {
+  	    (void) XmuGetHostname (host, 255);
+- 	    strcpy(host,argv[1]);
+  	    XtSetArg (args[0], XtNlabel, host);
+  	    XtSetValues (label_wid, args, ONE);
+        	  }
+--- 191,196 ----

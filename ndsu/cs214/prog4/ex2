@@ -1,0 +1,12 @@
+$1 The following are macro definitions to be used in generating FORTRAN code.
+$0'
+'$1 This macro allows a $ at the end of line to kill the new line char
+$0=n012$0=e033$0'b      '$0'S$n$b'$0'E$Send'$
+$0.L(%(i),i=1,$%).$0*I$%integer *$0'T$%$%,1%%) $L'$
+$0/Wwrite(6/$0:Rread(5:$0'F$n  1%% format('$0'A$n   %% '$
+$0-D$Sdo %% %=1,-$
+C This is an example of some FORTRAN code.
+$0'N80'$1 specifies the card image size
+$0'M15'$1 specifies the number of cards
+$1 AT LAST!  Here comes the code!
+$Ibi,j,a($N)$D21j$M$TSR73aN$F73$Na1)$TA21W73aN$E

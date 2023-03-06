@@ -1,0 +1,4 @@
+/contrib/bin/gcc -c tg1/tg1.c -o tg1/tg1.o
+/contrib/bin/gcc -c tg2/tg2.c -o tg2/tg2.o
+echo "linking tg1/tg1.o tg2/tg2.o tg3/tg3.o in tg.o"
+ld tg1/tg1.o tg2/tg2.o tg3/tg3.o -o tg.o

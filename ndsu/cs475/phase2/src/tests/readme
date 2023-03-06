@@ -1,0 +1,27 @@
+Mon Mar  1 00:26:27 CST 1993	Dean Roehrich
+
+
+The object file tg.o contains the functions which are described in the
+Readme-tg* files:
+
+	int tg1( void );
+	int tg2( void );
+	int tg3( void );
+
+These are in the file tg.h, which you may wish to include into your program.
+
+The sample Makefile has been updated to link this new .o into the program.
+You should notice that this .o is not listed on a dependency line, it is
+simply linked in.  Also notice it is not necessary for you to make your own
+copy of this .o.
+
+Note that the assign1.txt file specifies 3 .o files, one for each function.
+I've linked those 3 into a single .o, and this should make things a little
+more clean.
+
+
+See the file ~roehrich/cs475/doc/hand_in for a description of what you
+should hand in.  On March 4 you will need to put your source in
+/contrib/cs475/<groupname>.  Please make sure the tar file you put there is
+world readable (so I can read it).  No other groups will be able to get to
+your directory, so this should be ok.

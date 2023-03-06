@@ -1,0 +1,5 @@
+This is the file ex4.
+$m$1 This call on ex2 should work.
+This is the file ex4 (via return from ex2.incl).
+$2*ex5*
+This is the file ex4 (via return from ex5).

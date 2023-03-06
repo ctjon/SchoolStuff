@@ -1,0 +1,26 @@
+/* Exec for CS365 Program 1 */
+/* Written By: Chris Tjon   */
+SET MSG OFF
+CONS START
+GLOBAL TXTLIB PROB1 MODWLIB
+TYPE PROG1 EXEC A
+TYPE ITEMS DEF B
+TYPE ITEMS MOD A
+MODW ITEMS MOD A
+TYPE SKIPWHITE DEF B
+TYPE SKIPWHITE MOD A
+MODW SKIPWHITE MOD A
+TYPE TREES DEF B
+TYPE TREES MOD A
+MODW TREES MOD A
+TYPE DRIVER MOD A
+MODW DRIVER MOD A
+RUN DRIVER TEXT A
+TYPE PROB1 OUTPUT B
+TYPE PROG2 OUTPUT A
+say 'since prog1 output a and prog2 output a are identical my procedures'
+say
+say 'must work in a fashion identical to Dr. Erickson s Procedures '
+say
+CONS STOP
+SET MSG ON

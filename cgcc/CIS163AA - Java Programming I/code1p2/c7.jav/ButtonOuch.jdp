@@ -1,0 +1,17 @@
+[PROJECT]
+Name=ButtonOuch
+Location=C:\MIKES FILES\BOOKJ11\C7.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+ButtonOuch.java=1
+ButtonOuch.html=1
+
+[Visualforms]
+ButtonOuch.java=1
+ButtonOuch.html=0

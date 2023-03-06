@@ -1,0 +1,120 @@
+        Fall 1993        Calling Conventions for EE/CS 373        Gammill
+
+
+
+        The  following material supplements your text, and shows the kind
+        of conventions used by modern high-level languages, e.g.  Pascal,
+        Modula  2  and  C,  when  calling subroutines.  These conventions
+        allow easy allocation of dynamic storage, support for  recursion,
+        and the capability to do back-tracing of calls should the program
+        abort.  You must conform to these conventions in all programs you
+        write from this point forward in EE/CS 373.
+
+        First  we  give  an  example  of a program which calls a function
+        named fcn with 2 arguments, the first being the address of  array
+        x,  and  the  second  being  an integer k, probably the length of
+        array x.  When the function returns its  (single)  value,  it  is
+        stored in y.
+
+            MOVE.L  K,-(SP)    ;  int x[], k, y; are the types
+            PEA     X          ;  push arguments from right to left
+            BSR     FCN        ;  y = fcn(x,k)   is the hi-lvl version
+            ADD.L   #8,SP      ;  HE WHO PUSHES, MUST POP! (4*2 args)
+            MOVE.L  D0,Y       ;  store returned fcn value in y
+
+        It  is  important to note that OFTEN you have NO CONTROL over how
+        you are called, since most calls on assembly language  come  from
+        high   level  language  systems,  with  code  generated  by  some
+        compiler.  The example above shows a  REASONABLE  possibility  of
+        code produced for a call, but details WILL VARY!
+
+        Now  we  examine  the appropriate kind of assembly code to assure
+        that proper interfacing to the  calling  code  is  provided.   We
+        assume  that  register  A6 of the M68000 cpu is used as the stack
+        frame pointer, but another reasonable choice might be A0.
+
+                                      ; fcn(z,n) int z[], n;
+                                      ; {    int i, j;
+                                      ;      j = n;
+                                      ;      for( i=1; ...
+        FCN  LINK   A6,#-8            ;  make space for 2 local variables
+             MOVEM  D1-D7/A0-A5,-(SP) ;  save registers on stack
+             MOVE.L 12(A6),-8(A6)     ;  j = n; get 2nd formal to 2nd local
+             MOVE.L 8(A6),A1          ;  get address of X into A1
+             MOVE.L #1,-4(A6)         ;  i = 1; set first local to one                
+
+                      .               ;  Nth formal is at A6 + 4N + 4
+                      .               ;  Mth local  is at A6 - 4M
+                      .
+
+             MOVE.L <result>,D0       ;  load up result, somewhere in code
+
+             MOVEM  (SP)+,D1-D7/A0-A5 ;  restore saved registers from stack
+             UNLK   A6                ;  unlink, discarding local variables 
+             RTS
+
+
+
+
+
+                                      - 1 -
+        Fall 1993        Calling Conventions for EE/CS 373        Gammill
+
+
+        After running this and getting down to the dots in FCN, the stack
+        will appear as follows:
+                        ----------------
+                 12(A6) | value of K   |
+                        |--------------|
+                 8(A6)  | address of X |  stuff provided by caller
+                        |--------------|
+                 4(A6)  |return address|
+                        |--------------|  --------------
+             A6 ------->| old A6 value |
+                        |--------------|
+                 -4(A6) | value of i   |  stuff provided by called
+                        |--------------|
+                 -8(A6) | value of j   |
+                        |--------------|
+                        | old A5 value |
+                        |     .        |
+                        |     .        |
+                        |     .        |
+                        | old A0 value |
+                        |--------------|
+                        | old D7 value |
+                        |     .        |
+                        |     .        |
+                        |     .        |
+                        |--------------|
+             SP ------->| old D1 value |
+                        ----------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      - 2 -

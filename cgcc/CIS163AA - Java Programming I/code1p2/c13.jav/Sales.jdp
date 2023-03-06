@@ -1,0 +1,22 @@
+[PROJECT]
+Name=Sales
+Location=C:\MIKES FILES\BOOKJ11\C13.JAV
+Applet=1
+Unitcount=2
+Time=1561
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Sales.java=1
+Sales.html=1
+
+[Visualforms]
+Sales.java=1
+Sales.html=0
+
+[Sales.java]
+Time=38
+Height=150
+Width=300

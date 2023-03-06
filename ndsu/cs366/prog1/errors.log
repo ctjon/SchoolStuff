@@ -1,0 +1,24 @@
+Invalid transaction in transaction file DL SP 100
+
+Unable to locate deletion record DL SP in
+
+Error: Unrecognized transaction in trans file: CH CLIENT city=bis
+Error: Unrecognized master in trans file: CH SL 36 name=gf
+Error: Unrecognized command in trans file: RM SP 47
+Invalid transaction in transaction file DL CL afgs
+
+Invalid transaction in transaction file DL SP 5
+
+Error: Unrecognized transaction in trans file: DL CL
+Unable to locate supplier CH SP 15 city=fargo
+
+Unable to locate supplier CH SP 73 amount=333
+
+Unable to locate supplier CH SP 52
+
+Unable to locate client CH CL 56 client_name=af
+
+Invalid transaction in transaction file DL CL client_name=sf
+
+Invalid transaction in transaction file CH CL asage=24
+

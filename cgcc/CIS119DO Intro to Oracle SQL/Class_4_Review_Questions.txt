@@ -1,0 +1,58 @@
+CH3 REvIEW
+
+1.
+select last_name, TO_CHAR (hire_date, 'day') as DAY_HIRE
+from employees
+ORDER BY HIRE_DATE;
+
+2.
+
+select last_name, NVL(commission_pct, 9999) AS COMMISSION
+from employees;
+
+3.
+
+select last_name, NVL2(commission_pct, 'YES', 'NO') AS COMMISSION
+from employees;
+
+4.  
+
+select last_name "emloyee", NVL(commission_pct,9999) "No Commission",
+NVL2(commission_pct, 'YES', 'NO') ELIGIBLE
+FROM EMPLOYEES;
+
+5.
+
+Select last_name, NULLIF(last_name, 'Kochhar')
+FROM EMPLOYEES;
+
+6.
+
+select job_id,
+
+CASE job_id WHEN 'AD_PRES' THEN 'A'
+            WHEN 'ST_MAN' THEN 'B'
+            WHEN 'IT_PROG' THEN 'C'
+            WHEN 'SA_REP' THEN 'D'
+            WHEN 'ST_CLERK' THEN 'E'
+
+ELSE '0'
+END GRADE
+
+FROM EMPLOYEES    
+
+ORDER BY GRADE
+
+7.
+
+ANSI
+
+select c.country_name, l.city
+From countries c LEFT OUTER JOIN locations l
+ON c.country_id = l.country_id;
+
+ORAcLE NATIVE SYNTAX
+select c.country_name, l.city
+From countries c, locations l
+WHERE c.country_id = l.country_id(+);
+

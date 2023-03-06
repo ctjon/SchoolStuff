@@ -1,0 +1,333 @@
+
+                                                            G-1
+                LOOPING AND INDEXING
+                --------------------
+SAMPLE PROGRAM TO ADD 49 TO 3 LOCATIONS (LONG WAY)
+
+ASSEMBLY LANGUAGE             :          MACHINE LANGUAGE
+-----------------             :          ----------------
+          :
+*ADD 49 TO THREE LOCATIONS    :
+NET      START                :
+         BALR  15,0           :
+         USING FIRST,15       :
+          :
+FIRST    L     1,DATA1        :
+         A     1,FORT9        :
+         ST    1,DATA1        :
+          :
+         L     1,DATA2        :
+         A     1,FORT9        :
+         ST    1,DATA2        :
+          :
+         L     1,DATA3        :
+         A     1,FORT9        :
+         ST    1,DATA3        :
+          :
+         BR    14             :
+FORT9    DC    F'49'          :
+DATA1    DC    F'3'           :
+DATA2    DC    F'2'           :
+DATA3    DC    F'32'          :
+         END                  :
+
+USE ADDRESS EXPRESSION
+
+ASSEMBLY LANGUAGE             :          MACHINE LANGUAGE
+-----------------             :          ----------------
+*ADD 49 TO THREE LOCATIONS    :
+NET      START                :
+         BALR  15,0           :
+         USING FIRST,15       :
+          :
+FIRST    L     1,DATA1        :
+         A     1,FORT9        :
+         ST    1,DATA1        :
+          :
+         L     1,DATA1+4      :
+         A     1,FORT9        :
+         ST    1,DATA1+4      :
+
+         L     1,DATA1+8      :
+         A     1,FORT9        :
+         ST    1,DATA1+8      :
+
+         BR    14             :
+FORT9    DC    F'49'          :
+DATA1    DC    F'3,2,32'      :
+         END                  :
+
+WHO COMPUTES  DATA1+4  AND  DATA1+8
+INDEXING:
+             - LOOP THROUGH AN ARRAY OF DATA
+             - INDEX ADDRESSING
+             - RECALL, ADDRESS = DISPLACEMENT + C(X) + C(B)
+
+FLOWCHART TO ADD 49 TO 3 CONSECUTIVE LOCATIONS:
+
+        START
+       __:___
+      : R2=0 :      (REG2 = INDEX)
+      : R5=3 :      (REG5 = COUNTER)
+      :______:
+ ------->:
+:   _____:____
+:  : ADD 49 TO:
+:  : DATA(R2) :
+:  :__________:
+:   _____:___
+:  : R2=R2+4 :       (ADVANCE TO NEXT DATA WORD)
+:  :_________:
+:   _____:___
+:  : R5=R5-1 :       (DECREMENT AND TEST COUNTER)
+:  :_________:
+:       _:__
+:     /     .
+ _NO_/ R2=0? .
+     ._______/
+         :YES
+       STOP
+*USE INDEXING
+*ADD 49 TO THREE LOCATIONS          :
+INDEX    START                      :
+         BALR  15,0                 :
+         USING BEG,15               :
+BEG      SR    2,2       ZERO INDEX :
+         L     5,THREE   INITIALIZE :    OP     R1   X2   B2     D2
+                               LOOP : __________________________________
+LOOP     L     1,DATA(2)            ::        :    :    :    :          :
+                                    ::________:____:____:____:__________:
+         A     1,FORTY9             :
+         ST    1,DATA(2)            :
+         A     2,FOUR               :
+         BCT   5,LOOP               :
+         BR    14                   :
+ :
+FOUR     DC    F'4'                 :
+THREE    DC    F'3'                 :
+FORTY9   DC    F'49'                :
+DATA     DC    F'3,2,32'            :
+         END                        :
+
+INSTRUCTION MODIFICATION = An instruction can be used as data.
+
+- USUSALLY BAD! ---> IMPURE CODE!
+- SOME MACHINES HAVE NO INDEXING. INSTRUCTION MODIFICATION MAY BE NEEDED.
+
+       START
+       __:___
+      : R2=3 :
+      :______:                      ____________________________________
+ ------->:                 ------> :   L    : 1  : 0  : 15 :     D      :
+:   _____:__________     /         :________:____:____:____:____________:
+:  :LD  L  1,DATA <-----
+:  :    A  1,FORTY9 :               ____________________________________
+:  :SD  ST 1,DATA  <-------------> :   ST   : 1  : 0  : 15 :     D      :
+:  :________________:              :_______:____:____:____:____________:
+:   _____:________________
+:  :ADD 4 TO WORDS LD & SD:
+:  :  REG5 = REG5 - 1     :
+:  :______________________:
+:      __:__
+:     /     .
+ _NO_/ R2=0? ._YES__STOP
+     ._______/
+*TREAT INSTRUCTION AS DATA
+ASSEMBLY LANGUAGE             :          MACHINE LANGUAGE
+                              :         (ASSUME LOADED AT 8000)
+                              :      LOC    INSTRUCTION
+ADDM     START                :
+         BALR  15,0           :     8000
+         USING FIRST,15       :
+                              :
+FIRST    L     5,THREE        :
+                              :
+LD       L     1,DATA         :
+                              :
+         A     1,FORTY9       :
+                              :
+SD       ST    1,DATA         :
+                              :
+         L     1,LD           :
+                              :
+         A     1,FOUR         :
+                              :
+         ST    1,LD           :
+                              :
+         L     1,SD           :
+                              :
+         A     1,FOUR         :
+                              :
+         ST    1,SD           :
+                              :
+         BCT   5,LD           :
+                              :
+         BR    14             :
+                              :
+THREE    DC    F'3'           :
+                              :
+FOUR     DC    F'4'           :
+                              :
+FORTY9   DC    F'49'          :
+                              :
+DATA     DC    F'3,2,32'      :
+                              :
+         END                  :
+                  ____________________________
+EQU PSEUDO-OP:   : <LABEL>  EQU  <EXPRESSION> :
+-------------    :____________________________:
+. DEFINES SYMBOL <LABEL> TO HAVE SAME VALUE AS <EXPRESSION>.
+. EXAMPLES:
+    -   SUM      EQU  2
+    -   REG1     EQU  1
+    -   DATA2    EQU  DATA1+4
+
+. PLEASE MR ASSEMBLER, WHEN YOU SEE <LABEL> USE THE VALUE OF <EXPRESSION>
+
+PROGRAM TO ADD 49 TO THREE WORDS (REVISITED AGAIN)
+               ADD49    START
+               INDEX    EQU   2
+               COUNTER  EQU   5
+                        BALR  15,0
+                        USING BEG,15
+               BEG      SR    INDEX.INDEX
+                        L     COUNTER,THREE
+               LOOP     L     1,DATA(INDEX)
+                        A     1,FORTY9
+                        ST    1,DATA(INDEX)
+                        A     INDEX,FOUR
+                        BCT   COUNTER,LOOP
+                        BR    14
+               FOUR     DC    F'4'
+               THREE    DC    F'3'
+               FORTY9   DC    F'49'
+               DATA     DC    F'3,2,32'
+                        END
+. USE OF SYMBOLIC REGISTER NAMES
+   -EASIER TO READ AND UNDERSTAND PROGRAM.
+   -CAN REASSIGN REGISTERS WITH OUT REWRITING ENTIRE PROGRAM.
+
+WHAT DO THE FOLLOWING ASK?  "PLEASE MR. ASSEMBLER . . ."
+DC    F'23'              0000 0000 0000 0000 0000 0000 0001 0111
+DC    H'23'
+DC    C'23'
+DC    X'23'
+DC    2F'23'
+DC    2H'23,16'
+DC    XL2'23'
+DC    2XL2'23'
+DC    CL6'HELLO'
+DS    2F
+DS    CL6
+DS    2CL3
+LITERALS:
+   - LAZY MAN'S WAY OF WRITING DC'S.
+   - LITERALS APPEAR IN OPERAND FIELD IN PLACE OF DC LABEL.
+   - LITERAL FORMAL:
+                        ='<DC-OPERAND>'
+
+   - EXAMPLES:             L  1,=F'4' <====>       L  1,FOUR
+         "PLEASE MR ASSEMBLER..."
+PROGRAM TO ADD 49 TO 3 FULL-WORD LOCATIONS (REVISITED,YET AGAIN)
+          ADD49    START
+                   BALR  15,0
+                   USING BEG,15
+          BEG      SR    2,2
+                   L     3,=F'3'
+          LOOP     L     7,DATA(2)
+                   A     7,=F'49'
+                   ST    7,DATA(2)
+                   A     2,=F'4'
+                   BCT   3,LOOP
+                   BR    14
+          DATA     DC    F'3,2,32'
+                   END
+_________________________________________________________________________
+
+. LITERALS ARE ASSIGNED LOCATIONS AT END OF PROGRAM (LITERAL POOL).
+. LTORG PSEUDO-OP CAN BE SUED TO CONTROL PLACEMENT OF LITERAL STORAGE
+
+EXPRESSIONS:
+  . TERM:
+     - A SYMBOL (E.G., ALPHA)
+     - SELF-DEFINING (E.G., 14)
+     - LOCATION COUNTER REFERENCE (I.E., *)
+
+  . OPERATORS:
+     +,-,*,/,(,)
+
+  . EXAMPLES:
+       ALPHA+14              RULE FOR USE OF  *  ?
+       *-ALPHA
+       ALPHA+4*14
+
+
+  . RELOCATABLE TERMS (RT) VS. ABSOLUTE TERMS  (AT)
+     - SELF DEFINING TERM = AT
+     - STATEMENT LABEL FOR MEMORY ADDRESS = RT
+     - RULES FOR COMBINING:
+
+         AT+AT-->AT     RT+AT-->RT     RT+RT-->NOT ALLOWED
+         AT-AT-->AT     RT-AT-->RT     RT-RT-->AT
+DEFINING CONSTANTS AND STORAGE (DC'S & DS'S)
+--------------------------------------------
+ . DEFINE CONSTANT (DC) -- ASSIGNS STORAGE AND SETS CONTENTS.
+      DC  F'8' <---> 00000008  IN THE FOUR BYTES AT THAT ADDRESS
+
+ . DEFINE STORAGE (DS) -- RESERVES STORAGE SPACE, BUT CONTENTS NOT SET.
+      DS  F <---> ????????  FOUR BYTES SET ASIDE BUT CONTENTS UNCHANGED.
+ . GENERAL FORM:  <LABEL>   DC    DTLN'<CONSTANTS>'
+
+    - D = NUMBER OF DUPLICATES (DEFAULT IS ONE)
+    - T = DATA TYPE (REQUIRED)
+    - LN= DATA LENGTH (SEE CARD, P 6 FOR DEFAULT (IMPLIED) LENGTHS)
+    - <CONSTANTS> SEPARATED BY COMMA'S (MORE THAN ONE IN DECIMAL ONLY)
+
+ . DATA TYPES
+
+    X = HEXADECIMAL    F = FULLWORD BINARY     C = CHARACTER
+    P = PACKED DECIMAL H = HALFWORD BINARY     B = BINARY
+    Z = ZONED DECIMAL  D = DOUBLEWORD BIN.     E = FULLWORD FLOATING PT
+    A = INTERNAL ADDRESS   V = EXTERNAL ADDRESS
+
+PLEASE MR. ASSEMBLER...
+STORAGE ALIGNMENT
+
+ . DATA TYPES  HAVE A NATURAL ALIGNMENT.
+    - REQUIRED ON SYSTEM/360
+    - RECOMMENDED ON SYSTEM/370
+ . NORMAL ALIGNMENTS ARE:
+    - NONE = ANY BYTE IS FINE    (X,B,C,P,Z)
+    - HALFWORD = MULTIPLE OF 2   (H)
+    - FULLWORD = MULTIPLE OF 4   (F,A,V,E)
+    - DOUBLEWORD = MULTIPLE OF 8 (D)
+
+DC WILL AUTOMATICALLY ASSIGN DATA TO CORRECT ALIGNMENT.
+SAMPLE ALIGNMENT:               HEX
+                               /   .
+DATA     START               LOC   CONTENTS
+                             ---   --------
+         DC    F'6'           00   00000006
+         DC    H'12'          04   000C
+         DC    E'0'           08   40000000 (06-07 SKIPPED TO ALIGN)
+         DC    C'A'           0C   C1
+         DC    D'2'           10   4120000000000000 (0D-0F SKIPPED)
+         DC    X'1ABCDE'      18   1ABCDE
+         DC    F'-1'          1C   FFFFFFFF (1B SKIPPED)
+         END
+ . DATA AREAS HAVE A "NATURAL" (E.G., IN - DS F  - FOUR BYTES IMPLIED)
+   OR PROGRAMMER SPECIFIED LENGTH (E.G., DS CL6  - SIX BYTES SPECIFIED)
+ . LENGTH INFORAMTION IS ASSOCIATED WITH LABEL
+ . LENGTH FIELDS IN INSTRUCTIONS WILL BE AUTOMATICALLY FILLED IN:
+
+PROG1     START            :  PROG2     START
+          USING *,15,B     :            USING *,15
+          MVC   A(4),B     :            MVCNG A,B
+          MVC   D1(3),D2   :            MVC   D1,D2
+          BR    14         :            BR    14
+A         DS    F          :  A         DS    F
+B         DC    F'17'      :  B         DC    F'17'
+C         DC    CL3'OLD'   :  C         DC    CL3'OLD'
+D         DC    CL3'NEW'   :  D         DC    CL3'NEW'
+          END              :            END
+                           :

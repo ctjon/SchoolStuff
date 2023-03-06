@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Cards
+Location=C:\MIKES FILES\BOOKJ11\C13.JAV
+Applet=1
+Unitcount=2
+Time=363
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Cards.java=1
+Cards.html=1
+
+[Visualforms]
+Cards.java=1
+Cards.html=0

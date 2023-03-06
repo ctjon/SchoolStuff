@@ -1,0 +1,119 @@
+Fall 1993                     EE/CS 373                     Gammill
+                             Homework #1
+                                            NAME:
+Due: At class on Friday September 17, 1993       ------------------
+        (NO LATE HOMEWORK WITHOUT PRIOR WRITTEN PERMISSION)
+
+For the Motorola MC68000 assembly language program given below:
+
+ADDRESS  CONTENTS     LABEL  OPCODE  OPERAND   COMMENTS
+------------------------------------------------------------
+     
+_1000_   ___________         MOVE.W  #$900,A1  ___________________
+         
+______   ___________         CLR.L   D2        ___________________
+
+______   ___________         MOVE.B  $901,D2   ___________________
+
+______   ___________         MOVE.W  #$902,A0  ___________________
+
+______   ___________         CLR.L   D1        ___________________
+
+______   ___________  CHK    MOVE.B  (A0),D0   ___________________
+
+______   ___________         BLE.S   SKIP      ___________________
+
+______   ___________         ADDQ.W  #1,D1     ___________________
+
+______   ___________  SKIP   ADDQ.L  #1,A0     ___________________
+
+______   ___________         SUBQ.B  #1,D2     ___________________
+
+______   ___________         BNE.S   CHK       ___________________
+
+______   ___________         MOVE.B  D1,(A1)   ___________________
+
+______   ___________  STOP   BRA.S   STOP      ___________________
+
+1. Fill in the blank spaces in the columns above:
+
+   ADDRESS - for each program instruction (line) determine its
+             starting memory address.  Assume the first
+             instruction begins in the location $1000.
+   CONTENTS - write the HEXADECIMAL equivalent of the OPCODE
+              and OPERAND mnemonics (NO $ NEEDED).
+   COMMENTS - briefly tell what the instruction does in English
+
+2. Load the program (CONTENTS) on the MC68000 ECB at the addresses
+   specified.  For help see ecb.doc (MS command) in our directory.
+
+3. Set memory locations $901 through $908 with: $07, $68, $F7, $00,
+   $30, $A9, $2A, $C5 respectively.  NOTE: The ECB expects numbers
+   to be in hexadecimal, so no $ signs are needed there.
+
+4. Make sure registers D0, A0 and A1 all contain zero.  Load the
+   PC with $1000.
+
+5. Run the program.  TR is safe, but slow.  Before you use GO,
+   BE SURE to set a BReakpoint at the location STOP of your program.
+   If you fail to do this, you will lose control of the ECB and it
+   will require a manual RESET before you can use it again!
+Fall 1993                 EE/CS 373                     Gammill
+                      Homework #1 - Page 2
+
+6. Give the contents of memory location $900 after the
+   program has run.
+                                ______________________
+
+7. Determine the values of the internal microprocessor registers
+   for the preceding program with data specified in part 3, just
+   before the first execution of the following instructions:
+
+  INSTRUCTION    PC     D0     D1     A0      A1     SR    CYCLES
+-------------------------------------------------------------------
+MOVE.B (A0),D0|      |      |      |      |       |       |       |
+-------------------------------------------------------------------
+MOVE.B D1,(A1)|      |      |      |      |       |       |       |
+-------------------------------------------------------------------
+
+   The values of the requested registers must be given in
+   hexadecimal notation.  Cycle means the number of machine
+   cycles from the start of the program till just before the
+   specified instruction executes, given in decimal.  Motorola
+   causes confusion by giving the number of clock periods (states)
+   for an instruction.  Be sure you give cycles (equals 2 states).
+   Also, M68KS uses 2 cycles as the value for ADDQ.L which is wrong
+   according to all information available to us.
+
+8. If the contents of memory locations $902 through $908 are all 
+   129, what is in memory location $900 after the program has been
+   run?
+                                ________________________
+
+9. Same question if locations $902 through $908 are all 50.
+
+                                ________________________
+
+10. Explain precisely what this program does in 25 words or less.
+
+
+
+
+
+
+
+
+11. Be sure to clear out the ECB memory at $900 and $1000 before
+    you turn off the PACX box, so the next student will not
+    receive a free gift of your code.  ALSO:  BE SURE TO SUBMIT
+    A LOG FILE OF YOUR RUN ON THE ECB.  Keep it short by showing
+    only a memory display "MD" of your code (from $1000 to $1020)
+    and an MD of your data (from $900 to $910) followed by a trace
+    "TR 200" of your program running, and finally another MD of
+    your data (showing the result in $900 as well as your data).
+
+    See the ecb.doc file in the class directory to learn how to
+    use the LG command on the ECB to make a log file.  NOTE: this
+    is different than the UNIX log command which will allow you to
+    make a log file when running m68ks.
+

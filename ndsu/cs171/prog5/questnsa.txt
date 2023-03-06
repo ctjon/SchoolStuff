@@ -1,0 +1,46 @@
+                                                
+                                                CHRISTOPHER C. TJON
+                                                110975-8
+
+QUESTION #22   PAGE 310
+        
+A: The first player does not necessarily have a forced win.  The victor 
+   will be deterimined through a combination of factors.  If the number
+   of piles is even and there is a pile with a single chip then the first
+   player will win if he choses to remove the pile with more than one 
+   chip.  If there is no pile with a single chip then the first player
+   can win if he removes all but two chips from a pile.  This could 
+   cause the second player to remove a whole pile thus leaving two 
+   chips.  Then the first player could remove one chip leaving one left
+   for the second player.  (first player wins)  The second player could
+   however remove a whole pile save two chips.  This would force the 
+   first player to remove one or two.  If he removes one then the second
+   player can remove two and win.  If he removes two then the second
+   player can remove one and win.  Thus it would become clear that the
+   winner can only be determined by the number of chips and the number
+   of piles.  If the number of piles is greater than one and there is
+   more than one chip in all piles then the winner will only be determined
+   by the players reactions to each others moves.  In the special cases
+   where there is only one pile or there is a pile with only a single
+   chip the first player can force a win by removing all but one chip
+   from the board.
+   
+B: SEE THE NEXT PAGE
+
+C: AN ALGORITHM TO REMOVE SYMETRIC SYBLINGS COULD BE DONE AS FOLLOWS:
+
+   DETERMINE THE CHILDREN OF A NODE
+   CHECK TO SEE IF THEY EXIST ELSEWHERE IN THE TREE
+   IF SO DO NOT CREATE NEW NODE FOR CHILD RATHER SET POINTER TO CHILD TO
+       NODE WHICH ALREADY EXISTS
+   OTHERWISE CREATE THE NODE
+       
+
+
+
+
+
+
+
+
+    

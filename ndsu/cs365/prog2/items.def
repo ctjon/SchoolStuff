@@ -1,0 +1,5 @@
+DEFINITION MODULE Items;
+
+TYPE
+    Item = CHAR;
+END Items.

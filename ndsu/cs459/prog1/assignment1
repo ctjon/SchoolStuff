@@ -1,0 +1,60 @@
+        Spring 1994       CS 459 - Local Area Networks         R. Gammill
+
+
+        Homework #1: due at class time on Wednesday Jan. 26, 1994
+
+        This assignment is to be carried out on the sod.cc.ndsu.nodak.edu
+        cluster  (the  Sun  cluster).   cx01.sod.cc.ndsu.nodak.edu is the
+        server.
+
+        Under ~gammill/xload  you  will  find  a  makefile,  xload.c  and
+        get_load.c.   Your assignment is to get your own modified version
+        of xload, called  xusers,  running  under  X-windows.   Xload  is
+        really  a strip-chart display of data which is collected every 10
+        seconds (unless  you  specify  different).   Your  xusers  is  to
+        display  the  number  of users logged in on plains divided by 10.
+        The uptime function on plains and rsh on sod will  allow  you  to
+        get this data, e.g. "rsh plains -l logname uptime".  Your .rhosts
+        file  on  plains  must  permit  sod  systems to do rsh under your
+        login.  Also, the name displayed on the label line at the top  of
+        the  window should no longer be xload, but "users/10".  The label
+        inside the  window  should  be  the  name  of  the  system  being
+        measured, e.g. badlands.  It is required that you make the system
+        name a command line argument, and not build it into the code.  To
+        be graded on this assignment you must turn in a hard copy of your
+        get_load.c  replacement and document changes you made to xload.c.
+        Make sure the xload.c changes are easy to understand,  i.e.  show
+        before  and  after  snapshots  of the lines changed with specific
+        changes highlighted.  You must also create  a  bin  directory  in
+        your login directory and put your xusers in there.  You must also
+        "open up" (chmod 755) your main directory so we can get into your
+        bin  directory  to run your xusers.  Be sure to put private stuff
+        into a subdirectories which you close (chmod 700).
+
+        xload.c  is  a  system  independent  X  application  package  for
+        displaying  a  strip  chart on your screen.  Xload displays a new
+        "double" value every 10 seconds (you can modify that).  Xload  is
+        fairly  easy to read, except that it uses the "Widget Library" of
+        X, which is very complex.
+
+        get_load.c is a mess.  It is packed full of #ifdef,  #elseif  and
+        #endif preprocessor statements, which make the code difficult for
+        humans  to  read.   It  is  all  there  to provide portability to
+        different OS and hardware platforms.  At any rate, all  you  want
+        from  get_load.c  is  to figure out how to build empty stubs that
+        will let you compile an xload that will appear on your screen but
+        display nothing much of interest.  Then, you are to use  rsh  and
+        uptime to get the required information.
+
+        You know the purpose of makefiles, but you've probably never seen
+        one  quite  like  this before.  You must use the makefile.  X has
+        libraries that run off towards the horizon.  Getting  your  xload
+        running with a stub get_load.c (rename that too) will verify that
+        you  have  understood  and  used the makefile correctly.  Do that
+        first.
+
+
+
+
+
+                                     - 1 - 

@@ -1,0 +1,297 @@
+  IBM SYSTEM/370 MACHINE ARCHITECTURE
+
+FIVE QUESTIONS TO ASK ABOUT A NEW MACHINE (at the assembler level)
+ 1.WHAT IS THE MEMORY LIKE?
+ 2.WHAT IS THE REGISTER STRUCTURE?
+ 3.WHAT TYPES OF DATA CAN BE USED?
+ 4.WHAT IS THE INSTRUCTION SET?
+ 5.WHAT ARE THE SPECIAL FEATURES?
+
+SYSTEM/370 CHARACTERISTICS
+
+MEMORY:  BASIC UNIT = BYTE (8 BINARY DIGITS OR "BITS")
+                               BYTES    NAME          BITS
+                               -----    ----          ----
+                                 1      BYTE           8
+                                 2      HALFWORD      16
+                                 4      WORD          32
+                                 8      DOUBLEWORD    64
+               24
+SIZE:   UP TO 2  = 16,777,216 BYTES
+ADDRESSING: EACH BYTE HAS AN ABSOLUTE ADDRESS (0 THROUGH 16,777,215).
+            ANY UNIT (BYTE, HALFWORD, WORD OR DOUBLEWORD) IS ADDRESSED
+            BY SPECIFYING ITS' LOW NUMBER BYTE.
+                        32-BIT WORD
+                     _________:_________________
+                   /                             .
+           _______________________________________________
+          :_______:_______:_______:_______:_______:_______:
+             103    104      105     106     107     108
+                     :
+                      .__SPECIFY LOW NUMBER BYTE
+         8- BITS
+         _______
+ BYTE   :::::::::
+
+         _______________
+ HALF   :       :       :2 CONSECUTIVE BYTES
+ WORD   :_______:_______:
+
+
+         _______________________________
+ WORD   :       :       :       :       :4 CONSECUTIVE BYTES
+        :_______:_______:_______:_______:
+
+
+         _______________________________________________________________
+ DOUBLE :       :       :       :       :       :8 CONSECUTIVE BYTES    :
+ WORD   :_______:_______:_______:_______:_______:_______:_______:_______:
+
+REGISTERS:
+    - 16 GENERAL-PURPOSE REGISTERS (EACH 32 BITS OR ONE WORD LONG)
+          - USED TO HOLD AND CALCULATE ARITHMETIC RESULTS
+          - USED TO HOLD AND CALCULATE ADDRESSES
+          - USED TO HOLD NUMBERS (OFFSETS) FOR LOOPING
+
+    - 4 FLOATING POINT REGISTERS (EACH 64 BITS OR ONE DOUBLEWORD LONG)
+          - USED TO HOLD AND CALC. ARITH. RESULTS CODED IN FLOATING POINT
+
+    - SPECIAL REGISTERS (PSW)
+          - FOR CONDITION LIGHTS & LOCATION COUNTER (INSTR ADDR REG)
+DATA TYPES:
+
+     - ONLY 1'S AND 0'S ACTUALLY STORED INTERNALLY IN COMPUTER
+     - WHY WANT DIFFERENT REPRENTATIONS FOR NUMBERS
+           -FAST ARITHMETIC
+           -BIG NUMBERS
+           -FAST I/O
+       EXAMPLE - CONSIDER THE STRING  0100 1100
+                           7     6     5     4     3     2    1    0
+       AS BINARY NUMBER 0X2 + 1X2 + 0X2 + 0X2 + 1X2 + 1X2+ 0X2+ 0X2
+       EQUIV TO DECIMAL   0 +  64 +   0 +   0 +   8 +   4 +  0 +  0 =76
+
+EACH DECIMAL DIGIT TAKES FOUR BITS
+DECIMAL   0    1    2    3    4    5    6    7    8    9     +     -
+BINARY  0000 0001 0010 0011 0100 0101 0110 0111 1000 1001   1100 1101
+
+THE INTERPRETATION OF A BIT PATTERN DEPENDS UPON HOW THE INSTRUCION IS
+BUILT TO INTERPRET THE PATTERN.
+
+NUMERIC INTERPRETATIONS     0              15
+-BINARY INTEGER             _________________
+      SHORT FORM (16 BITS) :________________:
+                                                            31
+                            __________________________________
+      LONG FORM (32 BITS)  :_________________________________:
+                               E-64
+-BINARY FLOATING POINT (.F X 16    )
+                            _________________________________
+      SHORT FORM (32 BITS) :S:__E____:_________F_____________:
+                            0       7 8                     31         64
+                            _____________________________________ .. ___
+      LONG FORM (64 BITS)  :S:__E____:_________F_________________ .. ___:
+
+                            _____________________________________ .. ___
+      EXTENDED (128 BITS)  :S:__E____:_________F_________________ .. ___:
+                                                                      128
+
+-DECIMAL                     _________________
+   PACKED (1-31 DIGITS,     : D : D  : D : S  :
+           1-16 BYTES  )    :___:____:___:____:
+
+                             __________________________
+   UNPACKED (1-16 DIGITS,   : Z : D  : Z : D  : S  : D :
+             1-16 BYTES  )  :___:____:___:____:____:___:
+
+CHARACTER/LOGICAL DATA TYPES
+                             ___________________________________
+   -CHARACTER(1 CHAR/BYTE)  :    C   :   C    :   C    :   C    :
+                            :________:________:________:________:
+
+                                 _______________
+   -BIT STRING (8 BITS/BYTE)    :B:B:B:B:B:B:B:B:
+                                :_:_:_:_:_:_:_:_:
+
+4.  INSTRUCTIONS
+       FUNCTION:
+         -ARITHMETIC
+         -LOGICAL
+         -TRANSFER
+         -I/O CONTROL
+PRIMARY FORMATS:
+                  - RR  REGISTER-TO-REGISTER         (2 BYTES LONG)
+                  - RX  REGISTER-TO-INDEXED STORAGE  (4 BYTES LONG)
+                  - SS  STORAGE-TO-STORAGE           (6 BYTES LONG)
+   RR FORMAT
+     (MACHINE LANGUAGE)            (ASSEMBLER LANGUAGE)
+
+BITS 0______7____11___15
+    :   OP   : R1 : R2 :  ------->  AR    3,1
+    :________:____:____:
+       TWO BYTES LONG
+
+Examples:
+      _REGISTERS_       LOCATION  INSTRUCTION     ACTION
+    0:       26  :      --------  -----------     ------
+     :___________:         0      AR   3,1        C(R3) <-- C(R3) + C(R1)
+    1:       13  :                                  17 <----- 13  +  4
+     :___________:
+    2:       -6  :
+     :___________:         2      AR   0,1
+    3:        4  :
+     :___________:
+     .           .         4      SR  15,1
+      ___________
+   15:       105 :
+     :___________:         6      AR   1,1
+
+
+                           8      SR   2,2
+
+RX FORMAT:
+     (MACHINE LANGUAGE)                            (ASSEMBLER LANGUAGE)
+
+BITS 0______7____11___________________31
+    :   OP   : R1 :        A2          :  ------->   L    1,B
+    :________:____:____________________:
+            FOUR BYTES LONG
+                                                                 SYMBOLIC
+EXAMPLES:                                                         MEMORY
+                                                                 LOCATION
+      ___REGISTERS__                        _MEMORY_(FULL WORDS)  NAME
+    0:              :                     0:                   :   :
+     :______________:                      :____:____:____:____:   :
+    1:              :  LOAD (L)            .                   .   :
+     :______________:  <-------            .                   .   V
+    2:              :                       ___________________
+     :______________:  ADD (A)          100:              11   :   A
+    3:              :  <-------            :___________________:
+     :______________:                   104:              12   :   B
+     .              .  SUBTRACT (S)        :___________________:
+     .              .  <-----------     108:             -61   :   C
+      ______________                       :___________________:
+   15:              :  STORE (ST)       112:                   :
+     :______________:  --------->          :___________________:
+                                           .                   .
+                                           .                   .
+                                            ___________________
+                                 16,777,208:             210   :   D
+                                           :___________________:
+                                 16,777,212:              15   :   E
+                                           :___________________:
+
+LOCATION  INSTRUCTION      ACTION
+--------  -----------      ------
+   0      L   1,B          C(R1) <-- C(B)
+                            12 <----- 12
+   4      ST  0,C
+
+   8      A   1,A
+
+   12     S   1,E
+
+   16     ST  1,C
+
+
+SS FORMAT:                                                  (ASSEMBLER)
+
+     (MACHINE LANGUAGE)                                          HOW MUCH
+                                                                     /
+ 0______7________15_______________31________________47            /
+:   OP   :LENGTH-1:       A1       :       A2        :      MVC  A(4),C
+:________:________:________________:_________________:          /    /
+      SIX        BYTES           LONG                         TO   FROM
+
+
+                             SYMBOLIC
+EXAMPLES:                    MEMORY
+                             LOCATION
+       _MEMORY_(FULL WORDS)  NAME
+     0:                   :   :
+      :____:____:____:____:   :
+      .                   .   :
+      .                   .   V     NOTE: THE LENGTH FIELD IN THE MVC
+       ___________________                INSTRUCTION TELLS HOW MANY
+   100:              11   :   A           BYTES TO MOVE.  IN MACHINE
+      :___________________:               LANGUAGE IT IS REDUCED BY 1
+   104:              12   :   B           (SO 1 TO 256 BYTES CAN BE
+      :___________________:                MOVED, NOT 0 TO 255)
+   108:             -61   :   C
+      :___________________:
+   112:              43   :
+      :___________________:
+      .                   .
+      .                   .
+       ___________________
+      :             210   :   D
+      :___________________:
+      :              15   :   E
+      :___________________:
+
+
+LOCATION INSTRUCTION  ACTION
+-------- -----------  ------
+  0      MVC  A(4),C  CONTENTS 4 BYTES AT(A) <-- CONTENTS 4 BYTES AT(C)
+                      OR   C(A)<---C(C)
+                           -61 <-- -61
+  6      MVC  C(4),B
+
+  12    MVC  A(8),D
+
+SPECIAL FEATURES:
+----------------
+
+PROGRAM STATUS WORD (PSW)
+
+  0_______________________________________________________________63
+  :                                 CC    :INSTRUCTION ADDRESS REG.:
+  :_______________________________________:________________________:
+                                    :
+                                   34
+
+
+SAMPLE PROGRAM 1:  CALCULATE PAY = WAGE + BONUS - TAX
+
+
+      ___REGISTERS__                      ___MEMORY____________
+    0:            0 :                   0:                     :
+     :______________:                    :_____________________:
+    1:            0 :                    .                     .
+     :______________:                    .                     .
+           .                              _____________________
+      ______________                  100:                400  :(WAGE)
+   15:            0 :                    :_____________________:
+     :______________:                 104:                 75  :(TAX)
+                                         :_____________________:
+                                      108:                 50  :(BONUS)
+                                         :_____________________:
+                                      112:                  0  :(PAY)
+                                         :_____________________:
+
+LOCATION  INSTRUCTION
+--------  -----------
+   0      L   1,WAGE
+   4      A   1,BONUS
+   8      S   1,TAX
+  12      ST  1,PAY
+
+
+SAMPLE PROGRAM 2:  CALCULATE  PAY = (WAGE + BONUS) - (TAX - REBATE)
+
+
+      ___REGISTERS__                      ___MEMORY____________
+    0:            0 :                   0:                     :
+     :______________:                    :_____________________:
+    1:            0 :                    .                     .
+     :______________:                    .                     .
+           .                              _____________________
+      ______________                  100:                400  :(WAGE)
+   15:            0 :                    :_____________________:
+     :______________:                 104:                 75  :(TAX)
+                                         :_____________________:
+                                      108:                 50  :(BONUS)
+                                         :_____________________:
+                                      112:                  0  :(PAY)
+                                         :_____________________:
+                                      116:                 30  :(REBATE)
+                                         :_____________________:

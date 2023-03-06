@@ -1,0 +1,20 @@
+DL SP 27
+DL SP 100
+DL CL ta
+DL SP in
+CH SP 45 name=ad
+CH CLIENT city=bis
+CH SL 36 name=gf
+RM SP 47
+DL CL afgs
+DL SP 5
+DL SP 63
+DL CL
+CH SP 15 city=fargo
+DL CL ad
+CH SP 73 amount=333
+CH SP 52
+CH CL 56 client_name=af
+DL CL client_name=sf
+CH CL df age=67
+CH CL asage=24

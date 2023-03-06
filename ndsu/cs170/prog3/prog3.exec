@@ -1,0 +1,12 @@
+/*prog3 exec*/
+set msg off
+cons start
+type points def a
+modw points def a
+type points mod a
+modw points mod a
+type testpoin mod a
+modw testpoin mod a
+run testpoin text a
+cons stop
+set msg on

@@ -1,0 +1,45 @@
+#!/bin/sh
+cat ex1|macro>output1
+cat ex1|gmacro>goutput1
+cat ex2|macro>output2
+cat ex2|gmacro>goutput2
+cat ex3|macro>output3
+cat ex3|gmacro>goutput3
+cat ex4|macro>output4
+cat ex4|gmacro>goutput4
+cat ex5|macro>output5
+cat ex5|gmacro>goutput5
+cat exa|macro>outputa
+cat exa|gmacro>goutputa
+echo output1
+diff output1 goutput1
+echo output2
+diff output2 goutput2
+echo output3
+diff output3 goutput3
+echo output4
+diff output4 goutput4
+echo output5
+diff output5 goutput5
+echo outputa
+diff outputa goutputa
+echo "building final output file"
+cat macro.h>final3
+echo " ">>final3
+cat macro.c>>final3
+echo " ">>final3
+cat macio.c>>final3
+echo " ">>final3
+cat makefile>>final3
+echo " ">>final3
+cat output1>>final3
+echo " ">>final3
+cat output2>>final3
+echo " ">>final3
+cat output3>>final3
+echo " ">>final3
+cat output4>>final3
+echo " ">>final3
+cat output5>>final3
+echo " ">>final3
+cat outputa>>final3

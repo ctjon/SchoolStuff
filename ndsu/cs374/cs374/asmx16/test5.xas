@@ -1,0 +1,27 @@
+UNIT TEST 5
+;
+; Test5 - Tests the EXTERNAL and 
+;         PUBLIC directives
+;         Also tests direct addressing
+;
+EXTERNAL   EX1
+EXTERNAL   EX2
+PUBLIC     X1
+PUBLIC     Y
+PROGRAM PROB1
+STACK   DH    8       ;DEFINE STACK
+X1      DH    (52)      ;PREASSIGN VALUES TO
+X2      DH    (38)      ;THE SOURCE VARIABLES
+X3      DH    (23)
+Y       DH    (0)       ;PREASSIGN RESULT VARIABLE
+START   MOVH    200H,Y   ;MOVE X1 TO Y
+        MOVH    X2,R0 
+        MULH    #2,R0 
+        ADDH    R0,Y    ;ADD 2*X2 TO Y
+        MOVH    100H,R0 
+        MULH    #3,R0 
+        ADDH    R0,Y    ;ADD 3*X3 TO Y
+        SUBH    #42,Y   ;SUBTRACT 42 FROM Y
+        RETN 
+ENDP 
+END 

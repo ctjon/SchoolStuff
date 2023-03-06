@@ -1,0 +1,17 @@
+[PROJECT]
+Name=FileDialogdem
+Location=C:\MIKES FILES\BOOKJ11\C19FILES.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+FileDialogdem.java=1
+FileDialogdem.html=1
+
+[Visualforms]
+FileDialogdem.java=1
+FileDialogdem.html=0

@@ -1,0 +1,431 @@
+                                                                                
+                                               P-1                              
+IBM LINKAGE CONVENTIONS ON SAVING REGISTERS                                     
+                           ----------------                                     
+PRESENT SCEME:  EVERY ROUTINE HAS ITS OWN SAVE AREA,                            
+                SAVES REGISTERS IN ITS SAVE AREA.                               
+                ___________                                                     
+               :MAIN START :                                                    
+               :     STM ..:                                                    
+               :       :   :                                                    
+               :SAVE DC 18F:                                                    
+               :___________:                                                    
+       ______________:_____________                                             
+  ____:______   _____:_____   _____:_____                                       
+ :SUB1 START : :SUB2 START : :SUB3 START :                                      
+ :     STM ..: :     STM ..: :     STM ..:                                      
+ :       :   : :       :   : :       :   :                                      
+ :SAVE DC 18F: :SAVE DC 18F: :SAVE DC 18F:                                      
+ :___________: :___________: :___________:                                      
+  - PROBLEMS:  WASTED SPACE, IMPURE CODE                                        
+ ALTERNATE SCHEME:  SAVE AREA PROVIDED BY PARENT                                
+                    (IBM CONVENTION)                                            
+                           _OS________                                          
+                          :SAVE DC 18F:                                         
+                          :_____._____:                                         
+                ___________   .                                                 
+               :MAIN START : .                                                  
+FEW SAVE AREAS :     STM ->:-                                                   
+     REQUIRED  :       :   :                                                    
+               :SAVE DC 18F...<....<........<                                   
+               :___._______: .                .                                 
+                  .  :        .                .                                
+       __________.___:________._______         .                                
+  ____:______   ._____:_____  .  _____:_____   .                                
+ :SUB1 START : .:SUB2 START : . :SUB3 START : .                                 
+ :     STM ->:. :     STM ->:-  :     STM ->:-                                  
+ :___________:  :___________:   :___________:                                   
+PURE CODE AT BOTTOM LEVEL                                                       
+ -HOW WILL SUB KNOW MAINS' SAVE AREA ADDRESS?                                   
+CONVENTIONS:                                                                    
+ -MAIN PUTS ADDRESS OF ITS' SAVE AREA IN R3                                     
+  BEFORE CALLING SUB (LEAVE MAP IN REG 13).                                     
+      _OS_____________                                                          
+1000->SAVE DC  18F <---.                                                        
+     :________________:.                                                        
+                       .                                                        
+LOC                    .:LOC                                                    
+---                    .:---                                                    
+2000 MAIN START        .:2080 ADD49 START                                       
+                       .:2080       USING *,15                                  
+2000     STM  0,15,0(13):2000      STM 0,15,0(13)                               
+2004     BALR  12,0     :                                                       
+2006     USING *,12     :2084      L   2,0(0,1)                                 
+                        :2088      L   3,0(0,2)                                 
+                        :208C      A   3,=F'49'                                 
+2006     LA    13,SAVE  :2090      ST  3,0(0,2)                                 
+200A     LA    1,ADATA  :2094      LM  0,15,0(13)                               
+200E     L  15,=V(ADD49):2098      BR    14                                     
+2012     BALR  14,15    :          END                                          
+                        :   ____________________                                
+2014     LA    1,ADATA2 :R1:____________________:                               
+2018     L  15,=V(ADD49):   ____________________                                
+201C     BALR  14,15    :R2:____________________:                               
+                        :   ____________________                                
+                        :R3:____________________:                               
+201E     LM   0,15,0(13):    ___________________                                
+2022      BR   14       :R13:___________________:                               
+2024 ADATA DC   A(DATA) :    ___________________                                
+2028 DATA   DC  F'4'    :R14:___________________:                               
+202C ADATA2 DC  A(DATA2):    ___________________                                
+2030 DATA2  DC  F'50'   :R15:___________________:                               
+2034 SAVE   DS  18F     :                                                       
+                                                                                
+               END                                                              
+     SAVE__________________                                                     
+2034:                      :WORD 1                                              
+    :______________________:                                                    
+              :                                                                 
+     ______________________                                                     
+2064:                      :WORD 14                                             
+    :______________________:                                                    
+2068:                      :WORD 15                                             
+    :______________________:                                                    
+2070:                      :WORD 16                                             
+    :______________________:                                                    
+2074:                      :WORD 17                                             
+    :______________________:                                                    
+2078:                      :WORD 18                                             
+    :______________________:                                                    
+              .                                                                 
+WILL THIS PROGRAM WORK ??                                                       
+                                                                                
+SUBROUTINES SAVES REGS IN MAINS SAVE AREA                                       
+ - BUT REG 13 MUST BE SAVED SEPARATELY IN                                       
+   SUBR SAVE AREA (WHEN YOU BURY TREASURE                                       
+   YOU SAVE MAP SEPARATELY.                                                     
+   DON'T BURY MAP WITH TREASURE.                                                
+ - CONVENTION IS: SUBR SAVES REG14 THRU REG12                                   
+   IN FINAL 15 WORDS OF MAINS SAVE AREA AND                                     
+   REG13 IN 2ND WORD OF OWN (SUBR) SAVE AREA.                                   
+                                                                                
+MAIN:                                                                           
+----   ______________________                                                   
+ SAVE :                      :WORD 1                                            
+      :______________________:                                                  
+   +4 :                      :WORD 2                                            
+      :______________________:                                                  
+   +8 :                      :WORD 3                                            
+      :______________________:                                                  
+   +12:                      :WORD 4                                            
+      :______________________:                                                  
+                .                                                               
+                .                                                               
+       ______________________                                                   
+   +68:                      :WORD 18                                           
+      :______________________:                                                  
+                                                                                
+SUBROUTINE:                                                                     
+       ______________________                                                   
+ SAVE :                      :WORD 1                                            
+      :______________________:                                                  
+   +4 :                      :WORD 2                                            
+      :______________________:                                                  
+   +8 :                      :WORD 3                                            
+      :______________________:                                                  
+   +12:                      :WORD 4                                            
+      :______________________:                                                  
+                 .                                                              
+                 .                                                              
+       ______________________                                                   
+   +18:                      :WORD 18                                           
+      :______________________:                                                  
+                                                                                
+FIRST ACT OF SUBR IS:                                                           
+                                                                                
+ *********************                                                          
+ *STM  14,12,12(13) * <--BURY TREASURE                                          
+ * ST   13,SAVE+4    * <--SAVE MAP                                              
+ *********************                                                          
+                                                                                
+                                                                                
+LAST ACT OF SUBR (RESTORE REGISTERS AGAIN)                                      
+                                                                                
+ *********************                                                          
+ * L    13,SAVE+4    * <--DIG UP MAP                                            
+ * LM   14,12,12(13) * <--DIG UP TREASURE                                       
+ *********************                                                          
+LOC                    :LOC                                                     
+---                    :---                                                     
+2000 MAIN START        :2080 ADD49 START                                        
+                       :2080       USING *,15                                   
+2000   STM 14,12,12(13):2080    STM 14,12,12(13)                                
+                       :                                                        
+2004   BALR  12,0      :2084    ST  13,SAVE+4                                   
+                       :                                                        
+2006   USING *,12      :2088     L   2,0(0,1)                                   
+                       :208C     L   3,0(0,2)                                   
+2006   ST  13,SAVE+4   :2090     A   3,=F'49'                                   
+                       :                                                        
+200A   LA  13,SAVE     :2094     ST  3,0(0,2)                                   
+                       :2098     L   13,SAVE+4                                  
+200E   LA  1,ADATA     :209C     LM 14,12,12(13)                                
+                       :                                                        
+2012   L   15,=V(ADD49):20A0     BR  14                                         
+                       :                                                        
+2016   BALR 14,15      :20A4 SAVE DS    18F                                     
+                       :                                                        
+                       :         END                                            
+2018   LA   1,ADATA2   :                                                        
+201C   L    15,=V(ADD49)                                                        
+2020   BALR 14,15                                                               
+                                                                                
+2022   L     13,SAVE+4                                                          
+201E   LM    14,12,12(13)                                                       
+2022   BR    14                                                                 
+                                                                                
+2024 ADATA  DC    A(DATA)                                                       
+2028 DATA   DC    F'4'                                                          
+202C ADATA2 DC    A(DATA2)                                                      
+2030 DATA2  DC    F'50'                                                         
+2034 SAVE   DS    18F                                                           
+            END                                                                 
+OTHER TWO WORDS OF THE 18 WORD SAVE AREA?                                       
+ -WORD 1 IS UNUSED EXCEPT BY PL/1 ROUTINES.                                     
+ -WORD 3 IS RESERVED FOR ADDRESS OF SAVE AREA IN                                
+  ANY SUBROUTINE IT CALLS.  THIS POINTER IS OFTEN                               
+  CALLED "FORWARD LINK" (LINK TO SAVE AREA OF                                   
+  NEXT ROUTINE CALLED-FORWARD IN TIME)                                          
+TO REVIEW:                                                                      
+WORD 1: NOT USED                                                                
+WORD 2: POINTER TO PREVIOUS ROUTINES' SAVE AREA                                 
+WORD 3: POINTER TO NEXT ROUTINES' SAVE AREA                                     
+WORDS 4-18: WHERE NEXT ROUTINE STORES R12 THRU R14.                             
+TWO OTHER CONVENTIONS (OPTIONAL)                                                
+                                                                                
+-WHEN ROUTINE COMPLETES:   RESTORES REGISTERS,                                  
+ BEFORE RETURNING CONTROL, SET FOOTPRINT IN                                     
+ HIGH ORDER BYTE OF WORD 4 OF PARENTS' SAVE AREA.                               
+          MVI  12(13),X'FF'                                                     
+ NOTE THIS WORD WAS USED TO SAVE REG14 CONTENTS,                                
+ (RETURN ADDRESS TO THE OPERATING SYSTEM).  THUS,                               
+ IF CORE DUMP SHOWS X'00' AT THIS BYTE, THE NEXT                                
+ NEXT ROUTINE FAILED TO COMPLETE (NO FF MOVED IN).                              
+ 2. IF VARIABLE LENGTH PARAMETER LIST IS EXPECTED,                              
+    HIGH ORDER BYTE OF LAST ADDRESS IS FLAGGED                                  
+    WITH X'80' = B'1000 0000' .                                                 
+    PARMS DC  A(WAGE)                                                           
+          DC  A(HOURS)                                                          
+          DC  X'80',AL3(RATE)                                                   
+SUMMARY:      SAVE       CALL       RETURN                                      
+  -THESE SEQUENCES ARE USED OVER AND OVER.                                      
+   THUS, COULD BE WRITTEN AS MACROS!                                            
+   SAVE SEQUENCE WRITTEN AS A MACRO:                                            
+    MACRO                                                                       
+    SAVE                                                                        
+    STM   14,12,12(13)   SAVE PARENTS REGS                                      
+    ST    13,SAVE+4      SAVE MAP TO PARENTS AREA                               
+*                        SET THE FORWARD LINK                                   
+    LA    11,SAVE                                                               
+    ST    11,8(13)                                                              
+    MEND                                                                        
+                                                                                
+CALL SEQUENCE WRITTEN AS A MACRO                                                
+                                                                                
+    MACRO                                                                       
+    CALL  &LISTAD,&SUBR   PASS NAME & LIST ADDR                                 
+    LA    13,SAVE          R13  SAVE AREA ADDR                                  
+    LA    1,&LISTAD        R1   PARAM LIST ADDR                                 
+    L     15,=V(&SUBR)     R15  SUBR ENTRY POINT                                
+    BALR  14,15            R14  RETURN ADDRESS                                  
+    MEND                                                                        
+RETURN SEQUENCE WRITTEN AS A MACRO:                                             
+                                                                                
+    MACRO                                                                       
+    RETURN                                                                      
+*                                                                               
+    L     13,SAVE+4           RESTORE MAP                                       
+    LM    14,12,12(13)        RESTORE REGISTERS                                 
+    MVI   12(13),X'FF'        SET FOOTPRINT                                     
+    BR    14                  RETURN CONTROL                                    
+                                                                                
+                                                                                
+LOADER VS. LINKAGE EDITOR                                                       
+-------------------------                                                       
+LINKAGE EDITOR: (PROCESSING PROGRAM)                                            
+  - LINKS ALL SUBROUTINES TO MAIN                                               
+    (POSITIONS ALL SUBROUTINES RELATIVE TO MAIN.                                
+     CHANGES ALL V-TYPE ADDR CONSTANTS TO A-TYPE)                               
+  - OTHER EDITING (DELETES DUPLICATE ROUTINES                                   
+                   PROCESSES SPECIAL REQUESTS                                   
+  - PRODUCES A FINAL "LOAD MODULE" ON DISC                                      
+PROGRAM FETCH  (CONTROL PROGRAM)                                                
+-------------                                                                   
+                                                                                
+  - ALLOCATES STORAGE (CHOOSES ENTRY ADDR)                                      
+                                                                                
+  - RELOCATES MODULE (ADDS ENTRY ADDRESS TO ALL                                 
+     ADDR-DEPENDENT REFERENCES (A-TYPE CONSTANTS)                               
+  - LOADS MODULE AND INITIATES EXECUTION                                        
+LOADER (PROCESSOR AND CONTROL PROGRAM COMBINED)                                 
+  - DOES LINKAGE EDITING AND PROGRAM FETCH                                      
+      - LINKS                                                                   
+      - ALLOCATES                                                               
+      - RELOCATES                                                               
+      - LOADS AND INITIATES EXECUTION                                           
+                                                                                
+EXAMPLE: (ALL THE WAY THROUGH THE SYSTEM)                                       
+MAIN CALLS ADD49 TO ADD 49 TO DATA; ALL CONVENTIONS USED.                       
+                        : ADD49  START                                          
+MAIN  START             :        USING *,15                                     
+      STM   14,12,12(13):       STM  14,12,12(13)                               
+      BALR  12,0        :        ST  13,SAVE+4                                  
+      USING *,12        :        LA  11,SAVE                                    
+      ST    13,SAVE+4   :        ST  11,8(13)                                   
+      LA    11,SAVE     :        L   2,0(0,1)                                   
+      ST    11,8(13)    :        L   3,0(0,2)                                   
+      LA    13,SAVE     :        A   3,=F'49'                                   
+      LA    1,ADATA     :        ST  3,0(0,2)                                   
+      L     15,=V(ADD49):        L   13,SAVE+4                                  
+      BALR  14,15       :        LM  14,12,12(13)                               
+      L     13,SAVE+4   :        BR  14                                         
+      LM    0,15,0(13)  : SAVE   DS  18F                                        
+      BR    14          :        END                                            
+ADATA DC    A(DATA)     :                                                       
+DATA  DC    F'4'        :                                                       
+SAVE  DS    18F         :   ::                                                  
+      END               :   ::                                                  
+   ::                   :   ::                                                  
+   ::                   :   ::                                                  
+   ::                   :   ::                                                  
+    /                   :    /                                                  
+ ______                 : ______                                                
+  _IN_/________________ :  _IN_/________________                                
+ :ASSEMBLER            :: :ASSEMBLER            :                               
+ :                     :: :                     :                               
+ :             BASE:VAL:: :                     :                               
+ :SYMBOL:VAL   REG :   :: :             BASE:VAL:                               
+ :------:---   ----:---:: :             REG :   :                               
+ :MAIN  : 00    12 : 6 :: :SYMBOL:VAL   ----:---:                               
+ :ADATA : 44           :: :------:---    15 : 0 :                               
+ :DATA  : 48           :: :ADD49 : 00           :                               
+ :SAVE  : 52           :: :SAVE  : 44           :                               
+ :________OUT__________:: :__________OUT________:                               
+           .            :             .                                         
+           .            :  0   STM  14,12,12(13)                                
+ 0  STM   14,12,12(13)  :  4   ST   13,48(0,15)                                 
+ 4  BALR  12,0          :  8   LA   11,44(0,15)                                 
+ 6  ST    13,50(0,12)   : 12   ST   11,8(13)                                    
+10  LA    11,46(0,12)   : 16   L    2,0(0,1)                                    
+14  ST    11,8(13)      : 20   L    3,0(0,2)                                    
+18  LA    13,46(0,12)   : 24   A    3,64(0,15)                                  
+22  LA    1,38(0,12)    : 28   ST   3,0(0,2)                                    
+26  L     15,66(0,12)   : 32   L    13,44(0,15)                                 
+30  BALR  14,15         : 36   LM   14,12,12(13)                                
+32  L     13,46(0,12)   : 40   BR   14                                          
+36  LM    0,15,0(13)    : 44   DS   18F                                         
+40  BR    14            :                                                       
+                        : 64   DC   F'49'                                       
+44  DC    A(48)         :                                                       
+48  DC    F'4'          :                                                       
+52  DS    18F           :                                                       
+                        :                                                       
+72  DC    V(0)          :.OUTPUT BY ASSEMBLER                                   
+                        :  /                                                    
+RELOCATION DICTIONARY   : RELOCATION DICTIONARY                                 
+                        :                                                       
+:LOC:TYPE:              :  :LOC:TYPE:                                           
+:---:----:              :  :---:----:                                           
+: 44: A  :              :  :___:____:                                           
+: 72: V  :                                                                      
+:___:____:                    ::                                                
+            _________________//                                                 
+     ::    / ________________/                                                  
+     ::   //                                                                    
+      /   /                                                                     
+    ______                                                                      
+     _IN_/________________                                                      
+    :LINKAGE EDITOR       :                                                     
+    :                     :                                                     
+    :_____________OUT_____:                                                     
+                   .                                                            
+                   .                                                            
+                                                                                
+          0  STM   14,12,12(13)                                                 
+          4  BALR  12,0                                                         
+          6  ST    13,50(0,12)                                                  
+         10  LA    11,46(0,12)                                                  
+         14  ST    11,8(13)                                                     
+         18  LA    13,46(0,12)                                                  
+         22  LA    1,38(0,12)                                                   
+         26  L     15,66(0,12)                                                  
+         30  BALR  14,15                                                        
+         32  L     13,46(0,12)                                                  
+         36  LM    0,15,0(13)                                                   
+         40  BR    14                                                           
+                                                                                
+         44  DC    A(48)                                                        
+         48  DC    F'4'                                                         
+         52  DS    18F                                                          
+                                                                                
+         72  DC    A(2004)      <---.                                           
+                                    .                                           
+      2004   ST    13,48(0,15)      .                                           
+      2008   LA    11,44(0,15)      .                                           
+      2012   ST    11,8(13)         .                                           
+      2016   L     2,0(0,1)         .                                           
+      2020   L     3,0(0,2)         .                                           
+      2024   A     3,64(0,15)       .                                           
+      2028   ST    3,0(0,2)         .                                           
+      2032   L     13,44(0,15)      .                                           
+      2036   LM    14,12,12(13)     .                                           
+      2040   BR    14               .                                           
+      2044   DS    18F              .                                           
+                                    .                                           
+      2064   DC    F'49'            .                                           
+                                    .                                           
+RELOCATION DICTIONARY               .                                           
+                                    .                                           
+:LOC:TYPE:                          .                                           
+:---:----:                          .                                           
+: 44: A  :                          .                                           
+: 72: A  :<---CHANGED TO A-TYPE CONSTANT                                        
+:___:____:    BY LINKAGE EDITOR                                                 
+              (MODULES LINKED TOGETHER)                                         
+     ::                                                                         
+     ::                                                                         
+     "/                                                                         
+    ______                                                                      
+    "_IN_/________________                                                      
+    :PROGRAM FETCH        :                                                     
+    :                     :                                                     
+    :__________OUT________:                                                     
+                .                                                               
+                .                                                               
+                                                                                
+     900000  STM   14,12,12(13)                                                 
+     900004  BALR  12,0                                                         
+     900006  ST    13,50(0,12)                                                  
+     900010  LA    11,46(0,12)                                                  
+     900014  ST    11,8(13)                                                     
+     900018  LA    13,46(0,12)                                                  
+     900022  LA    1,38(0,12)                                                   
+     900026  L     15,66(0,12)                                                  
+     900030  BALR  14,15                                                        
+     900032  L     13,46(0,12)                                                  
+     900036  LM    0,15,0(13)                                                   
+     900040  BR    14                                                           
+                                                                                
+     900044  DC    A(90048) <-- RELOCATION (ADD                                 
+     900048  DC    F'4'         ENTRY POINT ADDR)                               
+     900052  DS    18F          DONE BY PROGRAM                                 
+                                FETCH                                           
+     900072  DC    A(92004) <--                                                 
+                                                                                
+     92004   ST    13,48(0,15)                                                  
+     92008   LA    11,44(0,15)                                                  
+     92012   ST    11,8(13)                                                     
+     92016   L     2,0(0,1)                                                     
+     92020   L     3,0(0,2)                                                     
+     92024   A     3,64(0,15)                                                   
+     92028   ST    3,0(0,2)                                                     
+     92032   L     13,44(0,15)                                                  
+     92036   LM    14,12,12(13)                                                 
+     92040   BR    14                                                           
+     92044   DS    18F                                                          
+                                                                                
+     92064   DC    F'49'                                                        
+                                                                                
+PROGRAM FETCH INITITAES EXECUTION.                                              
+LOADER DOES WORD OF BOTH LINKAGE                                                
+EDITOR AND PROGRAM FETCH.                                                       

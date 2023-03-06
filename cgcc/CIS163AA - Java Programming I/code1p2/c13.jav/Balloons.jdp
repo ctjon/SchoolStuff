@@ -1,0 +1,27 @@
+[PROJECT]
+Name=Balloons
+Location=C:\MIKES FILES\BOOKJ11\C13.JAV
+Applet=1
+Unitcount=2
+Time=21
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Balloons.java=1
+Balloons.html=1
+
+[Visualforms]
+Balloons.java=1
+Balloons.html=0
+
+[Balloons.java]
+Time=20
+Height=150
+Width=300
+
+[Balloons.html]
+Time=12
+Height=150
+Width=300

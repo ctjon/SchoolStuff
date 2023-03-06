@@ -1,0 +1,59 @@
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    1
+
+
+     1        00000900     	ORG $900                                            
+     2 000900 0004         RESULT	DS.L	1                                        
+     3 000904 0004         INPUT	DS.L	1                                         
+     4        00001000     	ORG $1000                                           
+     5 001000 2e7c00001000 	MOVE.L #$1000,SP		;set the stack pointer to $1000   
+     6                                                                          
+     7 001006 4280         MAIN	CLR.L D0			;clear Data Register 0 - result stora
+     8 001008 4281         	CLR.L D1			;clear Data Register 1                   
+     9 00100a 4282         	CLR.L D2			;clear Data Register 2                   
+    10 00100c 4283         	CLR.L D3			;clear Data Register 3                   
+    11 00100e 2f380904     	MOVE.L INPUT,-(SP)		;place n on the stack           
+    12 001012 6100000a     	BSR FACT			;call subroutine                         
+    13 001016 588f         	ADDQ.L #4,SP   			;fix stack pointer                
+    14 001018 21c00900     	MOVE.L D0,RESULT		;store result in memory           
+    15 00101c 604a         	BRA.S STOP			;terminate                             
+    16                                                                          
+    17 00101e 4e71         FACT	NOP				;factorial subroutine: y = fact(n)       
+    18 001020 242f0004     	MOVE.L 4(SP),D2			;retrieve n from stack to local st
+    19 001024 0c8200000000 	CMP.L #0,D2			;check for n = 0                      
+    20 00102a 67000030     	BEQ RET1			;branch for return of 1                  
+    21 00102e 0c8200000001 	CMP.L #1,D2			;check for n = 1                      
+    22 001034 67000026     	BEQ RET1			;branch for return of 1                  
+    23 001038 5382         	SUB.L #1,D2			;subtract 1 from D2                   
+    24 00103a 2f02         	MOVE.L D2,-(SP)			;place n-1 on the stack           
+    25                                                                          
+    26 00103c 61e0         	BSR FACT			;call fact with n-1 on top of stack      
+    27                                                                          
+    28 00103e 588f         	ADDQ.L #4,SP			;fix the stack pointer               
+    29 001040 222f0004     	MOVE.L 4(SP),D1			;retreive n to local storage in D1
+    30 001044 2600         	MOVE.L D0,D3			;copy result in D0 to D3:D3->yH|yL   
+    31 001046 c0c1         	MULU.W D1,D0			;multiply [n * (yL)]                 
+    32 001048 4843         	SWAP D3				;swap L.O. & H.O. words in D3: D3->yL|yH 
+    33 00104a c6c1         	MULU.W D1,D3			;multiply [n * (yH)]                 
+    34 00104c 4843         	SWAP D3				;swap L.O. & H.O. W;s in D3: D3->yH|yL   
+    35 00104e 4a43         	TST.W D3			;check 4 all 0's in L.O. Word of D3: yL  
+    36 001050 6600000e     	BNE OVRFLOW			;check for overflow                   
+    37 001054 d083         	ADD.L D3,D0			;add D3 to D0                         
+    38 001056 65000008     	BCS OVRFLOW			;check for carry and thus overflow    
+    39 00105a 4e75         	RTS				;return                                      
+    40                                                                          
+    41 00105c 7001         RET1	MOVE.L #1,D0			;place 1 in D0                   
+    42 00105e 4e75         	RTS				;return                                      
+    43                                                                          
+    44 001060 21fcffffffff
+                  0900     OVRFLOW	MOVE.L #-1,RESULT		;overflow condition - retu
+    45                                                                          
+    46 001068 60fe         STOP	BRA.S STOP			;stop execution                    
+    47                     	END                                                 
+
+ ****** TOTAL ERRORS    0--   47 -- TOTAL LINES   47
+
+
+ APPROX  2113 UNUSED SYMBOL TABLE ENTRIES
+
+ FACT     00101e INPUT    000904 MAIN     001006 OVRFLOW  001060 RESULT   000900
+ RET1     00105c STOP     001068

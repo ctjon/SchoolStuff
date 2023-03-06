@@ -1,0 +1,214 @@
+                                                                    O-1
+PASSING PARAMETERS
+1 IN REGISTERS (SEE N):  ADVANTAGE = QUICK AND EASY
+                  DISADVANTAGES = LIMITED TO 16 (NUMBER) FULLWORDS (SIZE)
+2 DIRECT ADDRESSING: POINT REG1 TO PARAMETER LIST
+                      -LINE UP PARAMETERS INTO A LIST (CONSECUTIVE FULL
+                       WORDS) AND LOAD ADDRESS OF LIST INTO REGISTER 1.
+                      -SOLVES NUMBER PROBLEM (MORE THAN 16 POSSIBLE)
+                                    REG1___________         ___________
+                                      :ADDR OF LIST:------>:PARAMETER 1:
+                                      :____________:       :___________:
+                                                           :PARAMETER 2:
+                                                           :___________:
+                                                                 .
+                                                                 .
+                                                                 .
+3 INDIRECT ADDRESSING: POINT REG1 TO PARAMETER ADDRESS LIST
+
+                      -LEAVE PARAMETERS WHERE THEY ARE.  LINE UP THEIR
+                       ADDRESSES INTO A LIST (CONSECUTIVE FULLWORDS)
+    AND LOAD ADDRESS OF THIS LIST INTO REGISTER 1.
+                      -SOLVES SIZE PROBLEM (SINCE PARAMETERS THEMSELVES
+                       ARE NOT MOVED, LARGE AND ODD SIZE PARAMETERS ARE
+                       EASILY HANDLED: I.E.,LARGE EMPLOYEE FILE, VARIABLE
+                       LENGTH DATA, EXTERNAL DATA, ETC.)
+                                                          ______________
+ REG 1                                          .------->:1ST PARAMETER :
+ ____________       _____________________      .         :______________:
+:ADDR OF LIST:---->:ADDR OF 1ST PARAMETER:-----
+:____________:     :_____________________:     _________________________
+                   :ADDR OF 2ND PARAMETER:--->:     2ND  PARAMETER      :
+                   :_____________________:    :_________________________:
+                   :ADDR OF 3RD PARAMETER:
+                   :_____________________:---.
+                           .                  .
+                           .                   .    ____________________
+                    _______._____________       -->:3RD PARAMETER       :
+                   :X'80':ADDR OF LAST   :   __    :  (LARGE TABLE)     :
+                   :_____:___PARAM_______:->:  :   :                    :
+                                            :__:   :                    :
+                                                   :                    :
+                                                   :                    :
+                                                   :                    :
+                                                   :                    :
+                                                   :____________________:
+
+
+                       -IF THE LIST IS VARIABLE LENGTH, THE LAST ADDRESS
+                        IN LIST IS MARKED (X'80' IN HIGH ORDER BYTE)
+-IBM SYSTEM PROGRAMS USE THE INDIRECT METHOD (METHOD 3). YOU MAY USE 1 OR
+ 2 WHEN YOU ARE SURE THE OTHER ROUTINE IS AWARE OF IT.
+
+-IF TWO LISTS ARE NEEDED, REGISTER 0 IS POINTED TO SECOND LIST.
+
+DIRECT METHOD (PARAMETER LIST)
+
+LOC                                 : LOC
+---                                 : ---
+2000 MAIN      START                : 2060 ADD49     START
+                                    :
+2000           USING MAIN,15        : 2060           USING ADD49,15
+2000           STM   0,15,SAVE      : 2060           STM   0,15,SAVE
+2004           LR    12,15          :
+2006           USING MAIN,12        : 2064           L     3,0(0,1)
+2006           DROP  15             : 2068           A     3,=F'49'
+                                    : 206C           ST    3,0(0,1)
+2006           LA    1,DATA         : 2070           LM    0,15,SAVE
+200A           L     15,=V(ADD49)   : 2074           BR    14
+200E           BALR  14,15          : 2078 SAVE      DC    18F
+                                    :                END
+                                    :        ______________________
+2010           LA    1,DATA2        :    R1 :                      :
+                                    :       :______________________:
+2014           L     15,=V(ADD49)   :
+                                    :        ______________________
+2018           BALR  14,15          :    R3 :                      :
+                                    :       :______________________:
+                                    :        ______________________
+                                    :   R12 :                      :
+                                    :       :______________________:
+201A           LM    0,15,SAVE      :
+                                    :        ______________________
+201E           BR    14             :   R14 :                      :
+                                    :       :______________________:
+                                    :
+                                    :        ______________________
+                                    :   R15 :                      :
+                                    :       :______________________:
+2020 DATA      DC    F'4'           :
+2024 DATA2     DC    F'50'          :
+2028 SAVE      DS    18F
+               END
+NOTES:
+  -IMPLIED BASE REGISTER IS CHANGED FROM 15 TO 12 (COULD HAVE ESTABLISHED
+   12 INITIALLLY. THEN ORIGINAL CONTENTS OF REG 12 WOULD NOT BE SAVED)
+
+  -BASE REGISTER CHOICE AND MAINTENANCE IS PROGRAMMERS RESPONSIBILITY
+   (NO CONVENTIONS ESTABLISHED). MORE ON BASE REG AND SAVING REG'S LATER.
+
+INDIRECT METHOD (S/370 CONVENTION)                              ________
+                                   REG1___     _____________   : HOURS  :
+-PAYROLL (MAIN) CALLS PAY (SUBR)  :       :-->:ADDR OF HOURS:->:________:
+ TO COMPUTE WAGE = HOURS * RATE   :_______:   :_____________:
+ PASSES PARAMETERS AS SHOWN--->               :ADDR OF RATE :.
+                                              :_____________: .    _____
+                                              :ADDR OF WAGE :---->:WAGE :
+                                              :_____________:   . :_____:
+                                                                 . _____
+                                                                  :RATE :
+                                                                  :_____:
+2000 PAYROLL   START                : PAY       START
+2000           USING *,15           :           USING   *,15
+2000           STM   0,15,SAVE      :           STM     0,15,SAVE
+2004           LR    12,15          : *HOW TO GET HOURS INTO REG 3?
+2006           USING PAYROLL,12     :
+2006           DROP  15             :
+                                    : *HOW TO GET RATE INTO REG 4?
+2006           LA    1,TPARMS       :
+                                    :           MR      2,4
+200A           L     15,=V(PAY)     :
+                                    : *HOW TO STORE RESULT IN WAGE?
+200E           BALR  14,15          :
+2010 TPARMS    DC    A(HOURS)       :           LM     0,15,SAVE
+2014           DC    A(RATE)        :           BR     14
+2018           DC    A(WAGE)        :  SAVE     DS     18F
+201C SAVE      DS    18F            :           END
+2030 WAGE      DC    F'0'
+                                          __________________________
+2034 RATE      DC    H'4'            R1  :                          :
+                                         :__________________________:
+2036 HOURS     DC    H'20'
+                                          __________________________
+               END                   R2  :                          :
+                                         :__________________________:
+
+                                          __________________________
+                                     R3  :                          :
+                                         :__________________________:
+
+                                          __________________________
+                                     R4  :                          :
+                                         :__________________________:
+
+CONVENTIONS THUS FAR:
+  1.  REGISTER 15  -  ENTRY POINT ADDRESS OF SUBROUTINE
+  2.  REGISTER 14  -  RETURN POINT ADDRESS IN MAIN
+  3.  REGISTER 1   -  ADDRESS OF PARAMETER LIST (WHICH CONTAINS ADDRESSES
+                                   OF PARAMETERS IN CONSECUTIVE FULLWORDS
+      IF TWO PARAMETER LISTS ARE USED, REGISTER 0 IS POINTED TO IT.
+
+CALL SEQUENCE:
+      LA    1,PARLIST       (POINT REG 1 TO PARAMETER LIST)
+      L     15,=V(SUBR)     (POINT REG 15 TO SUBROUTINE)
+      BALR  14,15           (POINT REG 14 TO RETURN ADDRESS IN CALLER)
+
+PAYROLL PROGRAM REVISTIED:(TAX DEDUCTED ALSO)
+                                                                ________
+                                   REG1___     _____________   : HOURS  :
+-PAYROLL (MAIN) CALLS PAY (SUBR)  :       :-->:ADDR OF HOURS:->:________:
+ TO COMPUTE WAGE = HOURS * RATE   :_______:   :_____________:
+ PASSES PARAMETERS AS SHOWN--->               :ADDR OF RATE :.
+                                              :_____________: .    _____
+                                              :ADDR OF WAGE :---->:WAGE :
+                                              :_____________:   . :_____:
+                                                                 . _____
+                                                                  :RATE :
+                                                                  :_____:
+-PAY CALLS TAX TO COMPUTE AND DEDUCT TAX FROM WAGE.
+ PASSES PARAMETERS AS BELOW:
+      ________     ____________      _____
+     :        :-->:ADDR OF WAGE:--->:WAGE :
+     :________:   :____________:    :_____:
+     REG 1
+
+PAYROLL START             : WAGE  START           : TAX   START
+                          :       BALR 12,0       :
+        USING *,15        :       USING *,12      :       USING *,15
+        STM   0,15,SAVE   :       STM   0,15,SAVE :       STM   0,15,SAVE
+        LR    12,15       : *GET HOURS INTO REG 3 :       L     2,0(0,1)
+        USING PAYROLL,12  :       L     2,0(0,1)  :       L     5,0(0,2)
+        DROP  15          :       LH    3,0(0,2)  : *SPREAD WAGE OVER 4&5
+                          : *GET RATE INTO REG 4  :       SLDA  4,32
+*CALL PAY                 :                       :
+                          :       L     2,4(0,1)  : *COMPUTE TAX AT 50
+        LA    1,TPARMS    :       LH    4,0(0,2)  :       D     4,=F'2'
+        L     15,=V(PAY)  :       MR    2,4       : *STORE TAKE HOME PAY
+                          :                       : *AT WAGE
+                          : *STORE RESULT IN WAGE :
+        BALR  14,15       :                       :       ST    5,0(0,2)
+                          :       L     2,8(0,1)  :
+*RETURN TO OP. SYS.       :                       : *RETURN TO PAY
+                          :       ST    3,0(0,2)  :
+        LM    0,15,SAVE   :                       :       LM    0,15,SAVE
+                          : *PREPARE NEW PARLIST  :
+        BR    14          :                       :       BR    14
+                          :       L     2,8(O,1)  :
+TPARMS  DC    A(HOURS)    :                       : SAVE  DS    18F
+                          :       ST    2,PARMS   :
+        DC    A(RATE)     :                       :       END
+                          : *CALL TAX             :
+        DC    A(WAGE)     :                       :
+                          :       L     15,=V(TAX):
+SAVE    DS    18F         :                       :
+                          :       BALR  14,15     :
+WAGE    DC    F'0'        :                       :
+                          : *RETURN TO PAYROLL    :
+RATE    DC    H'4'        :                       :
+                          :       LM    0,15,SAVE
+HOURS   DC    H'20'       :
+                          :       BR    14
+        END               :
+                          : PARMS DS    F
+                          : SAVE  DS    18F
+                          :       END

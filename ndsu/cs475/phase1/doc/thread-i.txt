@@ -1,0 +1,89 @@
+CS475 - Operating System Design
+Introduction to Threads
+Last modified on 1/25/93 dmr
+
+This is intended to be a brief introduction to the Lightweight Process (LWP)
+library available on the NDSU Solbourne computer under UNIX.  It is a summary
+of the information found in Section 6 (on Lightweight Processes) of the
+"Solbourne System Services Overview".  The following is copied nearly
+verbatim from the introductory sections of this manual.
+
+The remainder of the manual contains the examples which are already on the
+Solbourne in ~roehrich/cs475/lwp-examples.  It would be wise to obtain hard
+copies of these examples to study, since they outline the usage of many of
+the LWP library functions.  Also, the manual pages in section 3l contain
+descriptions of all the available LWP library functions.  To get started on
+reading these manual pages, type 'man 3l intro'.  You can obtain hard copy
+listings of these manuals by using a command like
+
+	'man 3l intro | lpr -Pnplains1'
+
+which will cause the introductory manual page to be sent to the printer in
+Operations, in the IACC.
+
+Introduction
+
+A lightweight process represents a thread of control that is not bound to an
+address space.  Threads communicate via shared memory instead of the
+filesystem.  Because threads share a common address space, the cost of
+creating tasks and intertask communication is substantially less than the
+cost of using more heavyweight primitives.  The availability of lightweight
+processes provides an abstraction well-suited to writing programs which
+react to asynchronous events such as servers.
+
+Definition
+
+The idea is to provide a process abstraction: a thread is a data type
+representing a flow of control.  A number of operations are available to
+manipulate threads, including ways to control their scheduling and
+communication.  Lightweight processes exist independently of virtual memory,
+I/O, resource allocation, and other operating system-supported objects, but
+are able to work smoothly with these objects.
+
+The lightweight process abstraction for managing asynchrony is superior to
+the UNIX signal abstraction.  Under the UNIX system, a signal causes a sort
+of context switch (to a new instruction and optionally, to a new location on
+the stack) but the thread is the same: for example, you can longjmp() to the
+main program (the signal handler and main program can't run in parallel).
+Critical sections are implemented with monitors.
+
+Functionality
+
+The Solbourne lightweight process library provides primitives for
+manipulating threads, as well as for controlling all events (interrupts and
+traps) on a processor.  The present library is supported for user-level
+processes only.  This means that the time slice given to a process by the
+operating system is shared by all the threads within that process.  Further,
+LWP objects are not accessible outside of the containing UNIX process.  The
+primitives supported by the library include:
+
+* Thread creation, destruction, status gathering, scheduling manipulation,
+  suspend and resume
+* Multiplexing the clock (any number of threads can sleep concurrently)
+* Individualized context switching (e.g., it is possible to specify that a
+  given set of threads will touch floating point registers and only those
+  threads will context switch these registers)
+* Monitors and condition variables to synchronize threads
+* Extended rendezvous (message send-receive-reply) between threads
+* An exception handling facility that provides both notify and escape
+  exceptions
+* A way to map interrupts into extended rendezvous
+* A way to map traps into exceptions
+* Utilities to allocate red-zone-protected stacks, and to provide some stack
+  integrity checking for environments that lack sophisticated memory management
+
+Scheduling is by default, priority-based, non-preemptive within a priority.
+However, sufficient primitives are available that it is possible to write
+your own scheduler.  For example, to provide a round-robin time-sliced
+scheduler, a high-priority thread may periodically reshuffle the queue of
+time-sliced threads which are at a lower priority.  Although pure coroutine
+scheduling is possible, it is not required and purely preemptive scheduling
+may be used.  Threads currently lack kernel support, so system calls still
+serialize thread activity, although a non-blocking I/O library (libnbio.a)
+mitigates this problem somewhat.  When a set of threads are running, it is
+assumed that they all share memory.
+
+Bibliography
+
+1. "Solbourne System Services Overview" Sun Microsystems Inc., 1987,1988.
+   Solbourne Computer Inc., 1989. Solbourne part #102625-AB. 

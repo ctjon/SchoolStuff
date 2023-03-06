@@ -1,0 +1,297 @@
+
+                                                                     I-1
+                 CHARACTER PROCESSING
+. CHARACTER REPRESENTATION, THE EBCDIC COLLATING SEQUENCE (CARD, P 9-12)
+           CHARACTER   NUMERICAL VALUE (EBCDIC)
+           ---------   ---------------
+              A           C1
+              a           81
+              $           5B
+. EXAMPLE:
+   CHAR =   G   I   V   E   B   M   E   B   $   5         (B = BLANK)
+           _______________________________________
+          |                                       |
+   HEX  = |_______________________________________|
+. CHARACTER MOVE AND COMPARE
+  --------------------------
+  . MVC  T(L),F   MOVES L BYTES FROM F TO T (ONE AT A TIME STARTING AT F)
+
+  . CLC  T(L),F   COMPARES L BYTES STARTING AT F WITH L BYTES AT T.
+
+ASSEMBLY LISTING:
+LOC       OBJECT CODE      ADDR1 ADDR2   SOURCE STATEMENT
+000000                                 CHANGE    START
+                                 00000           USING *,15
+000000    D506 F02F F10C   0002F 0001C           CLC   DATA+5(7),GOOD
+000006    4780 F01A              0001A           BE    FINISH
+00000A    D507 F02F F123   0002F 00023           CLC   DATA+5(7),POOR
+000010    4770 F01A              0001A           BNE   FINISH
+000014    D207 F02F F10C   0002F 0001C           MVC   DATA+5(7),GOOD
+00001A    47FE                         FINISH    BR    14
+00001C    C4E4 D5C1 E5C1 D5            GOOD      DC    C'DONAVAN'
+000023    C4D6 D5D6 E5C1 D5            POOR      DC    C'DONOVAN'
+00002A    D1D6 C8D5 40C4 D6D5          DATA      DC    CL80'JOHN DONOVAN'
+                                                 END
+
+CORE DUMP (BEFORE EXECUTION):
+
+020000    D507F02F  F01C4780  F01AD507  F02FF023
+020010    4770F01A  D207F02F  F01C47FE  C4E4D5C1
+020020    E5C1D5C4  D6D5D6E5  C1D5D1D6  C8D540C4
+020030    D6D5D6E5  C1D54040  40404040  40404040
+020040    40404040  40404040  40404040  40404040
+020050    40404040  40404040  40404040  40404040
+020060    40404040  40404040  40404040  40404040
+020070    40404040  40404040  40400000  00000000
+020080    00000000  00000000  00000000  00000000
+. WHAT WOULD BE DIFFERENT AFTER THE PROGRAM IS EXECUTED?
+
+SINGLE BYTE CHARACTER MOVE AND COMPARE
+. MVI  D,I   MOVE THE ONE BYTE I (IMMEDIATE DATA) TO LOCATION D.
+             NOTE: MVI MOVES THE BYTE AS CODED RIGHT IN THE INSTRUCTION
+. CLI  D,I   COMPARE THE BYTE I WITH THE BYTE AT LOCATION I.
+
+. IMMEDIATE CONCEPT = "DATA" STORED AS PART OF THE INSTRUCTION.
+                        ___________________________________
+. INSTRUCTION FORMAT:  |   OP   |   I2   | B1 |     D1     |
+                       |________|________|____|____________|
+
+. I2 IS THE BYTE OF "IMMEDIATE DATA".
+
+. SAMPLE PROGRAM 3 TO FIND ; INDICATING THE END OF A PASCAL STATEMENT.
+           +0 1 2 3 4 5 6 7 . . .
+             ______________________________________________________
+     DATA  /A   = B + C ;                                          |
+          |________________________________________________________|
+    COLUMN  1 2 3 4 5 6 7 8 ...
+LONG WAY:
+        FIND      START
+                  USING *,15
+                  CLI   DATA,C';'
+                  BE    COL1
+                  CLI   DATA+1,C';'
+                  BE    COL2
+                  CLI   DATA+2,C';'
+                  BE    COL3
+                  .     .
+                  .     .
+                  .     .
+                  CLI   DATA+79,C';'
+                  BE    COL80
+                  BR    14
+        COL1      MVC   COLUMN(4),=F'1'
+                  BR    14
+        COL2      MVC   COLUMN(4),=F'2'
+                  BR    14
+        COL3      MVC   COLUMN(4),=F'3'
+                  BR    14
+                  .     .
+                  .     .
+                  .     .
+        DATA      DC    CL80'A =B+C;'
+        COLUMN    DC    F'0'
+                  END
+. USE THE LOOP IDEA AND THE INDEX REGISTER TO STEP THROUGH THE DATA.
+USING INDEXED CLI INSTRUCTION:
+000000                           1  FIND1     START
+                         00000   2            USING *,15
+000000 1B33                      3            SR    3,3
+000002 0000 0000    00024        4  LOOP      CLI   DATA(3),C';'
+         *** ERROR ***
+000006 4780 F012    00012        5            BE    FOUND
+00000A 5A30 F01C    0001C        6            A     3,ONE
+00000E 47F0 F002    00002        7            B     LOOP
+000012 5A30 F01C    0001C        8  FOUND     A     3,ONE
+000016 5030 F020    00020        9            ST    3,COLUMN
+00001A 07FE                      10           BR    14
+00001C 00000001                  11 ONE       DC    F'1'
+000020 00000000                  12 COLUMN    DC    F'0'
+000024 C1407EC24EC35E40          13 DATA      DC    CL80'A =B+C;'
+                                 14           END
+STMT  ERROR CODE    MESSAGE
+   4  IF0228        RELOCATABLE DISPACEMENT IN MACHINE INSTRUCTION NEAR
+                    OPERAND 5
+
+NUMBER OF STATEMENTS FLAGGED IN THIS ASSEMBLY =    1
+HIGHEST SERVERITY WAS    8
+
+ . CAN WE USE CLI INSTRUCTION WITH INDEXING?
+            ___________________________________
+       CLI |   OP   |  I2    | B1 |    D1      |     ADDRESS = D + c(B)
+           |________|________|____|____________|
+ . POINTER CONCEPT
+
+   . USE A BASE REGISTER AS ADDRESS OF DATA BYTE
+   . SET D = 0
+   . THEN D + C(B) = ADDRESS OF DATA BYTE.
+2000        LA   3,DATA
+2004        CLI  0(3),C';'
+             .
+             .
+2100 DATA   DC   CL80'A =B+C;'
+        address
+            \
+             2100  2101  2102  2103  2104  2105  2106  2107  2108  2109
+             ___________________________________________________________
+      DATA  |  A  |     |  =  |  B  |  |  |  C  |  ;  |     |     |     |
+            |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|
+            /\ 1     2     3     4     5     6     7     8     9     0
+            ||  \
+            ||    COLUMN
+          POINTER
+
+000000                              1  FIND3     START
+                            00000   2            USING *,15
+000000 4120 F02C      0002C         3            LA    2,DATA
+000004 1B33                         4            SR    3,3
+000006 955E 2000      00000         5  LOOP      CLI   0(2),C';'
+00000A 4780 F01A      0001A         6            BE    FOUND
+00000E 5A30 F024      00024         7            A     3,ONE
+000012 5A20 F024      00024         8            A     2,ONE
+000016 47F0 F006      00006         9            B     LOOP
+00001A 5A30 F024      00024         10 FOUND     A     3,ONE
+00001E 5030 F028      00028         11           ST    3,COLUMN
+000022 07FE                         12           BR    14
+000024 00000001                     13 ONE       DC    F'1'
+000028 00000000                     14 COLUMN    DC    F'0'
+00002C C1407EC24EC35E40             15 DATA      DC    CL80'A =B+C;'
+                                    16           END
+CORE DUMPS:
+                    BEFORE:
+
+020000    4120F02C  1B33955E  20004780  F01A5A30
+020010    F0245A20  F02447F0  F0065A30  F0245030
+020020    F02807FE  00000001  00000000  C1407EC2
+020030    4EC35E40  40404040  40404040  40404040
+
+                    AFTER:
+
+020000    4120F02C  1B33955E  20004780  F01A5A30
+020010    F0245A20  F02447F0  F0065A30  F0245030
+020020    F02807FE  00000001  00000007  C1407EC2
+020030    4EC35E40  40404040  40404040  40404040
+
+
+SINGLE BYTE LOAD AND STORE BETWEEN REGISTER AND MEMORY
+.INSERT SINGLE CHARACTER INTO REGISTER (LOW-ORDER BYTE) FROM MEMORY  (IC)
+.STORE SINGLE CHARACTER FROM REGISTER (LOW-ORDER BYTE) TO MEMORY   (STC)
+          .                         ___________________________________
+          .                 REG 1  |    12  |    34  |    56  |    78  |
+          IC   1,SEMI       BEFORE |________|________|________|________|
+          .
+          .                         ___________________________________
+   SEMI   DC   C';'         REG 1  |    12  |    34  |    56  |    5E  |
+                            AFTER  |________|________|________|________|
+
+.IC & STC are RX type instructions
+
+FLOWCHART AND WRITE PROGRAM 3:
+
+000000                            1  FIND2     START
+                           00000  2            USING *,15
+000000 1B11                       3            SR    1,1
+000002 1B22                       4            SR    2,2
+000004 4320 F030     00030        5            IC    2,SEMI
+000008 1B33                       6            SR    3,3
+00000A 4313 F031     00031        7  LOOP      IC    1,DATA(3)
+00000E 1912                       8            CR    1,2
+000010 4780 F01C     0001C        9            BE    FOUND
+000014 5A30 F028     00028        10           A     3,ONE
+000018 47F0 F00A     0000A        11           B     LOOP
+00001C 5A30 F028     00028        12           A     3,ONE
+000020 5030 F02C     0002C        13 FOUND     ST    3,COLUMN
+000024 07FE                       14           BR    14
+000026 0000
+000028 00000001                   15 ONE       DC    F'1
+00002C 00000000                   16 COLUMN    DC    F'0'
+000030 5E                         17 SEMI      DC    C';'
+000031 C1407EC24EC35E40           18 DATA      DC    CL80'A =B+C;'
+                                  19           END
+CORE DUMPS:
+                        BEFORE
+
+020000   1B111B22  4320F030  1B334313  F0311912
+020010   4780F01C  5A30F028  47F0F00A  5A30F028
+020020   5030F02C  07FE0000  00000001  00000000
+020030   5EC1407E  C24EC35E  40404040  40404040
+020040   40404040  40404040  40404040  40404040
+                        AFTER
+020000   1B111B22  4320F030  1B334313  F0311912
+020010   4780F01C  5A30F028  47F0F00A  5A30F028
+020020   5030F02C  07FE0000  00000001  00000007
+020030   5EC1407E  C24EC35E  40404040  40404040
+020040   40404040  40404040  40404040  40404040
+
+TRANSLATING (AS IN LETTER GRADE EXAMPLE)
+. HOW DO WE TRANSLATE FRENCH TO ENGLISH
+. DO A TABLE LOOKUP
+FRENCH        ENGLISH
+
+ADIEU         GOODBYE        DATA            ADIEU     AMOUR.  ZUT!
+AMOUR         LOVE           BEFORE
+.             .              TRANSLATION        |        |      |
+.             .                                 V        V      V
+.             .
+ZONE          ZONE            DATA AFTER     GOODBYE   LOVE.   DARN!
+ZUT           DARN
+
+ . CHARACTER TRANSLATION
+   .FOR EXAMPLE, CHANGE ALL QUIZ GRADES OF "0" TO "F", ALL "1" TO "C" AND
+    ALL "2" TO "B"
+
+   DATA BEFORE:   B.P.=0,L.S.=1,J.G.=2,B.E.=1
+
+CHARACTERS            TRANSLATIONS
+(ordered EBCDICally)  ------------
+-------------------   ------------
+                      X'00'
+                      X'01'
+ .                    .
+ .                    .
+C','  ----------->    C','
+ .                    .
+ .                    .
+C'='  ----------->    C'='
+ .                    .
+ .                    .
+C'A'  ----------->    C'A'
+C'B'  ----------->    C'B'
+ .
+ .
+C'Z'  ----------->    C'Z'
+ .
+ .
+C'0'  ===========>    C'F'
+C'1'  ===========>    C'C'
+C'2'  ===========>    C'B'
+C'3'  ----------->    C'3'
+ .
+ .
+C'9'  ----------->    C'9'
+                      .
+                      .
+                      X'FF'
+   DATA AFTER:    B.P.=F,L.S.=C,J.G.=B,B.E.=C
+
+                 INITIALIZING TABLES
+                 -------------------
+
+ . ORG PSEUDO-OP (RESETS THE LOCATION COUNTER TO OPERAND)
+ . TABLE TO LOOK FOR ';' CAN BE CODED:
+
+TBL  DC  94X'00'
+     DC  X'FF'                 NOTES:
+     DC  161X'00'
+                                  1.  NEED X'00' FOR ALL 255 ENTRIES
+       OR                             EXCEPT ";"
+TBL  DC  256X'FF'                 2.  NEED X'FF' FOR ";"
+     ORG TBL+94
+     DC  X'FF'
+     ORG                          3.  ";" = 94   = 5E
+                                              10     X
+       OR
+
+TBL  DC  256X'00'
+     ORG TBL+C';'
+     DC  X'FF'
+     ORG

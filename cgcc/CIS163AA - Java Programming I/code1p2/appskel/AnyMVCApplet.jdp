@@ -1,0 +1,17 @@
+[PROJECT]
+Name=AnyMVCApplet
+Location=C:\MIKESFILES\BOOKJ11\APPSKEL
+Applet=1
+Unitcount=2
+Time=667
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+AnyMVCApplet.java=1
+AnyMVCApplet.html=1
+
+[Visualforms]
+AnyMVCApplet.java=1
+AnyMVCApplet.html=0

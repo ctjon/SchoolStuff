@@ -1,0 +1,19 @@
+*** idpopen.c	Tue Feb  1 12:05:11 1994
+--- ../libnet.orig/idpopen.c	Tue Feb  1 12:08:28 1994
+***************
+*** 5,11 ****
+  
+  #include	"netdefs.h"
+  
+! /* #include	<netns/ns.h> */
+  
+  /*
+   * The following globals are available to the caller, if desired.
+--- 5,11 ----
+  
+  #include	"netdefs.h"
+  
+! #include	<netns/ns.h>
+  
+  /*
+   * The following globals are available to the caller, if desired.

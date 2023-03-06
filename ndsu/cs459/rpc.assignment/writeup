@@ -1,0 +1,258 @@
+							Chris Tjon
+							Jason Kroh
+							Jeff Bakke
+
+							CS459
+							RPC Server Project
+							4 May 1994
+
+
+
+The following is the source for the RPC Date server and client.  This will
+be followed by the output.
+
+*****< Makefile >**************************************************************
+CC=/usr/bin/cc
+RPCGEN=/usr/bin/rpcgen
+APPN=date
+LIBS=-lrpc
+
+all: rdate $(APPN)_svc
+
+rdate: $(APPN)_clnt.c $(APPN).h rdate.c
+	$(CC) -o rdate $(APPN)_clnt.c rdate.c $(LIBS)
+
+$(APPN)_svc: $(APPN)_svc.c $(APPN).h $(APPN)_proc.c
+	$(CC) -o $(APPN)_svc $(APPN)_proc.c $(APPN)_svc.c $(LIBS)
+
+#stubs
+$(APPN)_svc.c $(APPN).h $(APPN)_clnt.c: $(APPN).x
+	$(RPCGEN) $(APPN).x
+
+clean:
+	rm -f *.o rdate $(APPN)_svc
+
+spotless:
+	rm -f *.o rdate $(APPN)_svc $(APPN)_svc.c $(APPN)_clnt.c $(APPN).h
+*****< date.h >****************************************************************
+
+#define DATE_PROG ((u_long)0x31234567)
+#define DATE_VERS ((u_long)1)
+#define BIN_DATE ((u_long)1)
+extern long *bin_date_1();
+#define STR_DATE ((u_long)2)
+extern char **str_date_1();
+
+*****< date.x >****************************************************************
+program DATE_PROG {
+	version DATE_VERS {
+		long	BIN_DATE(void) = 1;
+		string	STR_DATE(long) = 2;
+	} = 1;
+} = 0x31234567;
+
+*****< date_clnt.c >***********************************************************
+#include <rpc/rpc.h>
+#include "date.h"
+
+/* Default timeout can be changed using clnt_control() */
+static struct timeval TIMEOUT = { 25, 0 };
+
+long *
+bin_date_1(argp, clnt)
+	void *argp;
+	CLIENT *clnt;
+{
+	static long res;
+
+	bzero((char *)&res, sizeof(res));
+	if (clnt_call(clnt, BIN_DATE, xdr_void, argp, xdr_long, &res, TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&res);
+}
+
+
+char **
+str_date_1(argp, clnt)
+	long *argp;
+	CLIENT *clnt;
+{
+	static char *res;
+
+	bzero((char *)&res, sizeof(res));
+	if (clnt_call(clnt, STR_DATE, xdr_long, argp, xdr_wrapstring, &res, TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&res);
+}
+
+*****< date_proc.c >***********************************************************
+#include <rpc/rpc.h>
+#include "date.h"
+
+long *bin_date_1() {
+
+	static long timeval;
+	long time();
+
+	timeval = time((long *) 0);
+
+	return( &timeval);
+
+}
+
+
+char **str_date_1(long *bintime) {
+
+	static char *ptr;
+	char *ctime();
+
+	ptr = ctime(bintime);
+
+	return (&ptr);
+
+}
+*****< date_svc.c >************************************************************
+#include <stdio.h>
+#include <rpc/rpc.h>
+#include "date.h"
+
+static void date_prog_1();
+
+main()
+{
+	SVCXPRT *transp;
+
+	(void)pmap_unset(DATE_PROG, DATE_VERS);
+
+	transp = svcudp_create(RPC_ANYSOCK);
+	if (transp == NULL) {
+		(void)fprintf(stderr, "cannot create udp service.\n");
+		exit(1);
+	}
+	if (!svc_register(transp, DATE_PROG, DATE_VERS, date_prog_1, IPPROTO_UDP)) {
+		(void)fprintf(stderr, "unable to register (DATE_PROG, DATE_VERS, udp).\n");
+		exit(1);
+	}
+
+	transp = svctcp_create(RPC_ANYSOCK, 0, 0);
+	if (transp == NULL) {
+		(void)fprintf(stderr, "cannot create tcp service.\n");
+		exit(1);
+	}
+	if (!svc_register(transp, DATE_PROG, DATE_VERS, date_prog_1, IPPROTO_TCP)) {
+		(void)fprintf(stderr, "unable to register (DATE_PROG, DATE_VERS, tcp).\n");
+		exit(1);
+	}
+	svc_run();
+	(void)fprintf(stderr, "svc_run returned\n");
+	exit(1);
+}
+
+static void
+date_prog_1(rqstp, transp)
+	struct svc_req *rqstp;
+	SVCXPRT *transp;
+{
+	union {
+		long str_date_1_arg;
+	} argument;
+	char *result;
+	bool_t (*xdr_argument)(), (*xdr_result)();
+	char *(*local)();
+
+	switch (rqstp->rq_proc) {
+	case NULLPROC:
+		(void)svc_sendreply(transp, xdr_void, (char *)NULL);
+		return;
+
+	case BIN_DATE:
+		xdr_argument = xdr_void;
+		xdr_result = xdr_long;
+		local = (char *(*)()) bin_date_1;
+		break;
+
+	case STR_DATE:
+		xdr_argument = xdr_long;
+		xdr_result = xdr_wrapstring;
+		local = (char *(*)()) str_date_1;
+		break;
+
+	default:
+		svcerr_noproc(transp);
+		return;
+	}
+	bzero((char *)&argument, sizeof(argument));
+	if (!svc_getargs(transp, xdr_argument, &argument)) {
+		svcerr_decode(transp);
+		return;
+	}
+	result = (*local)(&argument, rqstp);
+	if (result != NULL && !svc_sendreply(transp, xdr_result, result)) {
+		svcerr_systemerr(transp);
+	}
+	if (!svc_freeargs(transp, xdr_argument, &argument)) {
+		(void)fprintf(stderr, "unable to free arguments\n");
+		exit(1);
+	}
+}
+
+*****< rdate.c >***************************************************************
+#include "date.h"
+#include <stdio.h>
+#include <rpc/rpc.h>
+
+main(int argc, char *argv[]) {
+	CLIENT		*cl;			/* rpc handle */
+	char		*server;		
+	long		*lresult;		/* return value from bin_date_1 */
+	char		**sresult;		/* return value from str_date_1 */
+
+	if (argc != 2) {
+		fprintf(stderr,"usage: %s hostname\n",argv[0]);
+		exit(1);
+	}
+
+	server = argv[1];
+
+	/* create client */
+
+	if ( (cl = clnt_create(server, DATE_PROG, DATE_VERS, "udp")) == NULL ) {
+		/* couldn't establish connection */
+
+		clnt_pcreateerror(server);
+		exit(2);
+	}
+
+	if ( (lresult = bin_date_1(NULL,cl)) == NULL ) {
+		clnt_perror(cl, server);
+		exit(3);
+	}
+
+	printf("time on host %s = %ld\n",server,*lresult);
+
+	if ( (sresult = str_date_1(lresult,cl)) == NULL ) {
+		clnt_perror(cl, server);
+		exit(4);
+	}
+
+	printf("time on host %s = %s\n",server,*sresult);
+
+	clnt_destroy(cl);
+
+	exit(0);
+
+}
+
+*****< Output >****************************************************************
+Script started on Tue May  3 22:51:09 1994
+bourne# make
+/usr/bin/cc -o rdate date_clnt.c rdate.c -lrpc
+/usr/bin/cc -o date_svc date_proc.c date_svc.c -lrpc
+bourne# ./rdate joy.cs.ndsu.nodak.edu
+time on host joy.cs.ndsu.nodak.edu = 768027037
+time on host joy.cs.ndsu.nodak.edu = Tue May  3 23:50:23 1994
+
+bourne# exit
+Script done on Tue May  3 22:51:24 1994

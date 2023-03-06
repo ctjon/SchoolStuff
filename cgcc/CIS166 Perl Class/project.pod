@@ -1,0 +1,80 @@
+=head1 tracker
+
+=head1 SYNOPSIS
+
+Web-Based Time Tracking Program
+
+=head1 DESCRIPTION 
+
+This program will be a web based time tracking program.  A user will simply direct his or her web browser to a URL to use the program.  The user will be authenticated in order to gain access to the system.  Then the user will be allowed to enter a new record into the system, edit an existing record, or create a report for time records for themselves.
+
+This program will require a web front end and a SQL Database on the backend.  My plan is to use the PerlLWP and Perl DBI modules to build a CGI that can be loaded to do this work.  For the database, I plan to use MySQL although I suspect the program could be easily adapted to use Oracle or SQL Server 2000.  I will include the create table SQL and the sample start data in the documentation for the program.
+
+There will also need to be a manager role.  The manager role will have the ability to create a report for the whole group as well as each individual.  Further, the manager will have the ability to add and delete users from the system.
+
+This system will require 3 database tables to work correctly:
+	1) a user table:  this table will be a simple list of users of the system to be managed by the manager
+	participant varchar(32);	# names of people on the team - Primary Key
+	2) an event name table: this table will be a simple list of event names which represent things that may have occurred.  The field will be 
+	event_name varchar2(32);	# names of events that occur - Primary Key
+	3) a time records table:  this table will be a list of records which represent the detail data submitted by the users.  Each record will contain the following fields:  
+	event_name varchar2(32);	# Foreign Key which much exist in the event table
+	participant varchar(32);	# Foreign Key will will tie back to the user table
+	problem_space char(2);	# one of [MF, NW, DS] which mean, Mainframe, Network, or distributed systems
+	event_date date;	# date of event
+	duration number(2)	# duration in hours
+	event_type char2(2);	# type of event, TL=techline, TIR=tech incident review, OT=Other
+
+The following subroutines will be required:
+
+	validate_user(participant);
+	logoff_user(participant);
+	add_user(participant)*
+	change_user(participant)*
+	delete_user(participant)*
+	add_event(event_name)
+	change_event(event_name)
+	delete_event(event_name)
+	add_record(event_name, participant, problem_space, event_date, duration, event_type)
+	change_record (event_name, participant, problem_space, event_date, duration, event_type)
+	delete_record (event_name, participant, problem_space, event_date, duration, event_type)
+	show_record(record_id)
+	report_by_individual(participant, start_date, end_date)
+	report_by_team(start_date, end_date)
+	report_by_event(event_name, start_date, end_date)
+
+	subroutines denoted by (*) will only be allowed to be performed by the manager.
+
+The program will use the following logic to accomplish its work:
+
+	startup
+	validate_user(participant);
+	prompt user for what they would like to do:
+	if prompt = add_user then adduser(participant)
+	if prompt = change_user then change_user(participant)*
+	if prompt = delelte_user then delete_user(participant)*
+	if prompt = add_event then  add_event(event_name)
+	if prompt = change_event then change_event(event_name)
+	if prompt = delete_event then delete_event(event_name)
+	if prompt = add_record then add_record(event_name, participant, problem_space, event_date, duration, event_type)
+	if prompt = change_record then change_record (event_name, participant, problem_space, event_date, duration, event_type)
+	if prompt = delete_record then delete_record (event_name, participant, problem_space, event_date, duration, event_type)
+	if prompt = show_record then show_record(record_id)
+	if prompt = report_by_individual then report_by_individual(participant, start_date, end_date)
+	if prompt = report_by_team then report_by_team(start_date, end_date)
+	if prompt = report_by event then report_by_event(event_name, start_date, end_date)
+	if prompt = logoff then logoff_user(participant);
+	prompt again
+
+=head1 OPTIONS
+
+Optional upgrades may include the use of stylesheets, pull down menus, and active directory authentication
+
+=head1 FILES
+
+tracker.pl
+
+=head1 AUTHOR
+
+Chris Tjon
+

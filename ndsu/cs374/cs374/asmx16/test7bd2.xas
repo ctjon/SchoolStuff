@@ -1,0 +1,5 @@
+UNIT TEST 7
+;
+; Program tests Register indirect addressing.
+;
+PROGRAM  TEST7

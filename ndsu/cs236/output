@@ -1,0 +1,22 @@
+
+Unbounded Tape Results:
+Total Machines = 104976
+Total Halting = 52596
+Total Infinite = 52380
+Total Crashed = 0
+Max ones written 4
+
+CORRECT Bounded Tape Results:
+Total Machines = 104976
+Total Halting = 33000
+Total Infinite = 28887
+Total Crashed = 43089
+Max ones written 2
+
+
+INCORRECT Bounded Tape Results: (can occur if left tape edge not checked right)
+Total Machines = 104976
+Total Halting = 47004
+Total Infinite = 28887
+Total Crashed = 29085
+Max ones written 2

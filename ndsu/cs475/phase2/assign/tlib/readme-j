@@ -1,0 +1,16 @@
+CS475 - Operating System Design
+Assignment 2
+Job Stream 2
+
+
+This job stream you should run through your completed system.  It is a large
+stream of jobs which should test the limiting of the number of threads and/or
+files you allow in your system.  90 jobs are included.
+
+You may wish to either link this job stream (js2) as INPUT, or copy it into
+your project directory.  To link this, you can apply the following command,
+assuming you link it on the same file system:
+	ln ~roehrich/assign2/tlib/js2 INPUT
+If you link it to a different file system, you need to use symbolic links.
+This is done with the following command:
+	ln -s ~roehrich/assign2/tlib/js2 INPUT

@@ -1,0 +1,17 @@
+To repeat what I said in class regarding problem assignment 2:  You
+are to implement the 3 modules that you used in doing the first
+programming assignment.  You are to show that your code for the first
+assignment runs with your implementation. AND YOU ARE TO DEMONSTRATE
+THAT YOUR MODULES WORK--BY PROVIDING APPROPRIATE TEST ROUTINES (TOGETHER
+WITH DOCUMENTATION ON WHAT THEY ARE TESTING).  That is, you are to
+convince me that your implementation does what it is supposed to do,
+i.e., that it meets the specifications given in the definition module.
+I will also expect from this assignment and on in this class that
+you follow the style given in class for Abstract Data Types.  That
+is, your implementation module should have an abstraction mapping
+and a rep invariant provided for each abstraction you deal with.
+Remember you may not make any changes in the definition modules
+and in particular you may not recompile them.  This will demonstrate
+to you that you can make changes in the implementation without the
+need to recompile the rest of the program (as long as the specifications
+do not change).

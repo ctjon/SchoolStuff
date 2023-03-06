@@ -1,0 +1,43 @@
+UNIT TEST 9
+;
+; Program tests the directive
+; addressing mode.  Arithmetic
+; is also tested.
+;
+FUN     EQU     20H
+S       EQU     4
+;
+PROGRAM  TEST9
+STACK   DH    8     
+X1      DH    (52)    
+X2      DH    (38)    
+X3      DH    (23)
+Y       DH    (0)     
+;
+; First operand
+;
+START   MOVH    Y,R0        
+        MOVH    FUN,R0
+        MOVH    FUN-10H,R0 
+        MOVH    FUN-1,R0 
+        MOVH    FUN+10H,R0 
+        MOVH    FUN+16,R0 
+        MOVH    Y-S,R0 
+        MOVH    Y+S,R0 
+        MOVH    10H,R0 
+        MOVH    16,R0 
+;        
+; Second operand
+;
+        MOVH    R0,Y
+        MOVH    R0,FUN
+        MOVH    R0,FUN-10H
+        MOVH    R0,FUN-16
+        MOVH    R0,FUN+10H
+        MOVH    R0,FUN+16
+        MOVH    R0,Y-S
+        MOVH    R0,Y+S
+        MOVH    R0,10H
+        MOVH    R0,16
+ENDP 
+END 

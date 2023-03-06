@@ -1,0 +1,267 @@
+Carpol's Syndrome is real!  Carpol's Syndrome involves the wrists and
+fingers of a programmer (blue hands disease) in which the programmer experiences
+pain and numbness in the hand and fingers.  The condition is brought on by
+inflammation of the tendons in the palm and wrist due to constant pressure from
+placing wrists flat on a table while keyboarding.  It can be very severe.
+
+In fact, a graduate student at NDSU (also a faculty member at Mankato State)
+just completed surgery on one hand for this problem.  So it is real!
+
+
+Are LCD and Gas Plasma screens safer for eyes than CRTs?
+
+Human input/output bandwidth is the true bottleneck in computing today.
+Keyboards are slow.
+Even the soon-to-be-reality voice-recognition-speach-synthesis
+systems will fail to provide high bandwidth for communication between human
+and computer system.
+
+
+WHAT CAN BE DONE TO RAISE THE HUMAN-TO-COMPUTER BANDWIDTH???????
+
+What about skates (foot operated mouses)?
+   - they free up your hands for keyboard-only use.
+
+What about the Knee-track-pad?
+   - Sort of a mouse which attaches to the top of your knee and which you
+     roll along the underside of your desk).
+ 
+For really high bandwith and to be fully Cybernetic and "in touch" with
+your workstation, how about the following futuristic scenario:
+
+1.  two skates (or as many as you have feet) with 5 puddy-proof-toe-buttons
+    on each.
+
+2.  two knee-track-pads (customized with "buttons" for those with trick knees).
+      or (for those who prefer to stand - we aim to please!)
+    one rear-pad (can be rolled against the wall behind you like a mouse -
+    lower bandwidth than the dual ktp's (especially since only one
+    full-foot-skate and a lower bandwidth heel-on-the-floor-metatarsal-skate)
+    could be used in conjunction with it).
+
+3.  one keyboard (but a Keyboard in which each finger is inserted into
+    a tube which is sensitive at 4 (or more?) points, top, bottom, left-side,
+    right-side.  Each 5-tube unit (one for left hand and one for right hand)
+    can be lifted-lowered-moved_left-moved_right-moved_forward-moved_backward,
+    adding 25% to the input bandwidth.
+    This "arm movement dimension would be effected using rings
+    around the wrists so as not to cancel effective concurrent fingers use).
+
+4.  voice recognition device
+
+5.  speech generation capability
+
+6.  Head-pen (a light-pen or stylus hooked to your cap which interfaces through
+    light sensitivity or touch to the screen in front of you - blinking you
+    eye triggers a mouse-button (fine wire attached to your eyelid, attached
+    in a manner similar to false eyelashes).  Maybe even two buttons, one
+    hooked to your left eyelid and the other to your right eyelid)
+
+7.  Four torso-bump buttons (left shoulder to "push" left-button, right shoulder
+    for right-button, chest for forward-button and back for back-button).
+
+Try to imagine the worker productivity increase that could be realized by
+a well trained person with this Fully-Cybernetic Perrizo-Control-System (PerCS)
+User Interface.  You could whip out a programming assignment in a matter
+of seconds!  Training would be a problem!  But, I'd start with those talented
+one-person-band musicians who play the squeeze-box, harmonica and full set of
+drums all at the same time, jugglers, high-wire artists, Failed-S&L-execs (they
+juggle several sets of books pretty well, AND they're looking for work!)....
+
+Have I captured maximum input bandwidth here?  Keep in mind I am reserving the
+eyes as exclusively acknowledgment devices (user observes on screen
+acknowledgements of all other input channels, and, thereby monitors the whole
+process).
+
+I see this thing as follows:
+I am a manager.  I want high level information (knowledge, decision) from my
+system.  I hire two types of people:
+
+1.  Input professionals (the wriggling masses who sit before this PerCS device
+    an enter data, commands, ...
+
+2.  System developers (who use a PerCS also, but to develop the code to make
+    it an efficient KBMS, DSS).
+
+I am the output user.  Thus, output bandwidth is not so important.  I just want
+nice high-level yes/no type decision support answers.  As input I use which
+ever method I choose (probably voice recognition).
+
+                    ##
+                   /  \
+                  / .--/  
+              \  / '----`  <- - me
+               \ \ |  o \\
+    chaise - -> \ \ `._< /
+                 \ \ / \/
+                  \ `\  `._________/ 
+                   \  \./_________/
+                    \_______________
+                    /               \
+                   /                 \
+
+                         Y/N
+                          ^
+                          |
+        |                 |
+Standing|    _____    .___|____.
+Input-> |O--|PerCS|   |KBMS/DSS|
+Person  ||==|_____|-->|        |
+        |&    :       |        |
+        |LL .-'       |        |
+        |=='          |        |
+                      |        |
+sitting      _____    |        |
+Input->  O--|PerCS|   |        |
+Person  ||==|_____|-->|        |
+        |`---.    :   |        |
+        |--. LL .-'   |        |
+        |  | =='      |        |
+                      |        |
+sitting      _____    |        |
+System>  O--|PerCS|   |        |
+Devel   ||==|_____|-->|        |
+Person  |`---.    :   |        |
+        |--. LL .-'   |        |
+        |  | =='      |________|
+
+
+
+
+This would really produce "computerized leisure" as discussed
+in the text, chapter 5!!!!
+
+Is there a down side to this sort of system in terms of users?
+    - would it be user-friendly?  Is that important?
+
+
+Privacy, security and information flow:
+
+Information and data flow in several ways.
+
+Overt information flow = intentional information flow (from producer to
+consumer or info-customer).
+
+   - here we WANT info to be transferred and the game it to maximize information
+     flow (what most DBMSs, MISs, KBMSs, and DSSs are all about).
+
+The other side of the coin:
+
+Covert information flows or (cover channels) = unwanted information flows
+(unwanted by the legit producer-manager-users of the raw data, anyway
+
+    - example is a spy on military data.
+
+    - another example is industrial espionage - one company stealing secrets
+      from another)
+
+    - There is a whole industry growing up with the intent to "keep"
+      information from unauthorized users or customers.
+
+There is discretionary security and mandatory security.  In mandatory security
+all users have "security classifications" such as Unclassified, Confidential,
+Secret, Top Secret.  All data is classified, usually along the same lines
+(U, C, S, T).  It is the job of a MultiLevel Secure Database Management System
+to police this system in terms of security.
+
+A MLS-DBMS is usually built using the Bell-Lapadula model:
+
+1. You can read down
+
+2. You can write up
+
+This guarantees multilevel security.
+
+
+Covert Channels:
+
+Example:  File existence storage channel.
+
+Secret users wants to transmit Morse code message to Unclassified user
+without leaving a detectable trail (so he doesn't go to jail for it).
+
+S: waits for signal from U (U can write up)
+
+S: If bit to transmit is "1", create file F.
+   else delete F
+
+C: send signal
+
+C: sleep(1)
+
+C: open F
+
+C: If "Your not allowed to access!" hear "1"
+   else hear "0".
+
+
+In Chapters 4 and 5, there is considerable discussion of the negative
+impacts of computers on users and societies.  The points made and implied
+are very valid and I don't disagree with them, but I would offer a companion
+thought to keep in mind when considering them.  Do you agree or disagree with
+this position?
+
+Stress, pain, depression, ....  can be somewhat attitudinal.  Ones attitute
+can "control" these other factors to a substantial extent.  Most people
+can control the negative results of stress and can control depression through
+attitude.  There may be "clinical" cases, however.
+
+The following anecdote is offered to illustrate the point that most of us
+can "decide" not to be negative or depressed, if we choose to.
+
+
+A person checked into an expensive hotel in a large eastern city.  Our person
+was very tired and needed to rest up for an important meeting the next day.
+After a hot bath, our person went to bed and fell right to sleep, only to
+be awoken an hour later by a piano playing in the next room.  Our person was
+irate!  The manager was immediately consulted, but there were no other open
+rooms.  Our person ranted and raved at the management for about an hour and
+finally attempted to force the point by asking very sarcastically "Who is the
+person in the next room??  A more important customer than I am???"  The manager
+replied that it was the great Paterouski and he was practicing for his
+very important performance the next day.  They just couldn't disturb him.
+
+Our person immediately turned and went back to the room.
+
+Later a guest check out earlier than expected and the management
+immediately came to our persons's room with the good news that a move was now
+possible and that they would do it without delay.  Management knocked on
+the door ... there was no answer.  After several knocks, management used a
+pass key - intending to have our person moved upon returning.  When they openned
+the door, they found our person and several friends that had been called
+in rapt silence, listenning to the great Paterouski play.
+
+A change in attitude.
+
+
+A related point regarding confort levels:
+It seems to be taken for granted that increased confort and reduced labor
+are positives.  That may not always be the case.  We may not always improve
+productivity and happiness through technology advances.  A couple of cases
+are:
+
+1.  In a department on campus (will remain anonymous - not CS though), there
+has been a revolution in office technology.  Most of the members have taken
+to computers and other advanced office machines completely (wysiwyg work
+processors, ...), but one has not.  This one person still sits in front of
+an old IBM selectric typewriter to type complicated formulas by overwriting
+etc.  This person is by far the most prolific publisher of new ideas in the
+department!
+
+2.  On a recent vacation to the jungle area of the Yucatan penisula, I had
+the chance to ovserve the Mayan people living in their ancient thached roofed
+stick huts without floors or running water.  They appeared to be very happy.
+There appeared to be universal harmony in their society.  Even their dogs
+were different.  I never heard one of them bark and they never comfronted
+strangers in the territorial way that our dogs do.  The people work hard, get
+a lot done in a day, and are always happy.  I observed one girl who stood at
+the checkout of the one store for 14 hours a day and never lost her cheerful
+attitude.
+
+It seem the government has decided this must change.  They are building concrete
+appartments for these people.  The people are refusing to move in!  In fact,
+many are saving up their money to build replica huts far back in the jungle,
+just in case the government forces them to abandon their present ones.
+
+I was struck by the realization that technology advances may not always be
+positive.

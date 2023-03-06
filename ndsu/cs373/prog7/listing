@@ -1,0 +1,176 @@
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    1
+
+
+     1                     *                                                    
+     2                     * Chris Tjon                                         
+     3                     * CS373                                              
+     4                     * Program 7                                          
+     5                     *                                                    
+     6                     * THIS IS 68000 ASSEMBLY FOR RUNNING A STEPPER MOTOR 
+     7                     * OF THE ECB.  WRITTEN BY R. GAMMILL ON MAY 9, 1989. 
+     8                     * THIS IS AN EXAMPLE PROVIDED TO GIVE YOU THE INITIAL
+     9                     * DO NOT ELIMINATE OR CHANGE ANY OF THE CODE THAT SET
+    10                     * YOU MUST PUT THE CORRECT VALUES INTO THE TIRV AND P
+    11                                                                          
+    12                     * Begin Changed Area ********************************
+    13        00000200             ORG     $200                                 
+    14 000200 000010dc     TIVR    DC.L    TIRQ                                 
+    15        00000210             ORG     $210                                 
+    16 000210 0000114e     PIVR    DC.L    PIRQ                                 
+    17                     * End Changed Area **********************************
+    18        00000900             ORG     $900            ; ALL DATA FOR CONTRO
+    19 000900 000000fa     DELAY   DC.L    250             ; 2 MS. DELAY  (DELAY
+    20 000904 00001388     COUNT   DC.L    5000            ; NUMBER OF HALF STEP
+    21 000908 00000002     HYSTER  DC.L    2               ; HYSTERESIS VALUE   
+    22 00090c 01           TAB     DC.B   1,3,2,6,4,12,8,9 ; TABLE OF COIL VALUE
+    23                     *                               ; TURNS ON COIL 1, 1 
+    24                     * Begin Changed Area ********************************
+    25 000914 20           CURRENT DC.B	' = CURRENT COIL SUMMATION',$A,$D,$0    
+    26 000930 20           IDLECNT DC.B    ' = IDLE COUNT',$A,$D,$0             
+    27 000940 20           MOTOR   DC.B    ' = NUMBER OF MOTOR REVERSALS',$A,$D,
+    28 00095f 20           H1IGNOR DC.B    ' = NUMBER OF H1 INTERUPTS INGNORED',
+    29 000984 01           FLAG    DC.B    1                                    
+    30                     * End Changed Area **********************************
+    31        00001000             ORG     $1000                                
+    32 001000 4ff80930     START   LEA     IDLECNT,SP	; CODE MUST BEGIN AT $1000
+    33 001004 4bf900010000         LEA     $10000,A5       ; GET OFFSET FOR 6823
+    34 00100a 20380900             MOVE.L  DELAY,D0        ; PUT DELAY IN COUNTE
+    35 00100e 01cd0025             MOVEP.L D0,$25(A5)      ; NOTICE!!!  MOVEP IN
+    36 001012 1b7c00800023         MOVE.B  #TIVR/4,$23(A5) ; LOAD TIVR WITH INT 
+    37 001018 1b7c0084000b         MOVE.B  #PIVR/4,$B(A5)  ; LOAD PIVR WITH INT 
+    38 00101e 1b7c00000001         MOVE.B  #0,$1(A5)       ; LOAD PGCR WITH ZERO
+    39 001024 1b7c00180003         MOVE.B  #$18,$3(A5)     ; LOAD PSRR (READ ECB
+    40 00102a 1b7c00fb000d         MOVE.B  #$FB,$D(A5)     ; LOAD PACR          
+    41 001030 1b7c00300001         MOVE.B  #$30,$1(A5)     ; LOAD PGCR WITH ENAB
+    42 001036 1b7c00a10021         MOVE.B  #$A1,$21(A5)    ; SET TCR - START THE
+    43 00103c 46fc2100             MOVE    #$2100,SR       ; ALLOW INT LEVELS 2 
+    44                                                                          
+    45                     *       ; YOUR CODE GOES IN HERE (BE SURE TO SERVICE 
+    46                     * Begin Changed Area ********************************
+    47 001040 13fc00ff
+                  00010005         MOVE.B  #$FF,$10005                          
+    48 001048 247c0000090c         MOVE.L  #TAB,A2                              
+    49 00104e 4281                 CLR.L   D1              ;idle loop count     
+    50 001050 4282                 CLR.L   D2              ;ignored H1 interrupt
+    51 001052 4283                 CLR.L   D3              ;motor reversal count
+    52 001054 7801                 MOVE.L  #1,D4           ;motor direction regi
+    53 001056 2a380904             MOVE.L  COUNT,D5                             
+    54 00105a 2c380904             MOVE.L  COUNT,D6                             
+    55 00105e 7e00                 MOVE.L  #0,D7                                
+    56 001060 5281         TLOOP	ADDQ.L  #1,D1                                  
+    57 001062 4af80984             TAS.B   FLAG                                 
+    58 001066 66f8                 BNE     TLOOP                                
+    59                     * End Changed Area **********************************
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    2
+
+
+    60                                                                          
+    61 001068 1b7c00000011 DONE    MOVE.B  #0,$11(A5)      ; TURN OFF MOTOR COIL
+    62 00106e 46fc2700             MOVE    #$2700,SR       ; DISALLOW INTS      
+    63 001072 1b7c00000021         MOVE.B  #0,$21(A5)      ; DISABLE TIMER      
+    64                                                                          
+    65                     *       ; THREE CALLS TO PRINT GO HERE               
+    66                                                                          
+    67                     * Begin Changed Area ********************************
+    68                     * PRINT THE IDLE COUNT                               
+    69 001078 2f01                 MOVE.L  D1,-(SP)                             
+    70 00107a 48780930             PEA     IDLECNT                              
+    71 00107e 61000022             BSR     PRINT                                
+    72 001082 508f                 ADDQ.L  #8,SP                                
+    73                     * PRINT THE NUMBER OF MOTOR REVERSALS                
+    74 001084 2f02                 MOVE.L  D2,-(SP)                             
+    75 001086 48780940             PEA     MOTOR                                
+    76 00108a 61000016             BSR     PRINT                                
+    77 00108e 508f                 ADDQ.L  #8,SP                                
+    78                     * PRINT THE NUMBER OF H1 INTERUPTS IGNORED           
+    79 001090 2f03                 MOVE.L  D3,-(SP)                             
+    80 001092 4878095f             PEA     H1IGNOR                              
+    81 001096 6100000a             BSR     PRINT                                
+    82 00109a 508f                 ADDQ.L  #8,SP                                
+    83                     * End Changed Area **********************************
+    84                                                                          
+    85 00109c 1e3c00e4             MOVE.B  #228,D7                              
+    86 0010a0 4e4e                 TRAP    #14                                  
+    87                                                                          
+    88                     *                                                    
+    89                     * PRINT ROUTINE                                      
+    90                     *                                                    
+    91 0010a2 4e50ffb0     PRINT	LINK    A0,#-80                 ;define space f
+    92 0010a6 48e7ff7e             MOVEM.L D0-D7/A1-A6,-(SP)       ;save the cur
+    93 0010aa 2c48                 MOVE.L  A0,A6                   ;setup pointe
+    94 0010ac 9dfc00000050         SUBA.L  #80,A6                  ;get to start
+    95 0010b2 2028000c             MOVE.L  12(A0),D0               ;place value 
+    96 0010b6 1e3c00ec             MOVE.B  #236,D7                 ;setup TUTOR 
+    97 0010ba 4e4e                 TRAP    #14                     ;call HEX2DEC
+    98 0010bc 22680008             MOVE.L  8(A0),A1                ;place the ad
+    99 0010c0 1cd9         WHILE   MOVE.B  (A1)+,(A6)+     	;byte copy from (A1)
+   100 0010c2 66fc                 BNE     WHILE                                
+   101 0010c4 538e                 SUB.L   #1,A6           	;fix count made off 
+   102 0010c6 2a48                 MOVE.L  A0,A5           	;get stack frame poi
+   103 0010c8 9bfc00000050         SUBA.L  #80,A5          	;find the beginning 
+   104 0010ce 1e3c00f3     	MOVE.B  #243,D7         	;setup tutor to call PRINT 
+   105 0010d2 4e4e                 TRAP    #14             	;call PRINT         
+   106 0010d4 4cdf7eff             MOVEM.L (SP)+,D0-D7/A1-A6       ;restore save
+   107 0010d8 4e58                 UNLK    A0                      ;unlink A0   
+   108 0010da 4e75                 RTS                             ;return      
+   109                     *                                                    
+   110 0010dc 5385         TIRQ	SUB.L   #1,D5			;subtract the number to go      
+   111 0010de 6600000a             BNE     CONT			;if D5 > 0 the branch to CONT 
+   112 0010e2 42b80984             CLR.L   FLAG			;clear FLAG                   
+   113 0010e6 4ef81146             JMP     FINISH			;Jump to FINISH             
+   114 0010ea 0c040001     CONT	CMP.B   #1,D4                                   
+   115 0010ee 66000008             BNE     REVERS                               
+   116 0010f2 5287                 ADD.L   #1,D7                                
+   117 0010f4 4ef810fe             JMP     OVER                                 
+   118 0010f8 0687ffffffff REVERS	ADD.L   #-1,D7                                
+   119 0010fe 028700000007 OVER	AND.L   #7,D7                                   
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    3
+
+
+   120 001104 1b7270000011         MOVE.B  0(A2,D7),$11(A5)                     
+   121                     *                                                    
+   122 00110a 2f327000             MOVE.L  0(A2,D7),-(SP)                       
+   123 00110e 48780914             PEA     CURRENT                              
+   124 001112 618e                 BSR     PRINT                                
+   125 001114 508f                 ADDQ.L  #8,SP                                
+   126                     *                                                    
+   127 001116 1b7c00010011         MOVE.B  #1,$11(A5)                           
+   128 00111c 1b7c00030011         MOVE.B  #3,$11(A5)                           
+   129 001122 1b7c00020011         MOVE.B  #2,$11(A5)                           
+   130 001128 1b7c00060011         MOVE.B  #6,$11(A5)                           
+   131 00112e 1b7c00040011         MOVE.B  #4,$11(A5)                           
+   132 001134 1b7c000c0011         MOVE.B  #12,$11(A5)                          
+   133 00113a 1b7c00080011         MOVE.B  #8,$11(A5)                           
+   134 001140 1b7c00090011         MOVE.B  #9,$11(A5)                           
+   135 001146 1b7c00010035 FINISH	MOVE.B  #1,$35(A5)		;service the interrupt    
+   136 00114c 4e73                 RTE                                          
+   137                     *                                                    
+   138 00114e ba86         PIRQ	CMP.L   D6,D5                                   
+   139 001150 6f000008             BLE     PIRQL1                               
+   140 001154 5283                 ADD.L   #1,D3                                
+   141 001156 4ef81164             JMP     PIRQDUN                              
+   142 00115a 4604         PIRQL1	NOT.B   D4                                    
+   143 00115c 5282                 ADD.L   #1,D2                                
+   144 00115e 2c05                 MOVE.L  D5,D6                                
+   145 001160 9cb80908             SUB.L   HYSTER,D6                            
+   146 001164 1b7c0001001b PIRQDUN	MOVE.B  #1,$1B(A5)                           
+   147 00116a 4e73                 RTE                                          
+   148                     *                                                    
+   149                     	END                                                 
+
+ ****** TOTAL ERRORS    0--  149 -- TOTAL LINES  137
+
+
+ APPROX  2099 UNUSED SYMBOL TABLE ENTRIES
+
+ CONT     0010ea COUNT    000904 CURRENT  000914 DELAY    000900 DONE     001068
+ FINISH   001146 FLAG     000984 H1IGNOR  00095f HYSTER   000908 IDLECNT  000930
+ MOTOR    000940 OVER     0010fe PIRQ     00114e PIRQDUN  001164 PIRQL1   00115a
+ PIVR     000210 PRINT    0010a2 REVERS   0010f8 START    001000 TAB      00090c
+ TIRQ     0010dc TIVR     000200 TLOOP    001060 WHILE    0010c0

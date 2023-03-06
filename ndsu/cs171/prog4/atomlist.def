@@ -1,0 +1,93 @@
+DEFINITION MODULE ATOMLIST;
+
+(****************************************************************)
+(*                                                              *)
+(*     DEFINITION MODULE ATOM LIST                              *)
+(*                                                              *)
+(*     WRITTEN BY CHRISTOPHER C. TJON                           *)
+(*     NAID #: 110975-8                                         *)
+(*     DATE: 5 FEBRUARY 1990                                    *)
+(*                                                              *)
+(*     THIS MODULE CONTAINS A SERIES OF SPECIAL PROCEDURES      *)
+(*     FOR USE WITH THE ATOMIC LIST MODULE WHICH WAS PROVIDED.  *)
+(*                                                              *)
+(****************************************************************)
+
+
+TYPE GENERALLIST;    (* OPAQUE TYPES *)
+     GENERALLISTNODE;
+
+
+PROCEDURE GETLIST(N : GENERALLISTNODE) : GENERALLIST;
+(****************************************************************)
+(* REQUIRES : L HAS BEEN CREATED                                *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETURNS A LIST OF NODE N                          *)
+(****************************************************************)
+
+PROCEDURE CREATELIST(VAR L : GENERALLIST);
+(****************************************************************)
+(* REQUIRES : NOTHING                                           *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : CREATES THE LIST                                  *)
+(****************************************************************)
+
+PROCEDURE GETATOM(L : GENERALLISTNODE) : CHAR;
+(****************************************************************)
+(* REQUIRES : LISTS HAVE BEEN INITIALIZED                       *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETURNS THE ATOM FROM ATOMIC NODE N               *)
+(****************************************************************)
+
+PROCEDURE CREATEATOMNODE(A : CHAR) : GENERALLISTNODE;
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : CREATES A NEW ATOM NODE CONTAINING A              *)
+(****************************************************************)
+
+PROCEDURE CREATELISTNODE(L : GENERALLIST) : GENERALLISTNODE;
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETURNS THE LIST L AS A NODE                      *)
+(****************************************************************)
+
+PROCEDURE LIST(N : GENERALLISTNODE) : BOOLEAN;
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETUNS TRUE IF N IS A LIST NODE FALSE OTHERWISE   *)
+(****************************************************************)
+
+PROCEDURE LENGTH(L : GENERALLIST) : CARDINAL;
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETURNS THE LENGTH OF THE LIST                    *)
+(****************************************************************)
+
+
+PROCEDURE CAR(L : GENERALLIST) : GENERALLISTNODE;
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETURNS THE FIRST NODE OF THE LIST                *)
+(****************************************************************)
+
+PROCEDURE CDR(L : GENERALLIST) : GENERALLIST;
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : RETURNS THE LIST WITHOUT THE FIRST NODE           *)
+(****************************************************************)
+
+PROCEDURE CONS(N : GENERALLISTNODE; VAR L : GENERALLIST);
+(****************************************************************)
+(* REQUIRES : LIST HAS BEEN INITIALIZED                         *)
+(* MODIFIES : NOTHING                                           *)
+(* EFFECTS  : ADDS A NODE TO THE BEGINNING OF THE LIST L        *)
+(****************************************************************)
+
+
+END ATOMLIST.

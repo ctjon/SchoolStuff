@@ -1,0 +1,180 @@
+    Fall 1993                 EE/CS 373 - Program #5                  Gammill
+
+
+    Due: At class on Wednesday, October 27, 1993.
+
+           (LATE HOMEWORK ONLY IF YOU TURN IN A WRITTEN DELAY CONTRACT)
+
+    You are provided a fragment of code (attached) which is a supervisor mode
+    scheduler  for two user mode processes.  Since the scheduler also has its
+    own register contents, there are 3 processes.  You are to  complete  this
+    code  so  that  TRAP  #0  is  used  to call the scheduler from user mode,
+    resulting in the other process being scheduled.  Everything you  need  to
+    get  into process 1 in user mode has been provided, but a continuous loop
+    for process 1 must be provided, which does a TRAP #0 to return control to
+    the scheduler (which will pass control to process  2).   Process  2  will
+    need  identical  code.   This  is  synchronous  scheduling,  and  the two
+    processes act somewhat like co-routines.   You  should  notice  that  all
+    supervisor  mode  code  is  between  $1000 and $2000 in memory, process 1
+    (user mode) code is from $2000 to $3000, and process 2 code is from $3000
+    to $4000.  The ECB (and m68ks) do NOT have a memory management unit,  but
+    on  more advanced processors (having such a unit) each user process would
+    be STRICTLY restricted to its own memory space.  We  will  simulate  this
+    restriction  in  our  code.   Notice that the stack pointer (SP) for each
+    process points to the top of the memory space for that  process,  growing
+    downward.   This  is  also  what  is  done  on  a  computer with a memory
+    management unit.  Get your code running on m68ks, and  show  that  it  is
+    running  correctly  by  a  brief  annotated  trace  showing  the register
+    contents for each user mode process, and for the scheduler (in between).
+
+    For  the   second   part   of   the   assignment   you   must   write   a
+    PRINT(NUMBER,STRING)  subroutine  which  displays  a  NUMBER  in  decimal
+    followed by some text (STRING) on the  screen  of  a  terminal  which  is
+    logged  in on the ECB.  PRINT will use the TRAP #14 system calls provided
+    by the ECB TUTOR monitor to convert a binary value (NUMBER) to a  decimal
+    ASCII  string  and  then you will append the STRING (terminated by CR and
+    LF) and output all of this to the terminal (and also  to  your  LG  file)
+    using  another  TRAP  #14  call.  To learn more about TRAP #14 be sure to
+    check the "MC68000 Educational Computer Board User's Manual" which is  on
+    the shelf in room EE 218.
+
+    Your  PRINT  routine is to use the EE 373 calling conventions.  Its first
+    argument is to be a long (32 bit) integer which is to be displayed on the
+    screen in decimal and followed by the ASCII string which  is  its  second
+    argument.  The string is to be terminated by a null byte (contains 0) and
+    its  address (not the string itself) is passed as the argument.  PRINT is
+    to use two TUTOR services, HEX2DEC (236)  and  OUTPUT  (243)  to  do  its
+    work.   All  TUTOR services are accessed by putting a number (decimal) in
+    the low byte of D7 and executing TRAP #14.  However, TUTOR uses registers
+    to pass arguments (and modifies registers as well, so your PRINT  routine
+    MUST  preserve  all  registers  of  its  caller  by using MOVEM.  HEX2DEC
+    requires a buffer (80 bytes will be plenty) to put an ASCII string in for
+    OUTPUT to display on the screen.  Create a temporary buffer on the  stack
+    (using  your LINK instruction).  HEX2DEC expects its binary number in D0,
+    and A6 must point to the buffer where the resulting string is to be  put.
+    When  it  returns  A6  will point to the first byte BEYOND the end of the
+    string which has been place in your buffer.  Then copy  the  STRING  into
+    the  buffer  after the ASCII for the number, point A5 at the front of the
+
+
+                                      - 1 -
+    Fall 1993                 EE/CS 373 - Program #5                  Gammill
+
+
+    buffer, and call the TRAP #14 OUTPUT routine.  OUTPUT expects A5 to point
+    to the beginning of the string it will display, and A6 to  point  to  the
+    first  byte  BEYOND the end.  Note that this means that you must point A6
+    at the null byte of the string which is the second argument of PRINT, and
+    of course A5 points to its start.  This string  should  have  a  carriage
+    return  and  line  feed  before  the  null  byte,  and each string should
+    identify which user process is sending it.   The  number  printed  should
+    indicate the count of which call to PRINT this is by this user process.
+
+    The report on this problem consists of:
+      -  written  description  (problem description, solution to the problem)
+        for EACH part
+      - program listings for EACH part
+      - a run under m68ks for part 1 with log file
+      - a run of the part 2 program on an ECB.  Do this by  downloading  your
+        object file S-records to the ECB (see Info/download.ecb).  Be sure to
+        use  LG  to provide a hardcopy of your run showing the results output
+        by your PRINT subroutine.
+
+    * SCHEDULER TEST PROGRAM USING TRAP #0 SYS CALL!
+            ORG     $1000
+    STARTS  LEA     ENDS,SP         ; START OF SUPERVISOR MEMORY SPACE
+            MOVE.W  #$2700,SR       ; m68ks does NOT default to this!
+            CLR.B   D0              ; use the "SR C 2700" command. 
+    RUN     LEA     PROC1,A0        ; LOAD PTR TO USER PROCESS 1 IMAGE
+            BSR     GOUSER
+            LEA     PROC2,A0        ; LOAD PTR TO USER PROCESS 2 IMAGE
+            BSR     GOUSER
+            ADDQ.B  #1,D0
+            CMPI.B  #5,D0
+            BLT.S   RUN
+            MOVE.B  #228,D7         ; PUT RESTART OP-CODE FOR TUTOR IN D7
+            TRAP    #14             ; GO TO TUTOR (causes m68ks to halt)
+    *               THE FOLLOWING ARE THE SCHEDULER ROUTINES
+    *               GOSUPER - SAVES USER PROC IMAGE AND LOADS UP SCHED
+    GOSUPER MOVEM.L D0-D7/A0-A6,-(SP)  ; SAVE USER REGISTERS
+            MOVE    USP,A0             ; GET USER SP IN A0
+            MOVE.L A0,-(SP)            ; SAVE IT
+            MOVEA.L SCHSP,SP           ; PICK UP SCHEDULER SP
+            MOVEM.L (SP)+,D0-D7/A0-A6  ; GET SCHEDULER REGISTERS
+            RTS
+    *               GOUSER - SAVES SCHED PROC IMAGE AND LOADS USER PROC
+    GOUSER  MOVEM.L D0-D7/A0-A6,-(SP)
+            MOVE.L  SP,SCHSP
+            MOVE.L  A0,SP           ; A0 MUST POINT TO USER PROC IMAGE
+            MOVE.L  (SP)+,A0
+            MOVE.L  A0,USP
+            MOVEM.L (SP)+,D0-D7/A0-A6
+            RTE
+    SCHSP   DS.L    1
+
+
+
+
+
+
+                                      - 2 -
+    Fall 1993                 EE/CS 373 - Program #5                  Gammill
+
+
+    *         BEGIN SUPERVISOR STACK STORAGE AREA FOR PROCESS 1
+    STATUS  EQU     $0700           ; USER MODE - NO INTERRUPTS
+    STAK1   DS.L    $100            ; THIS AREA FOR INSURANCE
+    PROC1   DS.L    0
+    P1SP    DC.L    END1
+    P1D0    DC.L    $1DDD0000
+    P1D1    DC.L    $1DDD1111
+    P1D2    DC.L    $1DDD2222
+    P1D3    DC.L    $1DDD3333
+    P1D4    DC.L    $1DDD4444
+    P1D5    DC.L    $1DDD5555
+    P1D6    DC.L    $1DDD6666
+    P1D7    DC.L    $1DDD7777
+    P1A0    DC.L    $1AAA0000
+    P1A1    DC.L    $1AAA1111
+    P1A2    DC.L    $1AAA2222
+    P1A3    DC.L    $1AAA3333
+    P1A4    DC.L    $1AAA4444
+    P1A5    DC.L    $1AAA5555
+    P1A6    DC.L    $1AAA6666
+    P1SR    DC.W    STATUS
+    P1PC    DC.L    START1
+    * BEGIN SUPERVISOR STACK STORAGE AREA FOR PROCESS 2
+    STAK2   DS.L    $100
+    PROC2   DS.L    0
+    P2SP    DC.L    END2
+    P2D0    DC.L    $2DDD0000
+    P2D1    DC.L    $2DDD1111
+    P2D2    DC.L    $2DDD2222
+    P2D3    DC.L    $2DDD3333
+    P2D4    DC.L    $2DDD4444
+    P2D5    DC.L    $2DDD5555
+    P2D6    DC.L    $2DDD6666
+    P2D7    DC.L    $2DDD7777
+    P2A0    DC.L    $2AAA0000
+    P2A1    DC.L    $2AAA1111
+    P2A2    DC.L    $2AAA2222
+    P2A3    DC.L    $2AAA3333
+    P2A4    DC.L    $2AAA4444
+    P2A5    DC.L    $2AAA5555
+    P2A6    DC.L    $2AAA6666
+    P2SR    DC.W    STATUS
+    P2PC    DC.L    START2
+            ORG     $2000
+    ENDS    DS.L    0
+    * PROCESS 1 (USER SPACE) BEGINS AT $2000 AND ENDS AT $3000
+    START1  DS.L    0       ; CODE FOR USER PROC 1 GOES HERE
+            ORG     $3000
+    END1    DS.L    0
+    * PROCESS 2 (USER SPACE) BEGINS AT $3000 AND ENDS AT $4000
+    START2  DS.L    0       ; CODE FOR USER PROC 2 GOES HERE
+            ORG     $4000
+    END2    DS.L    0
+            END
+
+
+                                      - 3 -

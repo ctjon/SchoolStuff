@@ -1,0 +1,9 @@
+Your second assignment is to send mail to "boing" as shown in the .mailrc
+file entry below:
+
+alias	boing	answering-machine@cobber.cord.edu
+
+Please put this alias into your .mailrc file.  The
+mail you send can be empty, but you SHOULD have a reasonable subject line.
+Boing will return your mail, with some wisecracks by Glen Overby.  The 
+returned mail is to be sent to me by including it in a piece of mail.

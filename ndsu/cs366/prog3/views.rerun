@@ -1,0 +1,75 @@
+Ready; T=0.01/0.01 18:25:37                                                                                                         
+sqlinit dbname(sqldba)                                                                                                              
+ARI0717I Start SQLINIT EXEC: 12/14/92 18:25:53 CST.                                                                                 
+ARI0320I The default server name is SQLDBA.                                                                                         
+ARI0796I End SQLINIT EXEC: 12/14/92 18:25:55 CST                                                                                    
+Ready; T=0.16/0.21 18:25:58                                                                                                         
+isql                                                                                                                                
+ARI0659I Line-edit symbols reset:                                                                                                   
+         LINEND=OFF LINEDEL=OFF CHARDEL=OFF                                                                                         
+         ESCAPE=OFF TABCHAR=OFF                                                                                                     
+ARI0320I The default server name is SQLDBA.                                                                                         
+ARI7716I User TJON connected to server SQLDBA.                                                                                      
+ARI7399I The ISQL default profile values are in effect.                                                                             
+ARI7079I ISQL initialization complete.                                                                                              
+ARI7080A Please enter an ISQL command or an SQL statement.                                                                          
+select deptname,max(salary),min(salary) from q.org, q.staff -                                                                       
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where dept = deptnumb group by deptname having count(*)>=5                                                                          
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+FORMAT TTITLE 'QUERY6'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY6                                                                                                                              
+                                                                                                                                    
+CMS subset                                                                                                                          
+spool prt *                                                                                                                         
+Ready;                                                                                                                              
+return                                                                                                                              
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0036 SENT FROM TJON     PRT WAS 0036 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+CREATE VIEW ONE AS SELECT * FROM Q.ORG WHERE Q.ORG.DEPTNAME = 'PACIFIC'                                                             
+ARI7955I The system ended your query result to process your command.                                                                
+ARI0503E An SQL error has occurred.                                                                                                 
+         The name used in the CREATE statement                                                                                      
+         or the ACQUIRE DBSPACE statement already exists.                                                                           
+ARI0505I SQLCODE = -601 SQLSTATE = 52010 ROWCOUNT = 0                                                                               
+ARI0504I SQLERRP: ARIXI09 SQLERRD1: -130 SQLERRD2: 0                                                                                
+ARI7933I The ROLLBACK process is complete.                                                                                          
+create view first as select * from q.org where q.org.deptname = 'pacific'                                                           
+ARI0500I SQL processing was successful.                                                                                             
+ARI0505I SQLCODE = 0 SQLSTATE = 00000 ROWCOUNT = 0                                                                                  
+create view second as select * from q.project,first where q.project.dept = -                                                        
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+first.deptnumb                                                                                                                      
+ARI0500I SQL processing was successful.                                                                                             
+ARI0505I SQLCODE = 0 SQLSTATE = 00000 ROWCOUNT = 0                                                                                  
+select distinct q.products.prodgrp from q.products,second -                                                                         
+ARI7068I Your input is continued. Enter more input or press Enter.                                                                  
+where q.products.prodnum = second.prodnum                                                                                           
+ARI7960I The query cost estimate for this SELECT statement is 1.                                                                    
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0037 SENT FROM TJON     PRT WAS 0037 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+FORMAT TTITLE 'QUERY7'                                                                                                              
+ARI7525I Top title is                                                                                                               
+QUERY7                                                                                                                              
+                                                                                                                                    
+PRINT                                                                                                                               
+PRINT                                                                                                                               
+ARI7905I The PRINT function is in progress.                                                                                         
+RDR FILE 0038 SENT FROM TJON     PRT WAS 0038 RECS 0066 CPY  001 A NOHOLD NOKEEP                                                    
+ARI7924I The PRINT function is completed.                                                                                           
+EXIT                                                                                                                                
+ARI7955I The system ended your query result to process your command.                                                                
+ARI7601I ISQL ended normally on your request.                                                                                       
+ARI0660I Line-edit symbols restored:                                                                                                
+         LINEND=OFF LINEDEL=› CHARDEL=OFF                                                                                           
+         ESCAPE=" TABCHAR=ON                                                                                                        
+Ready; T=0.25/0.45 18:35:41                                                                                                         
+Ready; T=0.01/0.01 18:35:41                                                                                                         
+DMSPCL386E Missing operand(s)                                                                                                       
+Ready(00024); T=0.01/0.01 18:35:41                                                                                                  
+cons stop                                                                                                                           

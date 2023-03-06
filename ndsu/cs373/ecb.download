@@ -1,0 +1,72 @@
+
+                                  EE/CS 373                      Gammill
+
+
+                   Downloading to ECB from a PACX mainframe
+
+       The  Educational  Computer  Boards (ECB) in EEE 218 are very nice
+       68000 test systems in that they have  a  "transparent  mode"  (TM
+       command)  that  allows  the  user  to login on a remote mainframe
+       and do such things as keeping a log (using the LG command) or now
+       we want to describe how you can download S-records.
+
+         1.  First  make  sure  the terminal is set at 1200 bps.  You do
+            this using the MENU and SYSTEM/USER keys  to  get  a  system
+            menu.   It  shows you that f8 is "config keys", so hit that.
+            Next you see a menu that shows that f3 is "datacomm config",
+            so hit that.  Now you have a menu that shows  BPS.   Use  f2
+            "next  choice"  and  f3  "prev. choice" to get the speed you
+            need (1200) and then use f1 "save config"  to  install  that
+            speed.   If  the speed is correct to begin with, do nothing.
+            Also, make sure you are in CAPS mode  by  hitting  the  CAPS
+            key.
+
+         2.  Turn  on  the  "Terminal  to ECB" blue box (LDS125) and hit
+            return.  When you are asked for "class", give 4-31 or  4-32,
+            depending  upon  which  ECB  is  available  and running (see
+            labels on top of ECB cases).
+
+         3. When you receive the TUTOR 1.3> (or similar) prompt, you are
+            logged into the ECB.  Now issue a TM command.
+
+         4. Hit a RETURN and when class is requested, give the class  of
+            the  mainframe  you want to download from (e.g. HP-UX on the
+            9040 is 4-hp).  Then login on that machine as  you  normally
+            do.   It  is  now  possible  to  do  an assembly to generate
+            downloadable object code (in S-record format),  but  usually
+            you should not tie up an ECB while doing that!
+
+         5.  Exit  "transparency  mode" by holding down the CTRL key and
+            hitting A  on  your  terminal  keyboard  to  send  a  CTRL-A
+            character  to  the  ECB.  One slight difficulty is that this
+            CTRL-A is ALSO sent  to  the  mainframe,  so  to  keep  from
+            fouling  up what follows, type "* <RETURN>" (i.e.  asterisk,
+            space, carriage-return to the ECB) which sends an empty line
+            to the mainframe, flushing out  the  CTRL-A.   Now  you  are
+            ready to download.
+
+         6.  Type  "LO;X=cat  object" to the ECB (if you are downloading
+            from HP-UX).  The quotation  marks  are  NOT  to  be  typed.
+            Watch  the  S-records  being listed on your terminal screen!
+            When the download (which was caused  by  the  command  given
+            after  X=) is done, your object file should now be loaded on
+            the ECB.  Use an MD command to check that it worked.
+
+         7. Be SURE to go back into TM mode and logout on the  mainframe
+            before  getting  off  the  ECB.   If  you forget to do this,
+            someone else may login on the ECB and use TM and trash  your
+            files,  so you should probably do it before you forget!  You
+            get back to the ECB again with CTRL-A.
+
+            Now  you  are ready to run your program on the ECB.  Be sure
+            to remember to enter break points so you do not lose control
+            of the ECB, since it will not trap out on a BRA * loop  like
+            M68KS.
+
+         8. Be sure to turn off the "Terminal to ECB" blue box to logout
+            of  the  ECB  when  you  are  all done.  Also, turn off your
+            terminal, preferrably leaving it in 1200 BPS mode (no action
+            necessary).  Also, be sure to leave the ECB running properly
+            so off-campus users can get at it.
+
+

@@ -1,0 +1,90 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100
+@PASSWD 110975                                    
+@RPG,IS SOURCE,REL 
+01010H**************************************************************************
+01020H*                                                                        *
+01030H*  PROGRAMMING ASSIGNMENT 5                                              *
+01040H*  WRITTEN BY CHRISTOPHER C. TJON                                        *
+01050H*  FOR CS170                                                             *
+01060H*  ID# 110975-8                                                          *
+01070H*  12 APR 1990                                                           *
+01080H*                                                                        *
+01090H**************************************************************************
+01100H* THE PURPOSE OF THIS PROGRAM IS TO HELP A TEACHER KEEP TRACK OF         *
+01110H* APTITUDE TEST SCORES.  A REPORT WILL BE PRODUCED FOR ALL STUDENTS      *
+01120H* ATTAINING A 90% OR BETTER.  THERE WILL BE ONE STUDENT PER PAGE.  IN    *
+01130H* ADDITION A SUMMARY REPORT WILL BE PRODUCED FOR THE TEACHER.  THIS      *
+01140H* SUMMARY WILL SHOW THE PERCENTAGE OF THAT TEACHER'S STUDENTS WHICH      *
+01150H* SCORED 90% OR BETTER ON THE APTITUDE TEST.                             *
+01160H**************************************************************************
+02010FCARDSIN IP  F      80            READ005SYSIPT
+02020FREPORT  O   F     132            PRINTERSYSLST
+03010ICARDSIN AA  01                                       
+03020I                                        1  25 TEACHRL2
+03030I                                       26  50 STUDNTL1  
+03040I                                       51  70 TEST
+03050I                                       71  720GRADE
+04010C   01      GRADE     COMP 90                   21  21
+04020C   21      ACOUNT    ADD  1         ACOUNT  20
+04030CL1         TCOUNT    ADD  1         TCOUNT  20
+04040CL2         TOTSTU    ADD  TCOUNT    TOTSTU  20
+04050CL2         ACOUNT    DIV  TOTSTU    ABOVE   22H
+04060CL2         ABOVE     MULT 100       OVER90  20
+04070CL2         TCOUNT    MULT 0         TCOUNT 
+04080CL1                   SETOF                     OF
+04090CL2                   SETOF                     OF
+05010OREPORT  H  301   21 L1 
+05020O       OR        OF  
+05030O                         UDATE Y    8     
+05040O                                   24 'APTITUDE TEST'
+05050O                                   32 ' RESULTS'  
+05060O                                   39 'PAGE'    
+05070O                         PAGE  Z   44 
+05080O        TF 2     L1 21
+05090O                                    7 'TEACHER'
+05100O                         TEACHR    40
+05110O        TF 2     L1 21
+05120O                                    7 'STUDENT'
+05130O                         STUDNT    40
+05140O        TF 2     L1 21   
+05150O                                    4 'TEST'
+05160O                         TEST      35
+05170O        TF 2     L1 21
+05180O                                    5 'GRADE'
+05190O                         GRADE     17 
+05200O        TF 301   L2 
+05210O       OR        OF  
+05220O                         UDATE Y    8     
+05230O                                   24 'APTITUDE TEST'
+05240O                                   32 ' RESULTS'  
+05250O                                   39 'PAGE'    
+05260O                         PAGE  Z   44 
+05270O        TF 2     L2  
+05280O                                    7 'TEACHER'
+05290O                         TEACHR    40
+05300O        TF 2     L2   
+05310O                                   14 'NO OF STUDENTS'
+05320O                         TOTSTU1B  22
+05330O        TF 2     L2
+05340O                                   17 'STUDENTS ABOVE 90'
+05350O                         ACOUNT1B  22
+05360O        TF 2     L2 
+05370O                                   19 'PERCENTAGE ABOVE 90'
+05380O                         OVER90 B  22
+05390O                                   23 '%'     
+@XQT
+COLLINS                  JAMES HARNLEY            MATHEMATICS         90
+COLLINS                  JULIE EICHOWER           MATHEMATICS         89
+COLLINS                  GEORGE VESSEL            MATHEMATICS         98
+COLLINS                  HANK BARON               MATHEMATICS         63
+COLLINS                  NEIL STRONG              MATHEMATICS         86
+COLLINS                  THOMAS NEIL              MATHEMATICS         81
+COLLINS                  FRANK BRYAN              MATHEMATICS         99
+SAMMYSON                 CLYDE DOLLAR             ECONOMICS           58
+SAMMYSON                 HAROLD HALFER            ECONOMICS           92
+SAMMYSON                 QUENTIN BUCKLEY          ECONOMICS           90
+SAMMYSON                 GERALD DODGE             ECONOMICS           27
+SAMMYSON                 HENRY MESSENGAR          ECONOMICS           93
+@FIN
+        
+

@@ -1,0 +1,15 @@
+[PROJECT]
+Name=Fsearch
+Location=C:\MIKES FILES\BOOKJ11\C19FILES.JAV
+Applet=0
+Unitcount=1
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Fsearch.java=1
+
+[Visualforms]
+Fsearch.java=1

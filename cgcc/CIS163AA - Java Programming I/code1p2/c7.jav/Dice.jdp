@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Dice
+Location=C:\MIKES FILES\BOOKJ11\C7.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Dice.java=1
+Dice.html=1
+
+[Visualforms]
+Dice.java=1
+Dice.html=0

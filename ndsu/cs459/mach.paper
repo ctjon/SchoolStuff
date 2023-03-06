@@ -1,0 +1,26 @@
+								Chris Tjon
+								Jason Kroh
+								CS459
+								4 May 1994
+
+
+
+
+		Port of Mach 3.0 MK83 Kernel to FreeBSD
+
+
+
+Goal Of Project:
+	a)Obtain a complete source tree for CMU's MK83 Mach 3.0 kernel
+	  which has already been ported to NetBSD 0.9.  
+	b)Port this code to compile on a FreeBSD 1.0e system
+	c)Boot the Mach 3.0 Kernel on a FreeBSD 1.0e system
+
+Project Organization:
+	The Project was organized in a typical hacker manner.  We more or less
+	attacked from the start by running a make as far as it would go, fixing
+	the problem, and trying again until a successful compile is achieved.
+	There was no tasking of specific tasks to any member of the group.
+
+Problem Statement:
+

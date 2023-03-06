@@ -1,0 +1,29 @@
+Your third assignment is to translate the simple formatter, specified in
+chapter 13 and implemented in CLU in an appendix, into an appropriate
+non-CLU language of your choice and implement it.  Appropriate languages
+include Modula-2, C, Pascal, Ada, and others.  (Check with me if you
+are uncertain whether your proposed language is OK.)  I suggest that
+you spend several days early in the project just reading and absorbing
+the specifications, and making sense out of the CLU implementation.
+You are pretty much on your own on this one.  (This includes the job of
+designing and using appropriate test suites.)  I will act as a reasonably
+intelligent consultant but one who does not know about the project in
+advance and one that does not know CLU.  So, comments like "I just don't
+know where to start" or "I really didn't make much sense out of CLU" will
+be met with sympathy but little more.  Also if you choose a language
+with which I am not familiar, you can not expect me to provide expert
+advice or debugging help.  Make your choices carefully and early
+enough to recover from problems!
+
+You are at a stage in your education where this project should be within
+reach (even though it may be a challenge and stretch you a bit).  You
+will find that this experience stands you in good stead when you are in
+your real job after graduation.  You may well be expected to do somthing
+similar there!  Good luck!  Enjoy!
+
+You are to turn in a copy of your source, evidence that it compiles
+and runs, and validation materials to increase my confidence that
+it works properly. (You design the validation suite(s)!)
+
+Note:  This will take a major programming effort on your part!
+Don't put off starting on it!

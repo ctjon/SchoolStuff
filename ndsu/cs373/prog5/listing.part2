@@ -1,0 +1,171 @@
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    1
+
+
+     1                     *                                                    
+     2                     * Chris Tjon                                         
+     3                     * CS373                                              
+     4                     * Program 5 - Part 2                                 
+     5                     *                                                    
+     6                     * SCHEDULER TEST PROGRAM USING TRAP #0 SYS CALL!     
+     7        00000080     	ORG	$0080		;*                                       
+     8 000080 00001028     	DC.L	GOSUPER		;*define the address of the GOSUPER pr
+     9        00001000             ORG     $1000                                
+    10 001000 4ff82000     STARTS  LEA     ENDS,SP         ; START OF SUPERVISOR
+    11 001004 46fc2700             MOVE.W  #$2700,SR       ; m68ks does NOT defa
+    12 001008 4200                 CLR.B   D0              ; use the "SR C 2700"
+    13 00100a 41f81452     RUN     LEA     PROC1,A0        ; LOAD PTR TO USER PR
+    14 00100e 6100002a             BSR     GOUSER                               
+    15 001012 41f81898             LEA     PROC2,A0        ; LOAD PTR TO USER PR
+    16 001016 61000022             BSR     GOUSER                               
+    17 00101a 5200                 ADDQ.B  #1,D0                                
+    18 00101c 0c000005             CMPI.B  #5,D0                                
+    19 001020 6de8                 BLT.S   RUN                                  
+    20 001022 1e3c00e4             MOVE.B  #228,D7         ; PUT RESTART OP-CODE
+    21 001026 4e4e         	TRAP    #14             ; GO TO TUTOR (causes m68ks 
+    22                     *               THE FOLLOWING ARE THE SCHEDULER ROUTI
+    23                     *               GOSUPER - SAVES USER PROC IMAGE AND L
+    24 001028 48e7fffe     GOSUPER MOVEM.L D0-D7/A0-A6,-(SP)  ; SAVE USER REGIST
+    25 00102c 4e68                 MOVE    USP,A0             ; GET USER SP IN A
+    26 00102e 2f08                 MOVE.L A0,-(SP)            ; SAVE IT         
+    27 001030 2e78104e             MOVEA.L SCHSP,SP           ; PICK UP SCHEDULE
+    28 001034 4cdf7fff             MOVEM.L (SP)+,D0-D7/A0-A6  ; GET SCHEDULER RE
+    29 001038 4e75                 RTS                                          
+    30                     *               GOUSER - SAVES SCHED PROC IMAGE AND L
+    31 00103a 48e7fffe     GOUSER  MOVEM.L D0-D7/A0-A6,-(SP)                    
+    32 00103e 21cf104e             MOVE.L  SP,SCHSP                             
+    33 001042 2e48                 MOVE.L  A0,SP           ; A0 MUST POINT TO US
+    34 001044 205f                 MOVE.L  (SP)+,A0                             
+    35 001046 4e60                 MOVE.L  A0,USP                               
+    36 001048 4cdf7fff             MOVEM.L (SP)+,D0-D7/A0-A6                    
+    37 00104c 4e73                 RTE                                          
+    38 00104e 0004         SCHSP   DS.L    1                                    
+    39                     *         BEGIN SUPERVISOR STACK STORAGE AREA FOR PRO
+    40        00000700     STATUS  EQU     $0700           ; USER MODE - NO INTE
+    41 001052 0400         STAK1   DS.L    $100            ; THIS AREA FOR INSUR
+    42 001452 0000         PROC1   DS.L    0                                    
+    43 001452 00003000     P1SP    DC.L    END1                                 
+    44 001456 1ddd0000     P1D0    DC.L    $1DDD0000                            
+    45 00145a 1ddd1111     P1D1    DC.L    $1DDD1111                            
+    46 00145e 1ddd2222     P1D2    DC.L    $1DDD2222                            
+    47 001462 1ddd3333     P1D3    DC.L    $1DDD3333                            
+    48 001466 1ddd4444     P1D4    DC.L    $1DDD4444                            
+    49 00146a 1ddd5555     P1D5    DC.L    $1DDD5555                            
+    50 00146e 1ddd6666     P1D6    DC.L    $1DDD6666                            
+    51 001472 1ddd7777     P1D7    DC.L    $1DDD7777                            
+    52 001476 1aaa0000     P1A0    DC.L    $1AAA0000                            
+    53 00147a 1aaa1111     P1A1    DC.L    $1AAA1111                            
+    54 00147e 1aaa2222     P1A2    DC.L    $1AAA2222                            
+    55 001482 1aaa3333     P1A3    DC.L    $1AAA3333                            
+    56 001486 1aaa4444     P1A4    DC.L    $1AAA4444                            
+    57 00148a 1aaa5555     P1A5    DC.L    $1AAA5555                            
+    58 00148e 1aaa6666     P1A6    DC.L    $1AAA6666                            
+    59 001492 0700         P1SR    DC.W    STATUS                               
+    60 001494 00002016     P1PC    DC.L    START1                               
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    2
+
+
+    61                     * BEGIN SUPERVISOR STACK STORAGE AREA FOR PROCESS 2  
+    62 001498 0400         STAK2   DS.L    $100                                 
+    63 001898 0000         PROC2   DS.L    0                                    
+    64 001898 00004000     P2SP    DC.L    END2                                 
+    65 00189c 2ddd0000     P2D0    DC.L    $2DDD0000                            
+    66 0018a0 2ddd1111     P2D1    DC.L    $2DDD1111                            
+    67 0018a4 2ddd2222     P2D2    DC.L    $2DDD2222                            
+    68 0018a8 2ddd3333     P2D3    DC.L    $2DDD3333                            
+    69 0018ac 2ddd4444     P2D4    DC.L    $2DDD4444                            
+    70 0018b0 2ddd5555     P2D5    DC.L    $2DDD5555                            
+    71 0018b4 2ddd6666     P2D6    DC.L    $2DDD6666                            
+    72 0018b8 2ddd7777     P2D7    DC.L    $2DDD7777                            
+    73 0018bc 2aaa0000     P2A0    DC.L    $2AAA0000                            
+    74 0018c0 2aaa1111     P2A1    DC.L    $2AAA1111                            
+    75 0018c4 2aaa2222     P2A2    DC.L    $2AAA2222                            
+    76 0018c8 2aaa3333     P2A3    DC.L    $2AAA3333                            
+    77 0018cc 2aaa4444     P2A4    DC.L    $2AAA4444                            
+    78 0018d0 2aaa5555     P2A5    DC.L    $2AAA5555                            
+    79 0018d4 2aaa6666     P2A6    DC.L    $2AAA6666                            
+    80 0018d8 0700         P2SR    DC.W    STATUS                               
+    81 0018da 00003016     P2PC    DC.L    START2                               
+    82        00002000             ORG     $2000                                
+    83 002000 0000         ENDS    DS.L    0                                    
+    84                     *                                                    
+    85                     * PROCESS 1 (USER SPACE) BEGINS AT $2000 AND ENDS AT 
+    86                     *                                                    
+    87 002000 20           STRING1	DC.B	' Calls to process 1',$D,$A,$0	;*define 
+    88 002016 0000         START1  DS.L    0       ; CODE FOR USER PROC 1 GOES H
+    89 002016 4281         	CLR.L	D1	;*clear register D1                        
+    90 002018 5281         LOOP1	ADDQ.L	#1,D1	;*increment D1                    
+    91 00201a 2f01         	MOVE.L	D1,-(SP)	;*push contents of D1 onto the stack
+    92 00201c 48782000     	PEA	STRING1	;*push the effective address of STRING1 
+    93 002020 61001fde     	BSR	PRINT	;*call the print subroutine               
+    94 002024 508f         	ADDQ.L	#8,SP	;*fix the stack                        
+    95 002026 4e40         	TRAP	#0	;*return control to the scheduler           
+    96 002028 60ee         	BRA	LOOP1	;*branch to LOOP1                         
+    97        00003000             ORG     $3000                                
+    98 003000 0000         END1    DS.L    0                                    
+    99                     *                                                    
+   100                     * PROCESS 2 (USER SPACE) BEGINS AT $3000 AND ENDS AT 
+   101                     *                                                    
+   102 003000 20           STRING2	DC.B	' Calls to process 2',$D,$A,$0	;*define 
+   103 003016 0000         START2  DS.L    0       ; CODE FOR USER PROC 2 GOES H
+   104 003016 4281         	CLR.L	D1	;*clear register D1                        
+   105 003018 5281         LOOP2	ADDQ.L	#1,D1	;*increment D1                    
+   106 00301a 2f01         	MOVE.L	D1,-(SP)	;*push contents of D1 onto the stack
+   107 00301c 48783000     	PEA	STRING2	;*push the effective address of STRING2 
+   108 003020 61000fde     	BSR	PRINT	;*call the print subroutine               
+   109 003024 508f         	ADDQ.L	#8,SP	;*fix the stack                        
+   110 003026 4e40         	TRAP	#0	;*return control to the scheduler           
+   111 003028 60ee         	BRA	LOOP2	;*branch to LOOP2                         
+   112        00004000             ORG     $4000                                
+   113 004000 0000         END2    DS.L    0                                    
+   114                     *                                                    
+   115                     * Print routine                                      
+   116                     *                                                    
+   117 004000 0000         PRINT	DS.L	0	;*                                      
+   118 004000 4e50ffb0     	LINK	A0,#-80	;*define space for the string          
+   119 004004 48e7ff7e     	MOVEM.L	D0-D7/A1-A6,-(SP)	;*save current registers s
+   120 004008 2c48         	MOVE.L	A0,A6	;*setup the pointer for the return valu
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    3
+
+
+   121 00400a 9dfc00000050 	SUBA.L	#80,A6	;*get to start of the space reserved f
+   122 004010 2028000c     	MOVE.L	12(A0),D0	;*place value to convert in D0     
+   123 004014 1e3c00ec     	MOVE.B	#236,D7	;*setup value for tutor to call HEX2D
+   124 004018 4e4e         	TRAP #14	;*call HEX2DEC                             
+   125 00401a 22680008     	MOVE.L	8(A0),A1	;*store the address of the string in
+   126 00401e 1cd9         PLOOP	MOVE.B	(A1)+,(A6)+	;*copy 1 byte pointed to by 
+   127 004020 0c110000     	CMP.B	#0,(A1)	;*check for                           
+   128 004024 66f8         	BNE	PLOOP	;*branch to PLOOP until done              
+   129 004026 538e         	SUB.L	#1,A6	;*fix the A6 register since it is off by
+   130 004028 2a48         	MOVE.L	A0,A5	;*get stack frame pointer              
+   131 00402a 9bfc00000050 	SUBA.L	#80,A5	;*find the beginning of the string    
+   132 004030 1e3c00f3     	MOVE.B	#243,D7	;*setup value for tutor to call PRINT
+   133 004034 4e4e         	TRAP	#14	;*call print routine                       
+   134 004036 4cdf7eff     	MOVEM.L	(SP)+,D0-D7/A1-A6	;restore previous register
+   135 00403a 4e58         	UNLK	A0	;*unlink the A0 register                    
+   136 00403c 4e75         	RTS		;*return                                       
+   137                     *                                                    
+   138                     	END                                                 
+
+ ****** TOTAL ERRORS    0--  138 -- TOTAL LINES  132
+
+
+ APPROX  2074 UNUSED SYMBOL TABLE ENTRIES
+
+ END1     003000 END2     004000 ENDS     002000 GOSUPER  001028 GOUSER   00103a
+ LOOP1    002018 LOOP2    003018 P1A0     001476 P1A1     00147a P1A2     00147e
+ P1A3     001482 P1A4     001486 P1A5     00148a P1A6     00148e P1D0     001456
+ P1D1     00145a P1D2     00145e P1D3     001462 P1D4     001466 P1D5     00146a
+ P1D6     00146e P1D7     001472 P1PC     001494 P1SP     001452 P1SR     001492
+ P2A0     0018bc P2A1     0018c0 P2A2     0018c4 P2A3     0018c8 P2A4     0018cc
+ P2A5     0018d0 P2A6     0018d4 P2D0     00189c P2D1     0018a0 P2D2     0018a4
+ P2D3     0018a8 P2D4     0018ac P2D5     0018b0 P2D6     0018b4 P2D7     0018b8
+ P2PC     0018da P2SP     001898 P2SR     0018d8 PLOOP    00401e PRINT    004000
+ PROC1    001452 PROC2    001898 RUN      00100a SCHSP    00104e STAK1    001052
+ STAK2    001498 START1   002016 START2   003016 STARTS   001000 STATUS   000700
+ STRING1  002000 STRING2  003000

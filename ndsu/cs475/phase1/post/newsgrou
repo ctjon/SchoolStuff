@@ -1,0 +1,536 @@
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Mon Feb  1 12:04:01 CST 1993
+Article: 216 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: cs475 startup info
+Sender: usenet@ns1.nodak.edu (News login)
+Message-ID: <C1HHK8.D6z@ns1.nodak.edu>
+Date: Tue, 26 Jan 1993 23:07:20 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 98
+Status: RO
+
+[Now that the news server is back online . . .]
+
+Welcome to the class, people.  I am the grader, the stewardess will be by
+shortly to hand out peanuts, fasten your seatbelts . . . we're about to
+begin our journey.
+
+This newsgroup is for the discussion of the operating system project for
+NDSU CS 475.  This is where you will find pointers to important
+project-related information, ask questions, gripe, sing H^2 J^2, and munch
+peanuts.
+
+Feel free to ask questions about LWP, C, Unix, or new developments in peanut
+research.  I want to encourage other members of the class to attempt to
+answer questions which are posted here.
+
+Please use this newsgroup, do not send mail to me.  More importantly, please
+do not use write(1) or talk(1) since they do not offer a convenient means of
+recording the discussion (I will not respond to write or talk requests).
+
+
+
+Preparation for the project:
+---------------------------
+
+First, you may want to use some of the utilities in /contrib, if so add
+"/contrib/man" to your MANPATH variable.  The "/contrib/bin" directory
+contains such goodies as the GNU C compiler and the GNU debugger, but no
+peanuts.
+
+Due to Dr. Gammill's efforts in cs474 I will assume you all know how to use
+an editor and the C compiler.  That done, I recommend you use Standard C
+(loosely, "ANSI C").  You can use the GNU C compiler for this since the 'cc'
+on plains doesn't understand Standard C.  Please use function prototypes;
+they offer a simple way to trim hours off your debugging time.  The K&R
+second edition describes Standard C, and I recommend you have a copy of it
+handy for this project.
+
+	You can find information about the C compilers with the
+	following commands:
+		/contrib/bin/info gcc
+			or
+		man cc
+			or
+		man gcc
+
+Your project *must* build with a makefile.  An example makefile can be found
+in ~roehrich/cs475/doc, others can be found in /usr/gnu/src and
+/src/local/bin.
+
+The BSD Make manual can be viewed with:
+		zcat /keeper/doc/BSD_manuals/ps1/make.Z | less
+
+You may find it useful to learn how to use a debugger.  Check out dbx(1) or
+gdb(1).  Information for these can be viewed with:
+		/contrib/bin/info gdb
+			or
+		man gdb
+			or
+		man dbx
+
+
+Finally, you will want to learn the LWP functions.  Some introductory
+material is in ~roehrich/cs475/doc.  Manual pages for the LWP functions can
+be found with:
+		man 3l intro
+			or
+		man -k lwp
+
+Example LWP code can be found in ~roehrich/cs475/lwp-examples.
+
+
+
+
+Project Description
+--------------------
+
+In ~roehrich/cs475/doc you will find the following files:
+	big_picture
+	design.txt
+	policy.txt
+
+Big_picture describes the general structure of the project and will give you
+an idea of how things will fit together.
+
+Design.txt describes the format of the design documents you must write.
+
+Policy.txt outlines some of the expectations of what you should deliver.
+
+
+
+Group Members
+--------------
+
+Once you have organized yourselves into groups, please let me know who the
+members of these groups are.
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Mon Feb  1 12:04:50 CST 1993
+Article: 218 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: LWP function defs
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C1s7D4.CGn@ns1.nodak.edu>
+Date: Mon, 1 Feb 1993 18:00:40 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 16
+Status: RO
+
+I received mail from one group indicating they were having problems finding
+procedure definitions for the LWP functions.  The man page you get with 
+	man 3l intro
+
+will list all the functions.  Consider this to be a menu.  To get specifics
+on any function listed, like maybe lwp_suspend(), try:
+	man lwp_suspend
+
+
+Some example lwp code can be found in ~roehrich/cs475/lwp-examples.  In
+particular, simple.c and scheduler.c should contain enough information in
+them to get you to "think lwp".
+
+And, of course, please read ~roehrich/cs475/doc/thread-intro.txt.
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Mon Feb  1 14:21:38 CST 1993
+Article: 219 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Atomic printf
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C1sD8J.96G@ns1.nodak.edu>
+Date: Mon, 1 Feb 1993 20:07:31 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 11
+Status: RO
+
+Your OS will require an atomic printf to avoid having the output of multiple
+threads mixed on the same line.  The test thread groups I supply to you will
+need to use this atomic printf, so the interface has to be "standardized".
+
+In ~roehrich/cs475/assign1/atomic_printf you will find source for a function
+which acts as a frontend for the printf library function.  In its present
+form you use it *exactly* the same way you would use printf.  All you need
+to do is make it atomic.
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Mon Feb  1 23:15:50 CST 1993
+Article: 220 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Where to find things
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C1t24s.6D6@ns1.nodak.edu>
+Date: Tue, 2 Feb 1993 05:05:16 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 25
+Status: RO
+
+
+I guess it kinda depends on the terminal you're using, but 3l might just
+look exactly like 31.  The introductory LWP man page is in section 3-el,
+not 3-one.  So:
+	man 3l intro   -->   "man, 3-el, intro"
+
+[you must use a lower-case l (el)]
+
+
+
+GNU C (gcc) is in /contrib/bin.
+
+Be careful that you are not using the gcc in /usr/local/bin or
+/usr/gnu/bin.  I don't know how far you'll get with it.
+
+I stated in an earlier post that you could find sample makefiles in
+/usr/gnu/src.  That is incorrect.  The actual path is /src/gnu.  Sorry about
+that.  I guess practically, though, the GNU makefiles may be a bit more than
+you're looking for.
+
+I put a version of my Makefile in ~roehrich/cs475/doc/Makefile-dmr.  This is
+a little less extravagant and may be easier to understand.
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Thu Feb  4 14:02:39 CST 1993
+Article: 222 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Re: defining Sychro functions
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C1xt6M.DH9@ns1.nodak.edu>
+Date: Thu, 4 Feb 1993 18:39:58 GMT
+Distribution: ndhecn
+References: <C1wFB9.ELL@ns1.nodak.edu>
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 42
+Status: RO
+
+In article <C1wFB9.ELL@ns1.nodak.edu> tofte@plains.NoDak.edu (Nathan Tofte) writes:
+>	Our group is trying to understand the functionality of the semaphore
+>functions.  Here is what we've figure they do:
+>
+>        s_create -> allocates new semaphore
+>                    no-one given access to it yet though
+>                    calling thread "owns" semaphore
+
+
+If I say "yes" then everyone will think semaphores have to be "owned".
+Which isn't necessarily true.  But you're not necessarily wrong, either.
+
+
+>        s_destroy -> deallocates semaphore (if not in use)
+>
+>        s_open    -> gives a thread access to the semaphore and returns
+>                     a "handle" (SID).
+>
+>        s_close   -> releases access to a semaphore 
+
+
+Which reminds me of something...
+
+The semaphore handle should be type SID, not SId (I was late in updating
+this in the assignment description, some of you may not have noticed this
+change, though it is documented).
+
+
+>        s_signal  -> UP's a semaphore, releasing the resource.
+>                     If threads are blocked waiting for a resource,
+>                     it gives one thread the resource--putting it on
+>                     ready status.
+>
+>        s_wait    -> DOWN's a semaphore, taking a resource.
+>                    thread is blocked if no resources left. 
+
+
+Fits Dijkstra's (page 41 of Tannenbaum's book) description of how a
+semaphore works.
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Thu Feb  4 14:50:59 CST 1993
+Article: 223 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: project dirs
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C1xz2F.FB4@ns1.nodak.edu>
+Date: Thu, 4 Feb 1993 20:47:03 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 42
+Status: RO
+
+Ok, you are going to have to learn what the 'group' on a file is for.  Some
+of you are opening yourselves up to some problems.
+
+
+-  Your group should choose a group name.  Up to 8 characters.
+-  Tell me who is in the group, and give me the account name of each
+   person.  I'll pass this info on and a group will be created for you in
+   the /etc/group file.
+
+
+Once your group is created, you can create a project directory which only
+members of your group can access.
+
+- Make a directory for your project.
+	$ mkdir projectdir
+
+- Change the owning group of that directory to the name of your project
+  group.  Let's say your project group is 'peanuts':
+	$ chgrp peanuts projectdir
+
+- Change the permission bits (mode) of the directory to allow only your
+  group to read/write it:
+  	$ chmod 770 projectdir
+
+  This will make the directory read/write for the owner, and read/write for
+  anyone in group 'peanuts', and will deny access to anyone else.
+
+You can check that you have the directory properly set up by typing
+	$ /bin/ls -ldg projectdir
+
+My directory started like this:
+
+	drwxr-xr-x  2 roehrich other       512 Feb  4 14:36 projectdir
+
+But looks like this after I'm done:
+
+	drwxrwx---  2 roehrich peanuts       512 Feb  4 14:33 projectdir
+
+[astute observers will notice an anomaly, work with it]
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Sat Feb  6 22:35:31 CST 1993
+Article: 227 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Re: my_malloc
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C224II.FM9@ns1.nodak.edu>
+Date: Sun, 7 Feb 1993 02:35:06 GMT
+Distribution: ndhecn
+References: <C20CBv.E94@ns1.nodak.edu>
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 16
+
+In article <C20CBv.E94@ns1.nodak.edu> brian@gehenna.acm.ndsu.NoDak.edu (Brian R. Glaeske) writes:
+>So what is the purpose of the utility function my_malloc?  We don't really
+>need it do we?
+
+The point, I guess, is whether or not /I/ need it in the thread groups I
+will give to you.  Obviously not, since the thread groups have to use
+b_get().
+
+I do not have documentation which tells me the malloc.o in liblwp.a is
+atomic.  You should not assume it is.
+
+So, no, you don't need my_malloc().  But you should not allow two threads to
+enter malloc() together.
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Sat Feb  6 22:35:42 CST 1993
+Article: 228 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Q&A during class 2/9/93
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C225H8.4K0@ns1.nodak.edu>
+Date: Sun, 7 Feb 1993 02:55:56 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 6
+
+I will be in class on Tuesday, Feb 9, to answer questions about the
+project.
+
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Sun Feb  7 15:49:44 CST 1993
+Article: 230 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Re: "current" thread definition
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C23H3D.961@ns1.nodak.edu>
+Date: Sun, 7 Feb 1993 20:04:25 GMT
+Distribution: ndhecn
+References: <C23B8G.4Jt@ns1.nodak.edu>
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 17
+
+In article <C23B8G.4Jt@ns1.nodak.edu> brian@gehenna.acm.ndsu.NoDak.edu (Brian R. Glaeske) writes:
+>What is a more precise definition of the "current" thread?  Does this mean
+>the thread that is in the running state, or the first thread on the ready
+>queue?
+
+
+``A process that is waiting for the cpu is _ready_.  A process that has been
+allocated the cpu is _running_''.
+	_Operating System Concepts_, 2nd ed, page 75.
+	(sorry, don't have a Tannenbaum handy)
+
+In this simulator the "current thread" and the "running thread" are the same
+thing.  A process will not be both "current" and on the ready queue at the
+same time, since that would indicate that the "current" thread should be
+waiting rather than running and it would be very confused.
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Sun Feb  7 19:25:00 CST 1993
+Article: 232 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Re: get segmentation faults running examples
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C23MF4.IHy@ns1.nodak.edu>
+Date: Sun, 7 Feb 1993 21:59:27 GMT
+Distribution: ndhecn
+References: <C23JFs.FG4@ns1.nodak.edu>
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 14
+
+In article <C23JFs.FG4@ns1.nodak.edu> sharter@plains.NoDak.edu (Steve Harter) writes:
+>Dean,
+>I receive seg. faults when running any of the examples except simple.c.
+>Any suggestions?
+
+
+without knowing how you compiled it, I cannot say much.  I have compiled
+them with /contrib/bin/gcc and they run fine.
+
+If you are using /usr/gnu/bin/gcc or /usr/local/bin/gcc, then you will get
+core dumps.
+
+
+Dean
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Mon Feb  8 15:29:29 CST 1993
+Article: 234 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Re: current thread 
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C25Cvq.EH8@ns1.nodak.edu>
+Date: Mon, 8 Feb 1993 20:28:38 GMT
+Distribution: ndhecn
+References: <C25Bv7.Ars@ns1.nodak.edu>
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 17
+
+In article <C25Bv7.Ars@ns1.nodak.edu> tofte@plains.NoDak.edu (Nathan Tofte) writes:
+>Do we need to make our own scheduler so we can keep track of it ourselves?
+>I was sort of hoping lwp_resched would be the scheduler already made for us...
+>just polish it a little and let it shine:)
+
+
+Yes, you must create your own scheduler.  You will not use lwp_resched()
+
+
+>Am I missing something here?
+
+
+Your scheduler must be in control.  Do not allow LWP to take over.
+
+
+Dean
+
+
+
+From ns1.nodak.edu!plains.NoDak.edu!roehrich Tue Feb  9 10:48:40 CST 1993
+Article: 236 of ndhecn.cs475
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!roehrich
+From: roehrich@plains.NoDak.edu (Dean Roehrich)
+Subject: Re: current thread 
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C26AFL.E4z@ns1.nodak.edu>
+Date: Tue, 9 Feb 1993 08:33:21 GMT
+Distribution: ndhecn
+References: <C25Bv7.Ars@ns1.nodak.edu> <C25Cvq.EH8@ns1.nodak.edu> <C25HxJ.IHF@ns1.nodak.edu>
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 28
+
+In article <C25HxJ.IHF@ns1.nodak.edu> dsatrom@plains.NoDak.edu (Dan Satrom) writes:
+>If we do not allow LWP to take over, then what functions may we use?
+>We take it we cannot use the lwp_yield, lwp_sleep, and other scheduling
+>functions provided by the LWP library.  Is this true?
+
+If you can use these to control the actions of the LWP scheduler, then you
+will effectively be doing your own scheduling.
+
+
+
+>In regard to inter-process communication can we use the LWP functions
+>for that or is this to be implemented with the "global" buffer used by our
+>b_get and b_release functions?
+
+
+You should implement IPC on top of your memory management functions.
+
+
+>In summary, we mainly are concerned with finding out which LWP functions
+>we can use and which are off limits.
+
+Actually lwp_resched() is not necessarily off-limits, though I have a tough
+time believing that it would be all that useful to you.
+
+
+
+
+Dean
+
+

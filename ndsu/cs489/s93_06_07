@@ -1,0 +1,620 @@
+The following question can be pondered while reading Chapter 6 on the changing
+nature of the workforce and workplace.
+
+It is a fact that unemployment stands at under 3% in the Fargo-Moorhead
+area.  In light of the fact that the farm economy and the oil economy are down,
+why does our area continue to experience almost full employment?
+
+Why, since the workplace revolution talked about in Chapter 6 is happening
+mostly on the coasts, is the FM area immuned to the employment slumps?
+
+Reasons to consider:
+
+   1.  ND leading export is young people (the workforce is small because people
+       leave the state).
+
+   2.  The revolution is a destabilizing force with respect to the employment.
+
+   3.  FM area people are willing to work.
+
+
+Question:  Would you prefer to stay in this area if the right job were
+available to you here?  Or do you intend to relocate elsewhere no matter
+what the job situation is here?
+
+
+Note:  The computer generations referred to in Chapter 6 are hardware
+generations while the generations in previous notes were software generations
+(or total system generations).  Since the hardware generations given in
+the text are very ambiguous and under-defined, I will not try to reconcile
+them with the generation-discussion we have already had.  You will not be
+required to do that either.
+
+
+
+In Chapter 7, the notion of TELECOMMUTING is discussed.  There is a very
+short article in the ACM Communications, January, 1992, V35:1 entitled
+"The Great Work" by John Perry Barlow.  It is so interesting, inaccessible to
+those who are not ACM members, and pertinent to the Telecommuting discussion
+that I repeat it here for you (I could, of course, Xerox it for everyone, but
+given the discussion in Chapter 6 of automated publishing, paper volume
+reduction, etc., I will save the paper):
+
+
+"The Great Work", by John Perry Barlow.
+
+Earlier in this century, the French philosopher and anthropologist Teilhard de
+Chardin wrote that evolution was an ascent toward what he called "The Omega
+Point", when all consciousness would converge into unity, creating the
+collective organism of the Mind.  When I first encountered the Net, I had
+forgotten my college dash through Teilhard's Phenomenon of Man.  It took me a
+while to remember where I had first encountered the idea of this immense and
+gathering organism.
+
+Whether or not it represents Teilhard's vision, seems clear we are about some
+Great Work here - the physical wiring of collective human consciousness.
+The idea of mind in full-duplex broadband is one which, for a hippie
+mystic like me, has clear theological implications, despite the ironic fact
+that most of the builders are bit wranglers and protocol priests, a proudly
+prosaic lot.  What thoughts will all this assembled neurology, silicon and
+optical fiber think?
+
+Since Teilhard was a Roman Catholic priest who never tried to forge a SLIP
+connection, his answers to that question were more conventionally Christian
+than mine.  But it doesn't really matter.  We will build it and then find out.
+
+And however obscure our reason, we do seem determined to build it.  Since 1970,
+when the Arpanet was established, it has become, as Internet, one of the
+largest and fastest-growing creations in the history of human endeavor.
+Internet is now expanding as much as 25% a month, a curve which plotted
+on a linear trajectory would put every single human being on-line in a few
+decades.
+
+Or, more likely, not.  Indeed, what we seem to be making a the moment
+is something which will unite only the corporate, military, and academic
+worlds, excluding the ghettos, hick towns, and suburbs where most human
+minds do their thinking.  We are rushing toward a world in which there will be
+Knows, constituting Wired Minds, and Know Nots, who will count of little but the
+labor and consumption necessary to support it.
+
+If that happens, the Great Work  will have failed, since, theological issues
+aside, its most profound consequences should be the global liberation of
+everyone's speech.  A truly open and accessible Net will become an environment
+of expression which no single government could stifle.
+
+When Mitch Kapor and I first founded the Electronic Frontier Foundation (EFF),
+we were eager to ensure that the rights established by the First Amendment
+would be guaranteed in Cyberspace.  But it wasn't long before we realized
+that in such borderless terrain, the First Amendment is a local ordinance.
+
+While we have not abandoned a constitutional strategy in ensuring free digital
+commerce, we have also come to recognize that, as Kapor puts it,
+"Architecture is politics."  In other words,  if the Net is ubiquitous,
+affordable, easy to access, tunneled with encrypted passageways,
+and based on multiple competitive channels, no local tyranny will be very
+effective against it.
+
+A clear demonstration of this principle was visible during the recent
+coup in the Soviet Union.  Because of the decentralized and redundant
+nature of digital media, it was impossible for the geriatric plotters
+in the Kremlin to suppress the delivery of truth.  Faxes and email
+messages kept the opposition more current with developments than the
+KGB, with its hierarchical information systems, could possibly be. 
+Whatever legal restraints the s\aspiring dictators might have imposed
+were impotent against the natural anarchy of the Net.
+
+Well, I could have a swell time here soliloquizing about such notions
+as the Great Work or the assurance of better living through
+electronics, but all great journeys proceed by tedious increments. 
+Though the undertaking is grand, it is the nuts and bolts--the
+regulatory and commercial politics, the setting of standards, the
+technical acceleration of bits--that matter.  While they are complex
+and boring enough to erode the most resolute enthusiasm, if they don't
+get done, neither does the Great Work.
+
+So we need to think about what small steps must be undertaken today. 
+Even while thinking globally, we must begin, as the bumper sticker
+fatuously reminds us, by acting locally.  That is why I will focus the
+remainder of this column on near-term conditions, opportunities, and
+preferred courses of action within the boundaries of the United
+States.
+
+To a large extent, America is the old country of Cyberspace.  The
+first large interconnected networks were developed here as was much of
+the supporting technology.  Leaving aside the estimable French Minitel
+system, Cyberspace is, in its present condition, highly American in
+culture and language.  Though fortunately this is increasingly less
+the case, much of the infrastructure of the Net still sits on American
+soil.  For this reason, the U.S. remains the best place to enact the
+policies upon which the global electronic future will be founded.
+
+In the opinion of the EFF, the first order of business is the creation
+of what we call the National Public Network--named with the hope that
+the word "National" should become obsolete as soon as possible.  By
+this, we mean a ubiquitous digital web, accessible to every American
+in practical, economic, and functional terms.  This network would
+convey, in addition to traditional telephone service, email, software,
+faxes, such multimedia forms of communication as "video postcards,"
+and, in time, high-definition television as well as other media barely
+imagined.
+
+Its services should be extended by a broad variety of providers,
+including the existing telephone, cable, publishing, broadcast, and
+digital network companies.  Furthermore, if its architecture is
+appropriately open to free enterprise, we can expect the emergence of
+both new companies and new kinds of companies.  Properly designed, the
+National Public Network will constitute a market for goods and
+services which will make the $100 billion-a-year personal computer
+business look like a precursor to the Real Thing.
+
+As a first step, we are proposing that Congress and state agencies
+establish regulatory mechanisms and incentives that will:
+
+- Establish an open platform for information services by speedy        
+  nationwide deployment of "Personal ISDN"
+
+- Ensure competition in local exchange services in order to provide
+  equitable access to communications media
+
+- Promote free expression by reaf-firming principles of common         
+  carriage
+
+- Foster innovations that make networks and information services       
+  easier to use
+
+- Protect personal privacy
+
+That is a tall bill, most of which I will have to take up in
+subsequent columns.  I will focus now on the First two points.
+Personal ISDN
+
+For the last two years, the Internet community has generally regarded
+Sen. Albert Gore's proposed National Research and Education network
+(NREN) as the next major component of the Great Work.  This has been
+regrettable.  NREN, as presently envisioned, would do little to enable
+the settlement of ordinary folks in Cyberspace.  Rather it would make
+plusher accommodations for the "mountain folk" already there.
+
+Actually, NREN has been and may continue to be useful as a "policy
+testbed."  By giving Congress a reason to study such legal connundrums
+as unregulated common carriage and the intermingling of public and
+private networks, NREN may not be a waste of time and focus.  But, as
+of this writing, it has become a political football.  If the House
+version (H656) of the High Performance Computing Act passes with Dick
+Gephart's "Buy American" provisions in it, the administration will
+surely veto it, and we'll be back to Square One.
+
+Meanwhile, ISDN, a technology available today has languished.  ISDN or
+Integrated Services Digital Network is a software-based system based
+on standard digital switching.  Using ISDN, an ordinary copper phone
+line can provide two full-duplex 64kb digital channels.  These can be
+used independently, concurrently, and simultaneously for voice and/or
+data.  (Actually, it's a bit more complex.  Garden variety ISDN
+contains three channels.  The third is a 16kb "signal" channel, used
+for dialing and other services.)
+
+While those who live their lives at the end of a T1 connection may
+consider 64KB to be a glacial transfer rate, the vast majority of
+digital communications ooze along at a pace 27 time slower, or 2,400
+baud.  We believe the ordinary modem is both too slow and too user-
+hostile to create "critical mass" in the on-line market.
+
+We also believe that ISDN, whatever its limitations, is rapid enough
+to jump start the greatest free market the world has ever known. 
+Widespread deployment of ISDN, combined with recent developments in
+compression technology, could break us out of what Adobe's John
+Warnock calls the "ascii jail," delivering to the home graphically
+rich documents, commercial software objects, and real-time multi-
+media.  Much of the information which is now inappropriately wedged
+into physical objects--whether books, shrink-wrapped software, videos,
+or CDs--would enter the virtual world, its natural home.  Bringing
+consumers to Cyberspace would have the same invigorating effect on on-
+line technology which the advent of the PC had on computing.
+
+We admit that over the long term, only fiber has sufficient bandwidth
+for the future we imagine.  But denying "civilian" access to
+Cyberspace until the realization of a megabillion buck end-to-end
+fiber network leaves us like the mainframe users in the 1960s waiting
+for the supercomputer.  The real juice came not from the Big Iron but
+from user-adaptable consumer "toys" like the Apple II and the original
+PC.
+
+Just as consumers were oblivious to the advantages of fax technology
+until affordable equipment arrived, we believe there is a great
+sleeping demand for both ISDN and the tools which will exploit it. 
+And then there is the matter of affording the full fiber national
+network.  Until the use of digital services has become as common as,
+say, the use of VCRs, Joe Sixpack's willingness to help pay fiber's
+magnificent cost will be understandably restrained.
+
+Given that most personal modem users are unaware that ISDN even
+exists, while the old elite of Internet grossly underestimates its
+potential benefits, it is not surprising that the telcos have been
+able to claim lack of consumer demand in their reluctance to make it
+available.  A cynic might also point to its convenience as a hostage
+in their struggles with Judge Greene and the newspaper publishers. 
+They wanted into the information business and something like "Allow us
+to be information providers or we starve this technology," has been
+one of their longest levers.
+
+This issue should now be moot.  Judge Greene ruled in July that the
+telcos could start selling information.  They got what they wanted. 
+Now we must make them honor their side of the bargain.
+
+Unfortunately, it still seems they will only let us use their playing
+field if they can be guaranteed to win the game.  To this end, they
+have managed to convince several state Public Utility Commissions that
+they should be allowed to charge tariffs for ISDN delivery which are
+grotesquely disproportionate to its actual costs.  In Illinois, for
+example, customers are paying 10 to 12 cents a minute for an ISDN
+connection.  This, despite evidence that the actual telco cost of a
+digitally switched phone connection, whether voice or data, runs at
+about a penny a minute.  Even in the computer business, 1,200% is not
+an ethical gross margin.  And yet the telcos claim that more
+appropriate pricing would require pensioners to pay for the plaything
+of a few computer geeks.
+
+Unfortunately, the computer industry has been either oblivious to the
+opportunities which ISDN presents or reluctant to enter the regulatory
+fray before Congress, the FCC, and the PUCs.  The latter is
+understandable.  National telecommunications policy has long been an
+in-house project of AT&T.  It is brain-glazingly prolix by design and
+is generally regarded as a game you cannot win unless you're on the
+home team.  The AT&T breakup changed all that, but the industry has
+been slow to catch on.
+
+Assurance of Local Competition
+
+In the wake of Ma Bell's dismemberment, the world is a richer and
+vastly more complex place.  Who provides what services to whom, and
+under what conditions, is an open question in most local venues.  Even
+with a scorecard you cannot tell the players since many of them do not
+exist yet.
+
+Legislation is presently before Edward Markey's (D-Mass.)  Sub-
+committee on Telecommunications and Finance (a subset of the House
+Energy and Commerce Committee) which would regulate the entry of the
+Regional Bells into the information business.  The committee is
+correctly concerned that the RBOCs will use their infrastructure
+advantage to freeze out information providers.  In other words, rather
+as Microsoft uses DOS and Windows.
+
+Somewhat hysterical over this prospect, the Newspaper Publisher's
+Association and the cable television companies have seen to the
+introduction of House Bill 3515 by Rep. Jim Cooper (D-Tenn.) which
+would essentially cripple telco delivery of information services for
+the next decade.  The bill would bar existing telephone service
+providers from information provision until 50% of subscribers in a
+given area had access to alternative infrastructures.
+
+Of course, neither approach would serve the public interest.  The
+telcos have had so little experience with competition that we cannot
+expect them to welcome it.  And while eventually there will be local
+phone connection competition through wireless technologies, it's silly
+to wait until that distant day.
+
+We need a bill which would require that telcos to make ISDN open and
+affordable to all information providers, conditioning their entry into
+the information business to the willing delivery of such service.
+
+The computer industry has an opportunity to break the gridlock between
+the telcos and the publishers.  By representing consumer interests,
+which are, in this case, equivalent to our own, we can shape
+legislation which would be to everyone's benefit.  What has been
+missing in the debate has been technical expertise which serves
+neither of the existing contenders.
+
+Finally, the Public Utility Commissions seem unaware of the hidden
+potential demand for digital services to the home.  What on earth
+would a housewife want with a 64KB data line?  This is another area in
+which both consumers and computer companies need to be heard from.
+
+What You Can Do
+
+Obviously, the first task upon entering a major public campaign is
+informing oneself and others.  In this, many Communications readers
+have a great advantage.  Most of us have access to such on-line fora
+as RISKS digest, Telecom Digest, and the EFFectors regulary published
+in the EFF's newsgroup comp.org.eff.news.  I strongly recommend that
+those interested in assisting this effort begin monitoring those
+newsgroups.  I'm tempted to tell you to join the EFF and support our
+Washington lobbying efforts, but I probably abuse this podium with out
+message too much as it is.
+
+Once you are up to speed on these admittedly labyrinthine issues,
+there are three levers you can start leaning against.
+
+First, Congress will be actively studying these matters for the
+remainder of the year and is eagerly soliciting viewpoints other than
+those self-servingly extended by the telcos and the publishers.  In a
+recent letter to EFF Rep. Markey said the following:
+
+Please let me and my staff know what policies you and others
+in the computer industry believe would best serve the public
+interest in creating a reasonably priced, widely available
+network, in which competition is open and innovation is
+rewarded.  I also want to learn what lessons from the
+computer industry over the past 10 to 15 years should apply
+to the current debate on structuring the information and
+communication networks of the future.
+Second, it is likely that the Public Utility Commission in your state
+will be taking up the question of ISDN service and rates sometime in
+the next year.  They will likely be grateful for your input.
+
+Finally, you can endeavor to make your own company aware of the
+opportunities which ISDN deployment will provide it as well as the
+political obstacles to its provision.  No matter what region of the
+computer business employs your toils, ISDN will eventually provide a
+new market for its products.
+
+Though these matters are still on the back pages of public awareness,
+we are at the threshold of one of the great passages in the history of
+both computing and telecommunications.  This is the eve of the electronic
+frontier's first land rush, a critical moment for the Great Work.
+
+
+
+In Chapter 7, discusion focuses on communication and telecommuting, and its
+effects on the workplace.  The following are some time-honored techniques in
+outline form, for communication in the workplace which, I think, transcend the
+"information age" boundaries (I don't have a source for these ideas.  Suffice
+it to say, they are not my creation.  The are a composite of notes I have taken
+during presentations on the subject, enhancements, etc.)
+
+MANAGERIAL SKILLS:   Theory and technique - need both.  Some principles:
+1.      For the first 20% of effort, you get 80% results and you will need to 
+        expend the other 80% to get the last 20% of the results.
+2.      People have limited ability to deal with details:  How many square in:
+
+        -------------------
+       |    |    |    |    |
+        -------------------
+       |    |    |    |    |
+        -------------------
+       |    |    |    |    |
+        -------------------
+       |    |    |    |    |
+        -------------------
+
+Devise a divide and conquer method.
+
+3.  Knee-jerk reaction is instinctively incorrect.
+
+4.  Failure-guarantees, when dealing with people; self conscious in a group,
+    getting defensive to criticism.
+
+5.  Communication is no more content (knowing what you are talking about)
+    than process (technique of communication).
+
+6.  Sincerity is the key component of communication - once you learn
+    (real or faked) sincerity, you'll be a good communicator.
+
+7.  AT WORST, AGREE TO DISAGREE - when you're challenged, even if you get
+    your way, you have done damage - they will be laying for you.
+
+8.  Weeny roasts aren't fun when you are the weeny.
+
+
+SIX MODELS FOR COMMUNICATION:
+----------------------------
+
+
+I.      SELL PROBLEM, not solution
+
+ (knee jerk reaction is to say what you want without first explaining the
+  problem first).
+
+  Get them to relate to your problem.
+
+  Make it meaningful in their terms.
+
+     "Payroll isn't going to be ready by monday morning" - problem
+     "Hate to see company miss payroll for 1st time" = getting them to relate
+     "I need John to work overtime this weekend" = solution.
+
+
+
+II.     AGREEMENT MODEL: reinforce agreement!
+
+     he says: "Got to get people paid on Monday!"
+     you say: "Right, got to get them paid"
+
+        Expand upon agreement.
+
+
+
+III.    CONCLUDE:
+
+   Know when you've won (the easy 80%) then cut it off.  
+
+   Review points of agreement
+
+       you say: "Company always pays its employees.  Maybe we'll have to go to
+                 payroll and find out what the trouble is."
+
+       he says: "You're right, let's got to the top!"
+
+  Propose course of action:
+
+       "John can get us out of it this time, if he works on it this weekend".
+
+
+-----------------
+If you encounter:
+-----------------
+
+
+IV      RESERVATION AND/OR DOUBT.
+
+       he says:  "I'm not sure John could handle it".
+                 "Can't we double up and get it done Monday?"
+
+
+       you provide re-assurance:
+
+       "Certainly don't want someone who can't handle it."
+
+       "Don't want overtime if its unnecessary."
+
+
+       provide Proof (only after re-assurance buffer):
+
+       "Here's what's involved.  Got 8 hours work & 1 hour to do it."
+       "Don't see how it can be done."
+
+
+
+V. QUESTIONS/CONFLICT/CONFUSION:
+
+       he questions: "Isn't unfair to ask John to work weekends again?"
+
+       his conflict/confusion "Forget it!  It's unfair to ask John again."
+
+               (Conflict if true- confusion if false)
+
+
+       you should always REPHRASE
+            (gives you time to think and changes frame of mind.)
+
+            The last thing he disagreed with, he will agree with rephrasing.
+
+            "I see, you're concerned about John's weekend."
+
+            "He has put in a lot of overtime lately."
+
+            Also serves to clarify issue.
+
+
+   Don't deal with it until you understand it.
+   What's said, is not always what's meant.
+   What's meant not always what's heard.
+
+
+
+    RECOGNIZE HOSTILITY/NEGATIVITY.
+
+    FORCE YOURSELF TO LISTEN AND TELL YOURSELF:
+    "I DON'T DO ANYTHING UNTIL I REPHRASE."
+
+
+     ANSWER(questions)
+
+     MINIMIZE(conflicts)
+
+     CLARIFY(confusion)
+
+         AFTER REPHRASING!!
+
+
+     Conflict:  keep in mind: there is no perfect solution,
+                the world's full of trade-offs, always offsetting issues.
+
+          "You're right.  He's done a lot of overtime lately.
+           However, if we don't keep him this weekend, we'll miss payroll.
+           Let's figure out how this can be avoided in the future.
+           I agree!  It can't go on this way."
+
+
+
+VI.  QUERY:  If he is definite, without conflict
+
+     "I don't think so."
+
+     Start off with a probe (with puppy dog eyes):
+                      -----
+
+          indirect probe: "oh??" "Any particular reason???"
+
+          direct probes: "Concerned about overtime?"
+                         "Worried about John's competence?"
+
+          After 2 indirects switch to direct.
+          Avoid games of 20 questions.
+
+
+
+
+
+
+FINAL NOTES:
+-----------
+
+If you do these things, your hit rate will increase dramatically.
+
+You won't get into arguments.
+
+You won't make enemies.
+
+
+Prepare for your meetings (know content of issues.  Don't "wing it")
+
+
+Most situations aren't zero-sum games
+
+        (where the sum of the gain for all is zero)
+
+        For example: car sales is not zero sum.
+        Salesman who lies is making a zero-sum game out of something that
+                 shouldn't be!
+
+Knee jerk is to make statements when you ought to ask questions.
+Any statement can be made a question.
+Statements commit!  Questions don't.
+
+If you can't come up with a question use
+
+      "What's your idea for a solution."
+
+      Then reinforce   "You're right.  It's hard to find a solution."
+
+
+
+CREDIBILITY:  requires all of the following four,
+
+1.  expertise (no carry over - goof once and that's all they'll remember)
+
+2.  trustworthiness (carries over)
+
+3.  dynamism
+
+4.  status (higher rank more believable)
+
+
+BODY LANGUAGE (very important):
+
+     silent pauses/sighs - reverse meaning (be careful of these!).
+
+     gestures illustrate words OR make stand alone statements (shrugs)
+
+     touches, handshakes effective (watch for flinch, though)
+
+
+     NO FINGER POINTING
+
+     When there is conflict: use OPENNESS body language:
+
+           direct facing,
+           good eye contact,
+           open palms,
+           spread legs,
+           forward lean
+
+
+     When there's doubt:  use RE-ASSURANCE body language:
+
+           open eyes,
+           lifted eyebrows,
+           hands to chest
+
+
+     When conflict is close: use COOPERATION body language:
+
+           roll up sleeves,
+           take off coat,
+           hands in "scales of justice position
+
+
+     When giving explanation or proof:  use CONFIDENCE body language:
+
+           erect posture,
+           eye contact

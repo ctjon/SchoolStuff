@@ -1,0 +1,22 @@
+/* Welcome to CS171 Winter 1989-1990.  This file contains information of
+   importance to you. You should move the cursor to the command line and
+   type
+SAVE CS171 EXEC A
+   then press the return key. This command will save this file on
+   your disk.  Once that is done, typing the command CS171 from
+   native CMS will link you with my shared disk.  If you place the
+   line CS171 in your file PROFILE EXEC A, at the bottom, you will link
+   to my disk every time you log on.
+To get a file list of the files on the shared disk enter the
+command
+FL * * B
+This command will produce a file list of the files on my
+shared disk.  To examine any of the files move the cursor to the
+line containing the file name and press the PF11 key (or type
+x in the cmd column in front of the name and press return).  This
+will XEDIT the file.
+   COMMAND TO GET TO DR. ERICKSON'S SHARED FILES */
+'CP DETACH 171'
+'CP LINK NU020154 193 171 RR'
+'ACCESS 171 B'
+'NEWS (NU020154 193'

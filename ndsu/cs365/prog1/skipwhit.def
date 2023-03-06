@@ -1,0 +1,9 @@
+DEFINITION MODULE SkipWhiteSpace;
+
+PROCEDURE GetNextChar(): CHAR;
+(* modifies - the standard input file
+    effects  - Returns the next nonwhite space character from the
+              standart input file if there is one.
+              InOut.Done is FALSE if end of file is reached.
+*)
+END SkipWhiteSpace.

@@ -1,0 +1,66 @@
+
+  CS214
+  PROGRAM 4       DUE: On or before Friday May 4, 1990 at 5 PM
+
+  You  are  to write a language independent macro processor (LIMP).  It is to
+  be a UNIX filter that reads standard input and writes  to  standard  output
+  expanding any macro calls in the text.  All macro calls will be marked by a
+  flag character '$' and have one character names, e.g. $a is a call on macro
+  a.  Language  independence  is provided by requiring that all other uses of
+  the flag character must be doubled, e.g. $$.  Your macro  processor  is  to
+  have two primitive (built in) macros, $0 and $1.
+          $0'abody'      $0 allows the definition of new macros.  The first
+                         character after the $0 is a delimiter.  The next
+                         occurrence of this delimiter terminates this macro.
+                         This definition sets $a to stand for "body".  The
+                         char string body could also include macro calls,
+                         but these are not called until $a is called.
+          $0=b007        A special form of the defining macro.  The special
+                         delimiter = tells us that the definition gives a 3 
+                         digit octal specification for a single 8 bit byte.   
+                         This example defines $b to stand for the ASCII bell 
+                         character (that beeps a terminal).
+          $1             Macro time end-of-line.  Causes the macro processor
+                         to discard everything from here down to and including
+                         the next '\n' (new line) character.
+  In  addition  to  the  above, a single character formal parameter insertion
+  mechanism is to be provided.  If a '%' occurs in a macro body OR name,  the
+  next  character from the standard input is to be substituted for it.  Thus,
+  if we define $0'ab%dy' and call $ao, it  yields  'body'  while  $aa  yields
+  'bady'.   Keeping  that  definition,  if we add $0.cr%ck. and $0/TThis $%./
+  which uses the $% to  call  a  macro  specified  at  call  time,  then  the
+  following occurs:
+                                  $Tco  yields  This rock.
+                                  $Tca  yields  This rack.
+                                  $Tao  yields  This body.
+  A more complex set of examples can be found in the ../Info/mactst directory
+  for  this  class,  as ex1 and ex2.  Be sure to turn in test runs on both of
+  these files using your macro processor.  A binary test version of macro  is
+  also  provided  for  comparison  purposes.   This  test  version contains a
+  special message to identify itself, which should NOT be  included  in  your
+  own  processor.   Also,  if  you  discover  yourself  building two decision
+  programs, one for dispatching $ marked things coming from  the  input,  and
+  another for doing the same job for stuff inside a macro body, YOU ARE DOING
+  THE  ASSIGNMENT  WRONG!   Instead,  write a nxtchr() routine which makes it
+  invisible where the next character  comes  from  (macro  body  or  standard
+  input,  and program 5 will provide even more character sources) and then on
+  the few occasions where your decision  logic  needs  to  distinguish,  test
+  where  the  character came from.  Also, you should use recursion to do this
+  program.
+
+  Extra credit will be given for non-trivial examples which  you  devise  and
+  demonstrate  with  your  program.  One such example might be to rewrite and
+  compress the macro processor itself using macros, and use it on  itself  to
+  regenerate the C code.
+
+
+
+                                     - 1 -
+
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+[PROJECT]
+Name=PlayBalloon
+Location=C:\MIKES FILES\BOOKJ11\C9.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+PlayBalloon.java=1
+PlayBalloon.html=1
+
+[Visualforms]
+PlayBalloon.java=1
+PlayBalloon.html=0

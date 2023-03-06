@@ -1,0 +1,80 @@
+
+The big picture
+Mark Roder
+Last Modified 11 March 91
+
+
+	This project can be confusing.  This document is going to try and give
+you a _big picture_ that will help you out on your way to becoming OS
+wizards.
+
+--------------------------------
+How do I get started?
+
+	Organize your groups
+	Work hard
+	sleep less :-) :-)
+	understand,modify,expand lwp functions in ~roehrich/cs475/lwp-examples
+	learn other lwp functions(man/docs/etc)
+
+
+--------------------------------
+How is this going to work?
+
+	Here is a step through of the problem.  Your main() will follow
+this type of structure.  
+	
+main()
+{
+	set up variables,free lists,etc,etc
+	set up the LWP environment.
+	find out the thread group that is requested to run from menu
+	do a t_ready(t_create(wanted_function))
+	then call scheduler
+	exit
+}
+
+	After your main finishes, you will have 1 item on the ReadyQ.  The
+scheduler then lets this thread run until the quantum is up.  It will then
+schedule the next thread to run(still could be the first, but it might not
+be).  Once the ReadyQ is empty, then print out important information and
+exit.
+
+
+--------------------------------
+What are the test threads going to look like?
+
+An example test thread might look like this.
+/* this will test to see if your os can handle 11 threads that go to
+ * completion
+ */
+tg1()
+{
+	int i;
+	for (i=10; i;i--)
+	{
+		printf("creating thread %i \n",i);
+		t_ready(t_create(looper));
+	}
+	t_destroy();
+}
+
+looper()
+{
+	int x,y;
+	for(x=10;x;x--)
+	{
+		for(y=1000;y;y--)
+			;
+		printf("%i in loop %i\n",(int)t_myid(),x);
+	}
+	t_destroy();
+}
+--------------------------------
+How will I get the supplied test groups into my code?
+
+
+	You will be supplied with a .o file for each thread group.  You
+will have all .o files in your Makefile so that they are included  when
+you compile your OS.   Then with the given function name, you create and
+ready it.  The initial thread will then do whatever it wants to do.

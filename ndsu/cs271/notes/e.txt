@@ -1,0 +1,342 @@
+                                                                                
+                                                                     E-1        
+          IBM SYSTEM/370 ASSEMBLY LANGUAGE                                      
+          --------------------------------                                      
+PROGRAM TO ADD 49 TO THE CONTENTS OF DATA1                                      
+  (DATA1 = DATA1 + 49)                                                          
+                                                                                
+LMC ASSEMBLY LANG        370 ASSEMBLY LANGUAGE                                  
+--- -------- ----        --- -------- --------                                  
+ADD49    START           ADD49    START                                         
+                                  USING FIRST,15                                
+         L     DATA1     FIRST    L     1,DATA1                                 
+         A     FORTY9             A     1,FORTY9                                
+         ST    DATA1              ST    1,DATA1                                 
+         STOP                     BR    14                                      
+DATA1    DC    30        DATA1    DC    F'30'                                   
+FORTY9   DC    49        FORTY9   DC    F'49'                                   
+         END                      END                                           
+                                                                                
+NOTES:  USING PSEUDO-OP  --  TO BE EXPLAINED LATER                              
+        MUST SPECIFY REGISTER TO BE USED IN 370 VERSION (IN LMC ONLY 1)         
+        BR  14  -- TO RETURN CONTROL TO OPERATING SYSTEM (DON'T STOP 370)       
+        DC  F'30"  --  INDICATES 32-BIT (4-BYTE) FULL-WORD OF DATA              
+                                                                                
+                                                                                
+PROGRAM TO ADD 49 TO DATA1 FIVE TIMES                                           
+-------------------------------------                                           
+       ADD495X  START                                                           
+                USING FIRST2,15                                                 
+       FIRST2   L     1,DATA1                                                   
+                A     1,FORTY9                                                  
+                ST    1,DATA1                                                   
+                L     1,DATA1                                                   
+                A     1,FORTY9                                                  
+                ST    1,DATA1                                                   
+                L     1,DATA1                                                   
+                A     1,FORTY9                                                  
+                ST    1,DATA1                                                   
+                L     1,DATA1                                                   
+                A     1,FORTY9                                                  
+                ST    1,DATA1                                                   
+                L     1,DATA1                                                   
+                A     1,FORTY9                                                  
+                ST    1,DATA1                                                   
+                BR    14                                                        
+       DATA1    DC    F'30'                                                     
+       FORTY9   DC    F'49'                                                     
+       END                                                                      
+                                                                                
+SHORTER WAY?                                                                    
+LOOPING APPROACH TO PROGRAM TO ADD 49 TO DATA1 FIVE TIMESE-2                    
+                                                                                
+       START                                         Z  M  P  O                 
+       __:___                                       _:__:__:__:_                
+      : R2=5 :                                     : 0  1  2  3 :               
+      :______:                CONDITION HANDLING   :  PROCESSOR :               
+ ------->:                    ------------------   :____________:               
+:   _____:____                                                                  
+:  : R1=DATA1 :   -AFTER CERTAIN INSTRUCTIONS, A CONDITION CODE IS SET          
+:  : R1=R1+49 :                                                                 
+:  : DATA1=R1 :   -CONDITION CODE REMAINS IN EFFECT UNTIL RESET BY              
+:  :  R2=R2-1 :    ANOTHER CONDITION-CODE SETTING INSTRUCTION                   
+:  :__________:                                                                 
+:      __:__      -IN GENERAL, ARITHMETIC INSTRUCTIONS SET CODE; LOAD,          
+:     /     .      STORE, AND BRANCH INSTRUCTIONS DO NOT ALTER COND. CODE       
+ _NO_/ R2=0? .                                                                  
+     ._______/    -TYPICAL MEANING OF CONDITION CODE SETTING AFTER AN           
+         :YES      ARITHMETIC OPERATION:                                        
+       STOP              CODE  MEANING                                          
+                         ----  -------                                          
+                          0    RESULT = 0 (Z ON)                                
+                          1    RESULT < 0 (M ON)                                
+                          2    RESULT > 0 (P ON)                                
+                          3    OVERFLOW   (O ON)                                
+                                                                                
+CONDITIONAL BRANCHING                                                           
+---------------------                                                           
+                                                                                
+-BRANCH ON CONDITION (BC) INSTRUCTION CAN BE USED TO TEST CONDITION CODE.       
+-IT CAN BE SUED TO TEST FOR ANY NUMBER OF CONDITIONS:                           
+                                                                                
+  . SIMPLE CONDITIONS                                                           
+       BZ = BRANCH ON ZERO                                                      
+       BM = BRANCH ON MINUS                                                     
+       BP = BRANCH ON POSITIVE                                                  
+       BO = BRANCH ON OVERFLOW                                                  
+  . COMPOUND CONDITIONS                                                         
+       BNZ = BRANCH NOT ZERO (BRANCH ON MINUS,POSITIVE OR OVERFLOW)             
+       BNM = BRANCH NOT MINUS (BRANCH ON ZERO,POSITIVE OR OVERFLOW)             
+       B   = BRANCH UNCONDITIONALLY (BRANCH ZERO,POSITIVE,MINUS,OVERFLOW)       
+                                                                                
+  . SEE REFERENCE CARD, PANEL 4                                                 
+                                                                                
+  . WRITE A PROGRAM FOR E-4 (ADD 49 TO DATA1 FIVE TIMES)                        
+                                                                                
+                        :                                                       
+       START            :    ADD495X2  START                                    
+       __:___           :              USING  FIRST2,15                         
+      : R2=5 :          :    FIRST2    L      2,FIVE                            
+      :______:          :    LOOP      L      1,DATA1                           
+ ------->:              :              A      1,FORTY9                          
+:   _____:____          :              ST     1,DATA1                           
+:  : R1=DATA1 :         :              S      2,ONE                             
+:  : R1=R1+49 :         :              BNZ    LOOP                              
+:  : DATA1=R1 :         :              BR     14                                
+:  :  R2=R2-1 :         :    DATA1     DC     F'30'                             
+:  :__________:         :    FORTY9    DC     F'49'                             
+:      __:__            :    FIVE      DC     F'5'                              
+:     /     .           :    ONE       DC     F'1'                              
+ _NO_/ R2=0? .          :              END                                      
+     ._______/          :                                                       
+         :YES           :                                                       
+       STOP             :    SHORTER WAY ?                                      
+                        :                                                       
+                                                                                
+USE BRANCH ON COUNT (BCT) INSTRUCTION (FOR COUNT DOWN LOOPING)                  
+                                                                                
+TO  ADDR                                                                        
+ :                                                                              
+ :   ____:____ BCT  R2,ADDR  DOES BOTH OF THESE                                 
+ :  : R2=R2-1 :                                                                 
+ :  :_________:   <--- FIRST ACT OF BCT                                         
+ :     __:__                                                                    
+ :    /     .                                                                   
+ _NO_/ R2=0? .    <--- SECOND ACT OF BCT                                        
+     ._______/                                                                  
+         :YES                                                                   
+         :                                                                      
+      CONTINUE                                                                  
+_____________________________________________________________________           
+ SO                 :                                                           
+                    :                                                           
+       START        :       ADD495X3  START                                     
+       __:___       :                 USING FIRST3,15                           
+      : R2=5 :      :       FIRST3    L     2,FIVE                              
+      :______:      :       LOOP      L     1,DATA1                             
+ ------->:          :                 A     1,FORTY9                            
+:   _____:____      :                 ST    1,DATA1                             
+:  : R1=DATA1 :     :                 BCT   2,LOOP                              
+:  : R1=R1+49 :     :                 BR    14                                  
+:  : DATA1=R1 :     :       DATA1     DC    F'30'                               
+:  :  R2=R2-1 :     :       FORTY9    DC    F'49'                               
+:  :__________:     :       FIVE      DC    F'5'                                
+:     /     .       :                                                           
+ _NO_/ R2=0? .      :NOTE: BCT  2,LOOP                                          
+     ._______/      :       REPLACES                                            
+         :YES       :      S    2,LOOP                                          
+       STOP         :      BNZ  LOOP                                            
+____________________:_______________________________________________            
+                                                                                
+EXAMPLE 370 ASM PROGRAM                                                         
+                                                                                
+EXAM     START                                                                  
+         USING LOC0,15                                                          
+LOC0     L     1,A                                                              
+         LTR   1,1                                                              
+         BP    LOC1                                                             
+         S     1,A                                                              
+         S     1,A                                                              
+LOC1     L     2,B                                                              
+         LTR   2,2                                                              
+         BP    LOC2                                                             
+         S     2,B                                                              
+         S     2,B                                                              
+LOC2     AR    1,2                                                              
+         ST    1,C                                                              
+         BR    14                                                               
+A        DC    F'41'                                                            
+B        DC    F'-7'                                                            
+C        DC    F'0'                                                             
+         END                                                                    
+                                                                                
+  . SIMULATE EXECUTION                                                          
+  . WHAT DOES PROGRAM DO?                                                       
+  . SHORTEN PROGRAM?                                                            
+                                                                                
+      - USE LPR INSTRUCTION                                                     
+ASSEMBLY LANGUAGE FORMAT AND CONVENTIONS                                        
+________________________________________                                        
+SOURCE PROGRAM                                                                  
+                                                                                
+       LABEL    OPERATION                                                       
+       (COL 1)  (COL 10)             COMMENT                  NO-MAN'S          
+       :        :                    (COL 31)                 LAND              
+       V        V     OPERANDS       :                        (COL 72-78)       
+                      (col 16)       :                                          
+       EXAMPLE  START                V                                          
+                USING BEG,15                                                    
+       BEG      L     1,X            LOAD X                                     
+                A     1,Y            ADD Y                                      
+                ST    1,Z            STORE SUM IN Z                             
+                BR    14                                                        
+       *DATA DEFINITIONS (THIS IS AN ENTIRE LINE OF COMMENT)                    
+       X        DC    F'48'                                                     
+       Y        DC    F'36'                                                     
+       X        DC    F'0'                                                      
+                END                                                             
+                                                                                
+FIELDS                                                                          
+   -LABEL - 1-8 ALPHANUMERIC CHARACTERS STARTING IN COLUMN 1                    
+            BEGINNING WITH ALPHABETIC CHARACTER.                                
+                                                                                
+   -OPERATION - 370 MNEMONIC OP CODE OR ASSEMBLER "PSEUDO-OP"                   
+                (E.G., START, USING, DC, END)                                   
+                                                                                
+   -OPERAND - REFERENCES TO REGISTERS AND/OR SYMBOLIC MEMORY ADDRESSES          
+                                                                                
+   -COMMENTS - OPTIONAL, BUT HIGHLY RECOMMENDED.                                
+                                                                                
+                                                                                
+NOTES:                                                                          
+                                                                                
+ 1.  COMMENT CARD STARTS WITH *                                                 
+ 2.  COLUMN 72 RESERVED FOR CONTINUATION CODE                                   
+ 3.  COLUMNS 73-80 CAN BE USED FOR SEQUENCE NUMBERS.                            
+                                                                                
+                                                                                
+BINARY NUMBER SYSTEM                                                            
+--------------------                                                            
+ . INTERNALLY ALL DATA IN THE 370 IS IN 1'S AND 0'S                             
+ . A 32-BIT DATA WORD INTERNALLY MIGHT LOO LIKE:                                
+                 ___________________________________                            
+          DATA1 :00000000 00000000 00001010 00010001:                           
+                :___________________________________:                           
+ . THUS, IT IS USEFUL TO BE ABLE TO DETERMINE EQUIVALENCE BETWEEN               
+   BINARY (FOR 370) AND DECIMAL (FOR US).                                       
+                                                                                
+ . WHAT IS A NUMBER?                                                            
+                  2      1      0                                               
+      246   = 2X10 + 4X10 + 6X10                                                
+         10                                                                     
+                    3     2     1     0                                         
+   THUS, 1101  = 1X2 + 1X2 + 0X2 + 1X2  = 13                                    
+             2                              10                                  
+                                                                                
+   OR IN SHORTHAND:   1   1   0   1                                             
+                                   2                                            
+                     (8) (4) (2) (1)                                            
+                                                                                
+                      8 + 4 + 0 + 1 = 13                                        
+                                        10                                      
+                                                                                
+PROBLEMS WITH BINARY AND DECIMAL NUMBER SYSTEMS                                 
+                                                                                
+ . PROBLEMS WITH BINARY NUMBER SYSTEM REPRESENTATION                            
+    - NUMBERS ARE VERY LONG AND AWKWARD                                         
+      (E.G., 00000000 00000000 00001010 000100001)                              
+    - BINARY SUBFIELDS REQUIRE CONVERSION TO DECIMAL BEFORE THEY CAN BE         
+      PROCESSED BE HUMANS (E.G., AR  2,1 INTERNALLY IS 00011010 0010 0001       
+                                                          AR      2    1        
+ . PROBLEMS WITH DECIMAL NUMBER SYSTEM REPRESENTATION                           
+    - DIFFICULT FOR HUMANS TO SWITCH BETWEEN BENARY AND DECIMAL REP.            
+    - DIFFICULT TO FIND SUBFIELDS (AR 2,1 BECOMES 6689  , THE 2 & 1?)           
+                                                      10                        
+HEXADECIMAL NUMBER SYSTEM                                                       
+----------- ------ ------                                                       
+                                                                                
+HEXADECIMAL (BASE 16) NUMBER SYSTEM REPRESENTATION IS A GOOD COMPROMISE.        
+                                                                                
+ . HEX USES 16 HEX DIGITS (HEXITS OR "HITS")                                    
+    - 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F                     2                     
+    - SEE CONVERSION TABLES ON CARD, PANNEL 16. 246  =2X16 +4X16+6 =582         
+                                                   16               10          
+ . ADVANTAGES OVER BINARY                                                       
+    - NUMBERS MUCH MORE CONPACT BY A FACTOR OF FOUR                             
+    - SUBFIELDS ARE EASILY PROCESSED (AR 2,1 VIEWED IN HEX AS 1A 2 1)           
+                                                              AR 2,1            
+ . ADVANTAGES OVER DECIMAL                                                      
+    - EASY TO SWITCH BINARY  0000 0000 0000 0000 0000 1010 0001 0001            
+                       TO                                           2           
+                        HEX   0    0    0    0    0    A    1    1              
+                                                                  16            
+                                                                                
+    - EASY TO DECOMPOSE SUBFIELDS                                               
+                                                                                
+ . THUS, HEX MOST COMMON FOR REPRESENTING INTERNAL DATA                         
+ . HEX CONVERSION:  0000=0  0100=4  1000=8  1100=C                              
+                    0001=1  0101=5  1001=9  1101=D                              
+                    0010=2  0110=6  1010=A  1110=E                              
+                    0011=3  0111=7  1011=B  1111=F                              
+                                                                                
+                                                                                
+                                                                                
+*******************ASSEMBLER OUTPUT************************************         
+                                                                                
+                                 EXTERNAL SYMBOL DICTIONARY                     
+SYMBOL    TYPE   ID   ADDR  LENGTH LDID                                         
+EXAMPLE    SD   0001 000000 00001C                                              
+                                                                                
+  LOC  OBJECT CODE ADDR1  ADDR2   STMT  SOURCE STATEMENT                        
+000000                            1 EXAMPLE  START                              
+                          00000   2          USING *,15                         
+000000 5810 F010   00010          3          L     1,X      GET X               
+000004 5A10 F014   00014          4          A     1,Y      ADD Y               
+000008 5010 F018   00018          5          ST    1,Z      SUM AT Z            
+00000C 07FE                       6          BR    14       RETURN              
+00000E 0000                                                                     
+000010 00000030                   7 X        DC    F'48'                        
+000014 00000024                   8 Y        DC    F'36'                        
+000018 00000000                   9 Z        DC    F'0'                         
+                                 10          END                                
+                                                                                
+                                     CROSS-REFERENCE                            
+SYMBOL    LEN   VALUE   DEFN    REFERENCES                                      
+X        00004 00000010 00007  00003                                            
+Y        00004 00000014 00008  00004                                            
+Z        00004 00000018 00009  00005                                            
+                                     ASSEMBLER DIAGNOSTICS AND STATISTICS       
+                                                                                
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY                                          
+HIGHEST SEVERITY WAS 0                                                          
+OPTIONS FOR THIS ASSEMBLY-ALIGN,ALOGIC,BUFSIZE(STD),NODECK,ESD,FLAG(0),         
+LINECOUNT(55),LIST,NOMCALL,NOYFLAG,NOMLOGIC,NUMBER,OBJECT,NORENT,RLD,           
+STMT,NOLIBMAC,TERMINAL,NOTEST,XREF(SHORT),SYSPARM()                             
+                                                                                
+WORK FILE BUFFER SIZE = 7294                                                    
+TOTAL RECORDS READ FROM SYSTEM INPUT        10                                  
+TOTAL RECORDS READ FROM SYSTEM LIBRARY       0                                  
+TOTAL RECORDS PUNCHED                        3                                  
+TOTAL RECORDS PRINTED                       34                                  
+                                                                                
+                                                                                
+**********************LOADER OUTPUT AND CORE DUMP************************       
+                LOAD ADDRESS OR ENTRY POINT                                     
+              /                                                                 
+EXAMPLE  SD 020000                                                              
+                                                                                
+            020000    5810F010  5A10F014  5010F018  07FE0000                    
+            020010    00000030  00000024  00000000  00000000                    
+            020020    00000000  00000000  00000000  00000000                    
+                                                                                
+*************************************************************************       
+                                                                                
+NOTE:                                                                           
+ 1.  INSTRUCTION AND DATA CONVERSION                                            
+ 2.  SYMBOL TABLE                                                               
+ 3.  DIAGNOSTICS                                                                
+ 4.  WHERE LOADED IN MEMORY                                                     
+ 5.  CORE DUMP                                                                  
+       - LOCATE:  (A) FIRST INSTRUCTION                                         
+                  (B) X & Y                                                     
+                  (C) Z                                                         

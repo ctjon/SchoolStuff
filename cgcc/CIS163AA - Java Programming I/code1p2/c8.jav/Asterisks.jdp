@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Asterisks
+Location=C:\MIKES FILES\BOOKJ11\C8.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Asterisks.java=1
+Asterisks.html=1
+
+[Visualforms]
+Asterisks.java=1
+Asterisks.html=0

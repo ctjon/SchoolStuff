@@ -1,0 +1,60 @@
+From salas-m Wed Oct 28 01:57:17 1992
+Received: by plains.NoDak.edu; Wed, 28 Oct 1992 01:57:15 -0600
+Date: Wed, 28 Oct 1992 01:57:15 -0600
+From: "Juan P. Salas" <salas-m>
+Message-Id: <199210280757.AA09805@plains.NoDak.edu>
+To: langowsk, salas-m, tjon
+Subject: cs366:Grade
+Status: R
+
+
+7) Chris Tjon (~tjon) & Mike Langowski (~langowsk)
+
+A few comments:
+
+I would like to see a better explanation of the program.
+A one line comment will not suffice a few weeks later in the quarter.
+Every procedure/functions should have a few comments at the beginning.
+
+delete_client & delete_supply
+change_client & change_supply
+The above functions are repeated. If the number of files is 10, 
+would you write 10 deletes and 10 changes? 
+
+The hand out very clearly states in "what to hand in", that you
+should hand in the error.log file.
+
+Transactions DL SP 7  and CH SP 25 amount=17 are reported
+as errors.  While it can be argued that deleting or changing records
+that do not exist in the database should be reported as errors.
+It's not an invalid transaction
+
+Points: 11/15
+
+
+
+From salas-m Wed Oct 28 02:22:23 1992
+Received: by plains.NoDak.edu; Wed, 28 Oct 1992 02:22:14 -0600
+Date: Wed, 28 Oct 1992 02:22:14 -0600
+From: "Juan P. Salas" <salas-m>
+Message-Id: <199210280822.AA10778@plains.NoDak.edu>
+To: dsatrom, roe, struchy, njos, lothspei, minerich, madsen, trappen.langowsk,
+        diehl, schmaltz, sharter, mmyhre, gunderso, manteuff.pfeifer, rpfeifer,
+        axtman, riordan, sbadinge, leach, jakubows, tjon.roehrich, glaeske,
+        ege, cossette, engebret.salas-m, soloviev, freadhof, conner, howatt,
+        bye, wetzstei, salas-ma
+Subject: CS366:Forgotten Comments
+Status: R
+
+
+I would like to remind you that 
+there is a difference between reading character at a time
+and reading line at a time.
+
+Since we are reading transactions/queries and we are dealing
+with databases, it is considerable better to execute/read
+transactions/queries at a time.
+
+thanks
+-Juan
+

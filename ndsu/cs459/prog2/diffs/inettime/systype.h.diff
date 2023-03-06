@@ -1,0 +1,19 @@
+*** systype.h	Tue Feb  1 10:14:34 1994
+--- ../inettime.orig/systype.h	Tue Feb  1 13:25:45 1994
+***************
+*** 38,44 ****
+  #define	CELERITY 1	/* hardware */
+  #define	BSD	 1	/* OS type */
+  #else
+! /* what type of unix system is this */
+  #endif	/* accel */
+  #endif	/* i386 */
+  #endif	/* mc68k */
+--- 38,44 ----
+  #define	CELERITY 1	/* hardware */
+  #define	BSD	 1	/* OS type */
+  #else
+! what type of unix system is this
+  #endif	/* accel */
+  #endif	/* i386 */
+  #endif	/* mc68k */

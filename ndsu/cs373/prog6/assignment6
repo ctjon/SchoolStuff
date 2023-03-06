@@ -1,0 +1,120 @@
+    Fall 1993                 EE/CS 373 - Program #6                  Gammill
+
+
+    Due: At class on Wednesday, November 10, 1993.
+
+           (LATE HOMEWORK ONLY IF YOU TURN IN A WRITTEN DELAY CONTRACT)
+
+    You  are  provided  a  fragment  of code (attached) which initializes the
+    Motorola MC68230 Parallel Interface/Timer (PI/T) chip on the ECB to allow
+    you to use the timer interrupt to execute the scheduler  (that  you  were
+    given  for  Progam  #5).  You are to keep your PRINT calls in each of the
+    user processes, and to keep the scheduler just as it is,  executing  each
+    of  the  user  processes  5 times in round-robin order.  Thus, instead of
+    TRAP #0 (remove these) to the scheduler you  will  now  do  an  interrupt
+    (under   timer   control,   after  a  delay  of  0.4  seconds)  which  is
+    "asynchronous" with the software.  The major problem with  this  is  that
+    the  interrupts  can also occur while you are in the TUTOR monitor inside
+    TRAP #14, in which case your scheduler will start up  the  other  process
+    which  will do a TRAP #14 also.  Since we don't know if the TUTOR monitor
+    is re-entrant, this could be a serious problem.  So, to prevent this  you
+    must  intercept  the  TRAP  #14  call  on  the  monitor  and  disable all
+    interrupts (ORI #$700,SR) before JMPing on to the location where TRAP #14
+    normally vectors to.
+
+    Your interrupt service routine has the responsibility for  resetting  its
+    interrupt  (acknowledging  to  the interrupt circuitry that the interrupt
+    has been "serviced") before it jumps to GOSUPER.  To reset  (acknowledge)
+    the timer interrupt you must write a "1" to bit 0 of location $10035.
+
+    All  registers of the 68230 are 8 bits wide, and located at odd locations
+    starting at $10001 in the ECB.  In particular, the pre-load register  for
+    the  timer is located at 4 locations:  $10025, $10027, $10029, $1002B and
+    the 4 bytes of the delay value must be placed in these  locations  (using
+    the  MOVEP  instruction,  see  the  code).  For clarification of this and
+    other issues you may not understand about TUTOR, the 68230 and  the  ECB,
+    be  sure  to check the "MC68000 Educational Computer Board User's Manual"
+    and the 68230 manual, both of which are on the shelf in EEE218.
+
+    There are several other registers which you  will  have  to  set  in  the
+    68230.   The one for which I have not given you all the code is the Timer
+    Interrupt Vector Register (TIVR) ($10023).  In this register you must put
+    the vector number (machine address divided by 4) where you will put  your
+    interrupt  vector  address,  just like you put your vector for TRAP #0 in
+    location $80.  I suggest you put your  vector  at  location  $200,  which
+    means  you put $80 into TIVR.  There are MANY other registers involved in
+    this program, but we will either explain those in class or you  can  read
+    about them in the 68230 manual.
+
+    When  you run the program on the ECB, as described above (with interrupts
+    disabled inside TRAP #14) you will discover something interesting.   Your
+    user  processes  will  still  be  rescheduled  during the TRAP #14 OUTPUT
+    routine (D7=243), and this is because that routine must enable interrupts
+    to do output of the characters.  When it enables interrupts for the  6850
+    ACIA  to do output to the terminal, it also allows the timer interrupt to
+    snatch control away from it.  The result is an unpleasant looking output,
+    but you should inspect that output carefully to prove to yourself that NO
+    CHARACTERS HAVE BEEN LOST!  Do not discard this result, but turn in a  LG
+
+
+                                      - 1 -
+    Fall 1993                 EE/CS 373 - Program #6                  Gammill
+
+
+    file  and  the  source code for this version of your program showing that
+    you  were  able  to  get  the   scheduling   to   work   correctly   (AND
+    ASYNCHRONOUSLY)  although  the  output function works poorly since we are
+    not providing exclusive access to it.
+
+    For the final phase of this  problem  add  to  your  TRAP  #14  intercept
+    routine the capability to test for D7 equal to 243, and when this matches
+    you  should  set a FLAG (or semaphore) indicating that you will be inside
+    the monitor OUTPUT routine, then simulate a TRAP (push a  return  address
+    and SR on the system stack) and jump to the TRAP #14 entry point.  Now if
+    a  timer  interrupt  happens, and the FLAG is set, you should set another
+    SFLAG (scheduling flag) indicating that the scheduler needs to be  called
+    at  the  first  convenient time (but NOT now).  Now, when control returns
+    from TRAP #14 (D7=243 the OUTPUT routine) you  should  reset  both  flags
+    (FLAG and SFLAG) but if SFLAG was turned on you should jump to GOSUPER to
+    schedule  the other user process.  Notice that this will work even though
+    we got into supervisor mode through a TRAP  #14  (because  the  TRAP  and
+    interrupt put the same stuff on the stack).  Turn in a LG file and source
+    code  for this version of your program as well.  Running LG slows the ECB
+    down a LOT, so you may need to make the 68230 timer delay  a  lot  larger
+    than  .4  second  (50000) to have the output look nice.  Now each line of
+    output should be complete, but notice that the scheduling may  appear  to
+    be  pretty  unfair,  with one process getting more CPU attention than the
+    other.  Why is that?
+
+    The report on this problem consists of:
+      - written description (problem description, solution  to  the  problem,
+        both parts)
+      - flowchart of the TRAP #14 and timer interrupt handling
+      - program listings (two of them)
+      -  two  runs  of  your  program on an ECB.  Do this by downloading your
+        object file S-records to the ECB (see Info/download.ecb).  Be sure to
+        use LG to provide a hardcopy of each run showing the  results  output
+        by your PRINT subroutine.
+
+    * INITIALIZATION CODE FOR THE TIMER INTERRUPT!
+    TR14LOC EQU     $BEB8           ; LOCATION OF TRAP #14 HANDLER
+            RESET                   ; ALWAYS DO THIS TO INSURE CLEAN 68230
+            LEA     $10000,A5       ; PUT BASE ADDRESS OF 68230 IN A5
+            MOVE.L  #50000,D0       ; PUT COUNT FOR 0.4 SECOND DELAY IN D0
+            MOVEP.L D0,$25(A5)      ; PUT DELAY IN COUNTER PRELOAD REG
+            MOVE.B  #????/4,$23(A5) ; LOAD TIVR WITH VEC # (FILL IN ????)
+            MOVE.B  #$A1,$21(A5)    ; SET TCR - START THE TIMER - ENABLE INT
+    *   your code goes in here
+
+    DONE    MOVE.B  #0,$21(A5)      ; DISABLE TIMER
+            MOVE    #$2700,SR       ; DISALLOW INTS
+            MOVE.B  #228,D7         ; PUT RESTART OP-CODE FOR TUTOR IN D7
+            TRAP    #14             ; GO TO TUTOR
+    *                       THE FOLLOWING IS THE TIMER SERVICE CODE
+    TIRQ    MOVE.B  #1,$10035       ; CLEAR ZERO DETECT BIT (SERVICE INT)
+    STATUS  EQU     $0100           ; BE SURE TO CHANGE THIS IN YOUR CODE
+
+
+
+
+                                      - 2 -

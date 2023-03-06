@@ -1,0 +1,38 @@
+16
+36
+0
+28
+UNIT DEMO1
+                              N        EQU  4                    ;ARRAY SIZE  
+    INITLOOP MACRO  AA,BB              ;MACRO FOR INITIALIZING A LOOP         
+             MOVH  AA,R5               ;R5 IS USED AS THE COUNTER             
+             MOVH  BB,R4               ;R4 IS USED TO HOLD THE ADDRESS        
+             MOVH  #0,R0               ;R0 AND R1 ARE FOR ACCUMLATING         
+             MOVH  R0,R1               ;THE SUM                               
+             ENDM                                                             
+                            PROGRAM DPADD                                     
+0000                          STACK    DH    8                                
+0010                          ARRAY    DW    2(1C02FC14H,2801AH) ;ARRAY TO BE 
+       FC14 1C02 801A 0002
+       FC14 1C02 801A 0002
+0020                          SUM      DW    1                   ;WORD FOR HOL
+                                       INITLOOP  #N,#ARRAY       ;LOOP INITIAL
+0024   EEA8 0004       NX              MOVH  #N,R5                            
+0028   EEA0 0010      R X              MOVH  #ARRAY,R4                        
+002C   EE80 0000        X              MOVH  #0,R0                            
+0030   E008             X              MOVH  R0,R1                            
+0032   4940                   ADDLP    ADDH  [R4]+,R0            ;LOOP FOR ADD
+0034   6948                            ADCH  [R4]+,R1            ;TO THE SUM  
+0036   9EA8 0001                       SUBB  #1,R5                            
+003A   053E FFF4                       BRNE  ADDLP                            
+003E   E03B      0020 R                MOVH  R0,SUM              ;STORE THE SU
+0042   E23B      0022 R                MOVH  R1,SUM+2                         
+0046   0003                            RETN                      ;RETURN TO TH
+                            ENDP                                              
+END                                                                             
+50
+$8008 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $8008 $FC14 $1C02 
+$801A $0002 $FC14 $1C02 $801A $0002 $8002 $0000 $0000 $0410 $EEA8 $0004 
+$4411 $EEA0 $0010 $0412 $EE80 $0000 $0213 $E008 $0214 $4940 $0215 $6948 
+$0416 $9EA8 $0001 $0417 $053E $FFF4 $1418 $E03B $0020 $1419 $E23B $0022 
+$021A $0003 

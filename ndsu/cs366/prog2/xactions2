@@ -1,0 +1,20 @@
+IN SP supply_order=79 name=di amount=78 city=chi
+IN CL client_name=hb age=68 city=bis
+DL SP 45
+IN SP supply_order=12 name=hi amount=34 city=wap
+IN CL client=ez age=22 city=gfs
+CH CL 19 city=chi
+IN SP name=ck amount=24 city=dls
+IN CL client_name=cp age=45 city=zap
+DL SP 32
+IN SP supply_order=61 name=ck amount=24 city=dls
+CH CL gp city=chi
+DL SP 85
+IN CL client_name=dk age=24 city=gfs
+IN SP supply_order=87 name=su amount=43 city=bis
+IN CL client_name=ar age=38 city=bis
+DL SP 1
+IN SP supply_order=4 name=ma amount=125 city=chi
+CH CL gq city=sfc
+IN SP supply_order=7 name=hd amount=325 city=sfc
+CH SP 19 city=chi

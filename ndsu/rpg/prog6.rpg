@@ -1,0 +1,161 @@
+@RUN,A FILE7,MHD170863344/CIS170030,CIS170,2,10                          
+@PASSWD 863344                                                            
+@RPG,IS SOURCE,REL                                                        
+00100H            
+00200F********************************************************
+00210F*                                                      *
+00220F*                PROGRAM DESCRIPTION                   *
+00230F*                                                      *
+00231F*     Name : Todd Frieze           Date : 5/04/90      *
+00232F*  Program : Program 7         Due Date : 5/12/90      *
+00233F*    Class : CIS 170            Teacher : Mr. Meier    *
+00234F*     Time : 8:00 a.m.                                 *
+00235F*                                                      *  
+00237F*     The following program will read data from an     *
+00239F* input card, the data consists of information dealing *
+00241F* with depreciation.  The program will make a deprec.  *
+00243F* schedule, and will print the new depreciation amount *
+00245F* each time.                                           *
+00350F*                                                      *   
+00360F********************************************************              
+02000F*
+02010FA-TRPRT IP  F      80            READ005SYSIPT                      
+02020FREPORT  O   F     132     OF     PRINTERSYSLST                      
+02025F*
+02030I********************************************************
+02040I*                                                      *
+02050I*              VARIABLES USED IN PROGRAM               *
+02052I*                                                      *
+02054I*   ITEM   -- loan number                              *
+02056I*   DESCRP -- product bought for which needed a loan   *
+02058I*   DATE   -- date the loan was given                  *
+02060I*   FDATE  -- "                     "                  *
+02062I*   COST   -- amount of the loan                       *
+02064I*   LIFE   -- life of the loan                         *
+02103I*                                                      *    
+02700I********************************************************
+02900I*                                    
+03075IA-TRPRT AA  01            
+03080I                                        1   50ITEM  L1
+03095I                                        6  20 DESCRP
+03100I                                       21  260DATE
+03100I                                       21  260FDATE
+03102I                                       25  260YEAR
+03105I                                       27  332COST
+03107I                                       34  350LIFE
+03143I*
+03145I********************************************************
+03147C*                                                      *
+03149C*        DEFINITIONS OF COMPUTATION VARIABLES          *
+03151C*                                                      *
+03153C*  DEPREC -- amount of depreciation per year           *
+03155C*  VALUE  -- amount of loan left over after each year  *
+03187C*                                                      *
+03189C********************************************************
+04000C*
+04010C   01      COST      DIV  LIFE      DEPREC  72H      * deprec. value
+04130C           COST      SUB  DEPREC    VALUE   72H      * value after 1
+04132C                                                     * yr deprection
+04133C*
+04156C           YEAR      ADD  1         YEAR             * adds 1 to yr
+04158C                     MOVE YEAR      DATE             * for each yr 
+04160C*                                                    * of deprec.
+04134C****************************
+04136C*       CONTROLLED LOOP    *
+04138C****************************
+04140C*
+04142C           LOOP      TAG
+04144C                     EXCPT
+04146C*
+04148C   55                SETOF                     55OF  * set switches 
+04150C   OF                SETON                     55    * off & on
+04152C                     SETOF                     L1    * when needed
+04154C*
+04156C           1         ADD  YEAR      YEAR             * adds 1 to yr
+04158C                     MOVE YEAR      DATE             * for each yr 
+04160C*                                                    * of deprec.
+04162C*
+04164C           LIFE      COMP 2                    10  15* compares life
+04166C           VALUE     SUB  DEPREC    VALUE            * subs deprec.
+04168C           LIFE      SUB  1         LIFE             * subtract 1 yr
+04170C*
+04172C   15                                                * end of loop
+04174C*                                             
+04180COR 10                GOTO LOOP                       * continue loop
+04182C*
+05000C********************************************************
+05002O*                                                      *
+05004O*               PRINTS REPORT FORMAT                   *
+05006O*                                                      *
+05008O********************************************************
+05010O*
+05012OREPORT  H  201   1P                                                 
+05014O       OR        OF               
+05016O*
+05018O*************************************                     
+05020O*   PRINTS HEADER LINE FOR REPORT   *
+05022O*************************************            
+05024O                         UDATE Y    8                               
+05026O                                   50 'SCHEDULE OF'            
+05028O                                   64 'DEPRECIATION'
+05032O                                   96 'PAGE'               
+05034O                         PAGE  Z  101                               
+05036O*
+05068O*************************************                     
+05070O* PRINTS MAIN HEADER LINE OF REPORT *
+07072O*************************************            
+05074O        H  1     1P                                                
+05076O       OR        OF
+05080O                                    5 'ITEM'
+05082O                                   22 'ITEM'
+05084O                                   36 'DATE'
+05086O                                   50 'ORIGINAL'
+05086O                                   62 'ESTIMATED'
+05086O                                   73 'ANNUAL'
+05086O                                   87 'YEAR-END'
+05086O                                  101 'DEPRECIATED'               
+05088O*
+05090O*************************************                     
+05092O* PRINTS MAIN HEADER LINE OF REPORT *
+05094O*************************************            
+05096O        H  2     1P
+05098O       OR        OF                                                 
+05100O                                    6 'NUMBER'
+05105O                                   25 'DESCRIPTION'
+05110O                                   38 'ACQUIRED'
+05115O                                   48 'COST'
+05120O                                   59 'LIFE'
+05125O                                   76 'DEPRECIATION'
+05130O                                   85 'DATE'
+05135O                                   98 'VALUE'
+05140O*
+05142O*************************************                     
+05144O*  PRINTS OUT DETAIL LINE OF REPORT *
+05146O*************************************            
+05148O        EF 1     01
+05150O                 L1      ITEM       6
+05152O                 L1      DESCRP    27
+05157O                 L1      FDATE Y   38
+05156O                 L1      COST  1   50
+00000O                 L1      LIFE      58
+00000O                 L1      DEPREC1   76
+05150O                 OF      ITEM       6
+05152O                 OF      DESCRP    27
+05157O                 OF      FDATE Y   38
+05156O                 OF      COST  1   50
+00000O                 OF      LIFE      58
+00000O                 OF      DEPREC1   76
+05154O                         DATE  Y   87
+00000O                         VALUE 1  100
+05168O*
+06000O********************************************************
+06010O*                                                      *
+06020O*                 DATA FOR PROGRAM                     *
+06030O*                                                      *
+06040O********************************************************
+@XQT
+13224PRESS          061376360000036
+12273CRANE          051476400000020
+13778BUILDING       051776850000040
+14297AUTOMOBILE     060276190000006
+@FIN                                                                      

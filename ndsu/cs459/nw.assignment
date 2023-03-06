@@ -1,0 +1,217 @@
+							Chris Tjon
+							CS459
+							Netwatch Assignment
+							14 March 1994
+
+
+For this assignment we used netwatch 9.6 to capture information about network
+activity within the cs459 Pentium cluster(IACC 160).  The following procedure
+was followed:
+
+	 1) boot one of the systems with MS-DOS
+	 2) obtain netwatch software, netdev.sys driver, wd8003e.com driver
+	 3) install netdev.sys by adding the following line to c:\config.sys:
+	 	device=c:\net\netdev.sys
+	    install wd8003e.com packet driver by adding the following line to
+	    c:\autoexec.bat:
+	 	c:\net\wd8003e 0x60 5 0x280 0xd000  
+	    0x60   = packet int no
+	    5      = interrupt used by network card
+	    0x280  = I/O port used by network card
+	    0xd000 = memory address used by network card
+	 4) reboot the system
+	 5) initiate netwatch
+	 6) open a netwatch logfile (f)
+	 7) initiate a ping of stallman.cs.ndsu.nodak.edu(134.129.125.193)
+	    from bourne.cs.ndsu.nodak.edu(134.129.125.196)
+	 8) capture some packets and close logfile(F)
+	 9) exit netwatch
+	10) upload logfile to a unix system with real tools
+	11) use od -x to view log file in hexadecimal-human readable format
+	    (note: on FreeBSD systems the od output is little endian)
+
+Information about systems used:
+
+joy.cs.ndsu.NoDak.edu (134.129.125.192) at 0:0:c0:d8:31:48
+	IP address in hexadecimal                 = 86 81 7d c0
+	IP address in hex and little endian       = 81 86 c0 7d
+	Ethernet address in hexadecimal           = 0000 c0d8 3148
+	Ethernet address in hex and little endian = 0000 d8c0 4831
+
+stallman.cs.ndsu.NoDak.edu (134.129.125.193) at 0:0:c0:ca:f9:86
+	IP address in hexadecimal                 = 86 81 7d c1
+	IP address in hex and little endian       = 81 86 c1 7d
+	Ethernet address in hexadecimal           = 0000 c0ca f986
+	Ethernet address in hex and little endian = 0000 cac0 86f9
+
+bourne.cs.ndsu.NoDak.edu (134.129.125.196) at 0:0:c0:de:f8:86
+	IP address in hexadecimal                 = 86 81 7d c4
+	IP address in hex and little endian       = 81 86 c4 7d
+	Ethernet address in hexadecimal           = 0000 c0de f886
+	Ethernet address in hex and little endian = 0000 dec0 86f8
+
+
+Upon issuing the ping the following process occurs(assumes a ping from bourne
+to stallman)
+
+	1) bourne arps the name server(joy) to obtain its ethernet address
+	2) bourne asks the name server for IP info about stallman
+	3) bourne arps stallman to obtain its ethernet address
+	4) bourne uses ICMP to ping stallman
+
+The following is the structure of an ARP packet.  This is taken directly
+from /usr/include/netinet/if_ether.h
+/*
+ * Ethernet Address Resolution Protocol.
+ *
+ * See RFC 826 for protocol description.  Structure below is adapted
+ * to resolving internet addresses.  Field names used correspond to 
+ * RFC 826.
+ */
+struct	ether_arp {
+	struct	arphdr ea_hdr;	/* fixed-size header */
+	u_char	arp_sha[6];	/* sender hardware address */
+	u_char	arp_spa[4];	/* sender protocol address */
+	u_char	arp_tha[6];	/* target hardware address */
+	u_char	arp_tpa[4];	/* target protocol address */
+};
+
+The following are the first two ethernet packets transmitted along the net.
+These are ARP packets.  You can tell this by the 0x0806 shown in the 13th and
+14 bytes(note 0x0806 is 0608 in little endian).
+
+ffff    ffff    ffff    0000    dec0    86f8    0608    0100
+0008    0406    0100    0000    dec0    86f8    8186    c47d
+0000    0000    0000    8186    c07d    0100    0001    0100
+0000    0000    0000    3103    3239    3103    0000    0040
+
+0000    dec0    86f8    0000    d8c0    4831    0608    0100
+0008    0406    0200    0000    d8c0    4831    8186    c07d
+0000    dec0    86f8    8186    c47d    0100    0001    0100
+0000    0000    0000    3103    3239    3103    0068    0040
+
+
+The following is the structure of the ethernet packet.  This is taken
+directly from /usr/include/netinet/if_ether.h
+
+	struct	ether_header {
+		u_char	ether_dhost[6];
+		u_char	ether_shost[6];
+		u_short	ether_type;
+	};
+	
+	#define	ETHERTYPE_PUP	0x0200		/* PUP protocol */
+	#define	ETHERTYPE_IP	0x0800		/* IP protocol */
+	#define ETHERTYPE_ARP	0x0806		/* Addr. resolution protocol */
+	
+	/*
+
+In the case of the first packet we see the following ethernet header:
+	ffff    ffff    ffff    0000    dec0    86f8    0608
+Or in english:
+	ether_dhost(to):     unknown because it is an arp
+	ether_shost(from):   00:00:c0:de:f8:86
+	ether_type:          0x0806 = ARP Packet
+
+For the purpose of this assignment and ethernet from address is defined as
+the physical and permanent hardcoded address stored in the ethernet hardware 
+roms.  The same is true for the ethernet to addresses.  IP to and from
+addresses are defined as a logical mapping between an ethernet address and a
+dynamic system address.  This allows flexible host and location addressing
+independent of the ethernet hardware.
+
+In this example we show 18 packets from the logfile(values are in hex):
+
+RED = Ethernet Headers and Trailers
+PINK = ARP Packets
+YELLOW = IP Packets
+
+0000000     ffff    ffff    ffff    0000    dec0    86f8    0608    0100
+0000020     0008    0406    0100    0000    dec0    86f8    8186    c47d
+0000040     0000    0000    0000    8186    c07d    0100    0001    0100
+0000060     0000    0000    0000    3103    3239    3103    0000    0040
+
+0000100     0000    dec0    86f8    0000    d8c0    4831    0608    0100
+0000120     0008    0406    0200    0000    d8c0    4831    8186    c07d
+0000140     0000    dec0    86f8    8186    c47d    0100    0001    0100
+0000160     0000    0000    0000    3103    3239    3103    0068    0040
+
+0000200     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0000220     5a00    d900    0000    111e    3393    8186    c47d    8186
+0000240     c07d    2a04    3500    4600    aa79    0100    0001    0100
+0000260     0000    0000    0000    7308    6174    6c6c    0000    0068
+
+0000300     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0000320     9600    6b30    0000    111e    6563    8186    c07d    8186
+0000340     c47d    3500    2a04    8200    90b4    0100    8385    0100
+0000360     0000    0100    0000    7308    6174    6c6c    0000    00a4
+
+0000400     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0000420     5700    da00    0000    111e    3593    8186    c47d    8186
+0000440     c07d    2b04    3500    4300    4fb1    0200    0001    0100
+0000460     0000    0000    0000    7308    6174    6c6c    0000    0065
+
+0000500     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0000520     9300    6c30    0000    111e    6763    8186    c07d    8186
+0000540     c47d    3500    2b04    7f00    1612    0200    8385    0100
+0000560     0000    0100    0000    7308    6174    6c6c    0000    00a1
+
+0000600     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0000620     5200    db00    0000    111e    3993    8186    c47d    8186
+0000640     c07d    2c04    3500    3e00    0dbb    0300    0001    0100
+0000660     0000    0000    0000    7308    6174    6c6c    0000    0060
+
+0000700     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0000720     8e00    6d30    0000    111e    6b63    8186    c07d    8186
+0000740     c47d    3500    2c04    7a00    fbfd    0300    8385    0100
+0000760     0000    0100    0000    7308    6174    6c6c    0000    009c
+
+0001000     0000    d8c0    4831    0000    dec0    86f8    0008    0045
+0001020     4800    dc00    0000    111e    4293    8186    c47d    8186
+0001040     c07d    2d04    3500    3400    5dd3    0400    0001    0100
+0001060     0000    0000    0000    7308    6174    6c6c    0000    0056
+
+0001100     0000    dec0    86f8    0000    d8c0    4831    0008    0045
+0001120     5800    6e30    0000    111e    a063    8186    c07d    8186
+0001140     c47d    3500    2d04    4400    e538    0400    8085    0100
+0001160     0100    0000    0000    7308    6174    6c6c    0000    0066
+
+0001200     ffff    ffff    ffff    0000    dec0    86f8    0608    0100
+0001220     0008    0406    0100    0000    dec0    86f8    8186    c47d
+0001240     0000    0000    0000    8186    c17d    0300    0001    0100
+0001260     0000    0000    0000    7308    6174    6c6c    0000    0040
+
+0001300     0000    dec0    86f8    0000    cac0    86f9    0608    0100
+0001320     0008    0406    0200    0000    cac0    86f9    8186    c17d
+0001340     0000    dec0    86f8    8186    c47d    0300    0001    0100
+0001360     0000    0000    0000    7308    6174    6c6c    0062    0040
+
+0001400     0000    cac0    86f9    0000    dec0    86f8    0008    0045
+0001420     5400    dd00    0000    01ff    43b2    8186    c47d    8186
+0001440     c17d    0008    5d83    00c7    0000    7d4a    2d88    f3e5
+0001460     000a    0908    0b0a    0d0c    0f0e    1110    0062    0062
+
+0001500     0000    dec0    86f8    0000    cac0    86f9    0008    0045
+0001520     5400    bd52    0000    01ff    6360    8186    c17d    8186
+0001540     c47d    0000    5d8b    00c7    0000    7d4a    2d88    f3e5
+0001560     000a    0908    0b0a    0d0c    0f0e    1110    0000    0062
+
+0001600     0000    cac0    86f9    0000    dec0    86f8    0008    0045
+0001620     5400    de00    0000    01ff    42b2    8186    c47d    8186
+0001640     c17d    0008    7b75    00c7    0001    7d4b    2d88    d5f1
+0001660     000a    0908    0b0a    0d0c    0f0e    1110    0000    0062
+
+0001700     0000    dec0    86f8    0000    cac0    86f9    0008    0045
+0001720     5400    be52    0000    01ff    6260    8186    c17d    8186
+0001740     c47d    0000    7b7d    00c7    0001    7d4b    2d88    d5f1
+0001760     000a    0908    0b0a    0d0c    0f0e    1110    0000    0062
+
+0002000     0000    cac0    86f9    0000    dec0    86f8    0008    0045
+0002020     5400    df00    0000    01ff    41b2    8186    c47d    8186
+0002040     c17d    0008    7b7b    00c7    0002    7d4c    2d88    d5e9
+0002060     000a    0908    0b0a    0d0c    0f0e    1110    0000    0062
+
+0002100     0000    dec0    86f8    0000    cac0    86f9    0008    0045
+0002120     5400    bf52    0000    01ff    6160    8186    c17d    8186
+0002140     c47d    0000    7b83    00c7    0002    7d4c    2d88    d5e9
+0002160     000a    0908    0b0a    0d0c    0f0e    1110    0000    0062

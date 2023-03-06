@@ -1,0 +1,168 @@
+Basic Principles of Patent Protection for Computer Software
+ J. M. Jakes & E.R. Yoches
+
+  US Constitution provides that Congress shall have the power
+
+   "To promote the progress of science and the useful arts by securing for
+   a limited time to authors and inventors, the exclusive right to their
+   respective writings and discoveries."
+
+
+
+PATENT PROTECTION (copyrights in paper 22, both discussed in text also)
+
+ - for many years software was considered unpatentable
+    by US Patent & Trademark Office
+
+      - fell within "unpatentable subject matter
+          - methods of doing business
+          - processes involving human judgment
+          - arrangements of printed matter
+
+      - at one time USP&T considered programs merely algorithms
+        or "principles of nature".  Rejected apps on that basis.
+
+      - after long battle and uncertainty (1960s & 1970s)
+
+
+      - Supreme Court settled issue in favor of patentability
+        (1981 Diamond v. Diehr)
+
+             "Process that would otherwise be patentable would not
+              become unpatentable just because it is executed by computer."
+
+      - Software patents still slow to catch on
+
+      - Now there are many patented programs and patent applications
+
+      - still some confusion about what patents can protect.
+
+
+
+TECHNICALLY:  Computer programs are NOT patentable
+
+  - this is misleading
+
+  - programs themselves are not patentable, but
+
+  - computers operated by programs are patentable.
+    (Programmed computers are MACHINES implementing PROCESSES (both patentable)
+
+  - program that seem unpatentable, may be if properly claimed
+
+
+
+PATENT CLAIMS = portion of patent which defines the invention (at end of patent)
+
+   - in order to get patent, CLAIM must be on proper subject matter (patentable)
+
+   - claims that recite math algorithms purely - not patentable
+
+   - operation of computer or human performing same steps - unpatentable
+     (mental steps doctrine: can't patent mental steps)
+
+   - software containing "methods of doing business" unpatentable.
+
+   - to avoid claiming unpatentable subject matter - claim should define
+     invention in terms of physical elements such as found in computer.
+     Usually possible to do.
+
+   - Claim with proper subject matter (patentable) does not guarantee patent.
+
+
+
+NOVELTY REQUIREMENTS
+
+   - patentable subject matter must be novel.
+
+   - Novelty means no item of "prior art" can contain EVERY element of claim
+
+   - Prior art includes patents and pubs dated 1 year prior to filing,
+     public uses or sales or offers for sale in US >= 1 year prior to filing.
+
+   - If patent app not filed <= 1 year of first offer for sale, may loose rights
+
+
+
+UNOBVIOUSNESS REQUIREMENTS
+
+   - patentable subject matter must be unobvious.
+
+   - tough call (unobvious to whom???)
+
+   - objective tests used (commercial success?...)
+
+
+
+ADEQUATE DISCLOSURE
+
+   - Patentable subject matter, which is novel and unobvious must be
+     properly disclosed (described)
+  
+   - Thus, can't keep best ideas as trade secrets and still get a patent.
+
+   - Must actual code be disclosed??
+
+      - In general, flowcharts, block diagrams.. are acceptable (preferred?)
+
+
+
+AMENDING a REJECTED APPLICATION
+
+When rejected, a patent may be AMENDED as long as no new matter is included.
+
+
+
+APPEALING AFTER REJECTION OF AMENDED APPLICATION
+
+When amended applic is rejected, can appeal to Patent & Trademark Office.
+
+
+
+PATENT PENDING
+
+   - kept secret by P&TO while pending
+
+
+
+MAINTENANCE OF PATENT, ONCE OBTAINED
+
+   - must pay maintenance fees
+
+   - can last up to 17 years (must pay maintenance fees)
+
+   - when patent expires, subject matter becomes public domain
+
+
+
+EXCLUSIVE RIGHTS PROVIDED
+
+   - like a copyright, owner has exclusive rights
+
+   - exclude all others from making, using or selling invention
+
+   - patent stronger than copyright
+
+      - patent infringed even if not copying or KNOWLEDGE of patent by infringer
+
+   - infringement can be established even for "partial infringement"
+
+   - infringement can be established even for "equivalence of function"
+
+      - recent user-interface cases involving "same look and feel"
+
+
+
+TO PATENT OR NOT TO PATENT?
+
+   - practical considerations usually outweigh legal
+
+   - very expensive process
+
+   - long duration process
+
+   - infringement proof difficult and expensive
+
+   - some claim patents stifle innovation and creativity
+
+   - some believe patents encourage innovation and creativity

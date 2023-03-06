@@ -1,0 +1,268 @@
+                                                                     M-1
+                        MACROS
+                        ------
+. ABREVIATION OF CODE - "LAZY MAN'S PROGRAMMING"
+. USES
+  . CLARITY OF CODE
+  . TEXT EDITING
+  . UNDERSTANDING OF "SYSTEM MACROS" AND SYSTEM GENERATION.
+. LIKE FORM LETTER PAGE THAT IS PREPARED AND IS INSERTED WHERE CALLED FOR
+  . IN-LINE CODE
+. ADD 49 TO DATA FIVE TIMES:
+LONG     START
+         USING BEG,15
+BEG      SR    1,1
+         L     1,DATA
+         A     1,=F'49'
+         ST    1,DATA
+         L     1,DATA
+         A     1,=F'49'
+         ST    1,DATA
+         L     1,DATA
+         A     1,=F'49'
+         ST    1,DATA
+         L     1,DATA
+         A     1,=F'49'
+         ST    1,DATA
+         L     1,DATA
+         A     1,=F'49'
+         ST    1,DATA
+         BR    14
+DATA     DC    F'30'
+         END
+. GENERAL FORM OF MACRO DEFINITION:
+                   MACRO
+                   <NAME>
+                   / .\
+                  /  .  \
+                 /  BODY \
+                 \   .  /
+                  \  . /
+                   MEND
+
+. GENERAL FORM OF MACRO CALL
+                  <NAME>
+
+        EVENT   :   ACTION
+-----------------------------------------------------------
+1 SEE MACRO DEF :
+                :
+2 SEE MACRO CALL:
+                :
+3 ANYTHING ELSE :
+                :
+  LAZY MAN'S WAY OF ADDING 49 TO DATA 5 TIMES:
+
+LOC    OBJECT CODE   ADDR1   ADDR2 STMT   SOURCE STATEMENT
+                                       1          MACRO
+                                       2          ADD49
+                                       3          L     1,DATA
+                                       4          A     1,=F'49'
+                                       5          ST    1,DATA
+                                       6          MEND
+000000                                 7 LAZ      START
+                            00000      8          USING BEG,15
+000000 1811                            9 BEG      SR    1,1
+                                      10          ADD49
+000002 5810 F040     00040            11+         L     1,DATA
+000006 5A10 F048     00048            12+         A     1,=F'49'
+00000A 5010 F040     00040            13+         ST    1,DATA
+                                      14          ADD49
+00000E 5810 F040     00040            15+         L     1,DATA
+000012 5A10 F048     00048            16+         A     1,=F'49'
+000016 5010 F040     00040            17+         ST    1,DATA
+                                      18          ADD49
+00001A 5810 F040     00040            19+         L     1,DATA
+00001F 5A10 F048     00048            20+         A     1,=F'49'
+000022 5010 F040     00040            21+         ST    1,DATA
+                                      22          ADD49
+000026 5810 F040     00040            23+         L     1,DATA
+00002A 5A10 F048     00048            24+         A     1,=F'49'
+000025 5010 F040     00040            25+         ST    1,DATA
+                                      26          ADD49
+000032 5810 F040     00040            27+         L     1,DATA
+000036 5A10 F048     00048            28+         A     1,=F'49'
+00003A 5010 F040     00040            29+         ST    1,DATA
+00003E 07FE                           30          BR    14
+31 DATA     DC    F'30'
+32          END
+33                =F'49'
+                        CROSS-REFERENCES
+SYMBOL   LEN   VALUE    DEFN     REFERENCES
+BEG      00002 00000000 00009    00008
+DATA     00004 00000040 00031    00011 00013 00015 00017 00019 00021
+                                             00023 00025 00027 00029
+
+                        LITERAL CROSS-REFERENCE
+=F'49'   00004 00000048 00033    00012 00015 00020 00024 00028
+
+. ADD49 TO TREE DIFFERENT LOCATIONS:
+LONG     START
+         USING BEG,15
+BEG      SR    1,1
+FIRST    L     1,DATA
+         A     1,=F'49'
+         ST    1,DATA
+         L     1,DATA2
+         A     1,=F'49'
+         ST    1,DATA2
+         L     1,DATA3
+         A     1,=F'49'
+         ST    1,DATA3
+         BR    14
+DATA     DC    F'30'
+DATA2    DC    F'42'
+DATA3    DC    F'50'
+         END
+. LAZY MAN'S WAY:
+LOC    OBJECT CODE   ADDR1   ADDR2 STMT   SOURCE STATEMENT
+                                       1          MACRO
+                                       2 &LABEL   ADD49 &NUM,&LOC
+                                       3 &LABEL   L     1,&LOC
+                                       4          A     1,=F'&NUM'
+                                       5          ST    1,&LOC
+                                       6          MEND
+000000                                 7 ARG      START
+                            00000      8          USING BEG,15
+000000 1811                            9 BEG      SR    1,1
+                                      10 FIRST    ADD   49,DATA
+000002 5810 F028     00028            11+FIRST    L     1,DATA
+000006 5A10 F038     00038            12+         A     1,=F'49'
+00000A 5010 F028     00028            13+         ST    1,DATA
+                                      14          ADD   49,DATA2
+00000E 5810 F02C     0002C            15+         L     1,DATA2
+000012 5A10 F038     00038            16+         A     1,=F'49'
+000016 5010 F02C     0002C            17+         ST    1,DATA2
+                                      18          ADD   49,DATA3
+00001A 5810 F030     00030            19+         L     1,DATA3
+00001F 5A10 F038     00038            20+         A     1,=F'49'
+000022 5010 F030     00030            21+         ST    1,DATA3
+000026 07FE                           22          BR    14
+000028 0000001E                       23 DATA     DC    F'30'
+00002C 0000002A                       24 DATA2    DC    F'42'
+000030 00000032                       25 DATA3    DC    F'50'
+                                      26          END
+000038 00000031                       27                =F'49
+
+. GENERAL FORM OF MACRO DEFINITION WITH POSITIONAL ARGUMENTS:
+                   MACRO
+
+    &<PARM0>        <NAME>      &<PARM1>,&<PARM2>,...
+
+                  /  .  \
+                 /  BODY \
+                 \   .  /
+
+                   MEND
+
+. GENERAL FORM OF MACRO CALL WITH POSITIONAL ARGUMENTS:
+
+     <ARG0>       <NAME>       <ARG1>,<ARG2>,...
+. CONCEPT OF POSITIONAL VERSUS KEYWORD PARAMETERS:
+          MACRO
+          ADD    &NUM=49,&LOC=
+          L      1,&LOC
+          A      1,=F'&NUM'
+          ST     1,&LOC
+          MEND
+ARG       START
+          USING  FIRST,15
+FIRST     SR     1,1
+          ADD    NUM=13,LOC=DATA1
+          ADD    LOC=DATA2
+          ADD    LOC=DATA3,NUM=17
+          BR     14
+DATA1     DC     F'18'
+DATA2     DC     F'4'
+DATA3     DC     F'76'
+          END
+
+. CONDITIONAL ASSEMBLY
+  . AIF
+  . AGO
+  . SET
+. GENERAL FORM OF MACRO WITH KEYWORD & POSITIONAL (POSITIONAL COME FIRST)
+                   MACRO
+
+   &<PARM0>        <NAME>    &<PARM1>,..,&<PARM5>,&<PARM6>=,&<PARM7>=21
+
+                 /  BODY \
+                 \   .  /
+
+                   MEND
+
+. GENERAL FORM OF MACRO CALL WITH POSITIONAL ARGUMENTS:
+     <ARG0>       <NAME>      <ARG1>,..,<ARG5>,<ARG6>=10,<ARG7>=11
+. SYMBOLIC PARAMETERS CAN BE CONCATENATED WITH REGULAR SYMBOLS:
+            MACRO                   MACRO
+  .DEFNS:   ADD     &TYPE,&OP       ARITH   &TYPE
+            A&TYPE  1,&OP           &TYPE.R 1,2
+            MEND                    MEND
+
+  .CALLS:   ADD     ,DATA           ARITH   A          ARITH   S
+
+  .RESULTS: A      1,DATA           AR      1,2        SR      1,2
+
+. MACRO PROCESSOR (THAT PART OF ASSEMBLER THAT PROCESSES MACROS-MAY BE A
+                                                        SEPARATE PROGRAM)
+
+                     ____________
+                    : INITIALIZE :
+                    :____________:
+                          :
+                          :<----------------------------------------
+                          :                                  :  :  :
+                          :                                  :  :  :
+                   _______:________                          :  :  :
+                  : READ NEXT CARD :                         :  :  :
+                  :________________:                         :  :  :
+                          :                                  :  :  :
+                          :                                  :  :  :
+                          :                                  :  :  :
+  ______                 / \                                 :  :  :
+ : DONE :<----------no--/END\                                :  :  :
+ :______:               \   /                                :  :  :
+                          \/                                 :  :  :
+                          :yes                               :  :  :
+                          :                                  :  :  :
+                          :                                  :  :  :
+                         /  \          _________________     :  :  :
+                        /MACRO>-yes-->: SAVE DEFINITION :---->  :  :
+                        \DEF /        :_________________:       :  :
+                          \/                                    :  :
+                           :no                                  :  :
+                           :                                    :  :
+                         /  \          ___________________      :  :
+                        /MACRO>-YES-->: INSERT DEFINITION :----->  :
+                        \CALL/        :___________________:        :
+                          \/                                       :
+                           :no                                     :
+                           :                                       :
+                         /  \                                      :
+ ________             / INSTR.\         ________                   :
+:ERROR # :<-------NO-<OR PSEUDO>-YES-->: OUTPUT :----------------->
+:________:            \  OP   /        :________:
+                        \ _ /
+
+OVERVIEW OF THE MACRO PROCESSOR.
+       MACRO
+       XYZ    &A
+       ST     1,&A
+       MEND
+       MACRO
+       MIT    &Z
+       MACRO
+       &Z     &W
+       AR     4,&W
+       XYZ    ALL
+       MEND
+       ST     &Z,ALL
+       MEND
+PROG   START
+       USING  *,15
+       MIT    HELLO
+       ST     2,3
+       HELLO  YALE
+YALE   EQU    5
+ALL    DC     F'3'
+       END

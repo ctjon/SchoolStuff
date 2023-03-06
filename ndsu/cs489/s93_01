@@ -1,0 +1,735 @@
+The purpose of computer systems is to
+hold and process data.
+
+transient data (in queues, stacks,
+              program variables, ...)
+
+persistent data (in files - to be used
+later or in order other than creation
+order - to be reused again and again).
+
+Database Management System (DBMS)
+manages persistent data
+
+So, DBMSs are what Computer Science is
+all about!!!     
+
+Main DBMS models:
+
+* Relational (simple flat files)
+
+* Hierarchical (files with hierarchical links)
+
+* Network (files with record chains)
+
+This is a relational database.
+
+STUDENTS     COURSE           ENROLL      
+._________. ._____________.  .___________.
+|S#|SNAME | |C#|CNAME|SITE|  |S#|C#|GRADE|
+|==|======| |==|=====|====|  |==|==|=====|
+|25|CLAY  | |8 |DSDE |ND  |  |32|8 | 89  |
+|32|THAISZ| |7 |CUS  |ND  |  |32|7 | 91  |
+|38|GOOD  | |6 |3UA  |NJ  |  |25|7 | 68  |
+|17|BAID  | |5 |3UA  |ND  |  |25|6 | 76  |
+|57|BROWN | `-------------'  |32|6 | 62  |
+`---------'                  |38|6 | 98  |
+                             |17|5 | 96  |
+                             ------------
+
+
+HIERARCHICAL MODEL data=records,
+   relationships=links forming tree structure
+
+* EDUCATION example: root type is STUDENT,
+              1st dependent type is COURSE
+ _____________   ______________   _____________
+|25|CLAY|OUTBK| |32|THAISZ|KNOB| |38|GOOD|GATER|
+|__|____|_____| |__|______|____| |__|____|_____|
+        |                |              |
+    |7|CUS|          |8|DSDE|        |6|3UA|
+ ___|_|___|      .___|_|____|        |_|___|
+ |6|3UA| |       |7|CUS |  |            |
+ |__|__| |   .___|_|____|  |            |
+   |     |   |6|3UA|   |   |            |
+   |   _____      |    |  _|___       __|__
+   |  |ND|68|     |    | |ND|89|     |NJ|98|
+  _|___      _____|  __|__
+ |NJ|76|    |ND|62| |ND|91|
+  -----      -----   -----
+
+
+NETWORK MODEL data: by records,
+relationships: owner-member chains (sets)
+(many-to-many relationships represented)
+EDUCATION example: 2 owner-member chains
+    STUDENT-ENROLLMENT COURSE-ENROLLMENT
+    ______________       ________________
+.<|25|CLAY|NJ5101|<. .<|32|THAISZ|NJ5102|< - -.
+.  --------------  . .  ----------------      .
+.       __      __ . .   __       __       __ .
+`- - > |68|- ->|76|' `->|89|- - >|91|- - >|62|'
+    .->`-->. .>`--'>. .>`--'>.  >`--'>- ->`--'>.
+    .      ._._ _ _ ._._ _ _ ._'               .
+    .        .      . .      . .- - - - - - - -'
+    .        .      `-.- - - .-.- - - - - - - -.
+    .        `- - -.  .      . .               .
+.- -.- - - - - - - - -'      . .               .
+.   `_ _ _ _ _     `- - - - -.-.- .            .
+. _________   `-.  ________  . .  .  ________  .
+`|8|DSDE|ND|<.  `<|7|CUS|ND|<.-'  `<|6|3UA|NJ|<'
+  ---------  .     --------  .       --------
+             .               .
+             `- - - - - - - -'
+
+My view (from simplest to most complicated):
+-------------------------------------------
+
+File System				(FS)
+Database Management System		(DBMS)
+Information System or Mgmt Info Sys 	(MIS)
+Knowledgebase Mgmt System 		(KBMS)
+Decision Support System 		(DSS)
+
+
+Database Management System (DBMS):
+   Stores and manages data
+
+
+File System:
+   Just a very simple, manual DBMS.
+
+
+Information System or Mgmt Info Sys (MIS)
+   Stores data and inforamtion -
+   produces & manages information
+
+
+Knowledgebase Mgmt System (KBMS)
+   Stores data, info and rules -
+   produces & manages knowledge
+
+Decision Support System (DSS)
+   or Expert System
+   Stores data, info, rules,
+   procedures -
+   produces decisions or support
+   info for decisions.
+
+
+DECISIONS
+
+The goal of most data gathering is
+to reach a decision on something.
+It is often said that our society
+has become to quantity oriented
+(we quantify everything - give people id#s,
+      score all performances with numbers
+      eg, grades, IQ, olympic scores...).
+Many complain that this "depersonalizes our
+society.  Decisions should be subjective
+and humanized!"
+
+When confronted with that claim
+keep in mind that DECISIONS are
+ultimately binary (yes/no).
+That's the ultimate in quantification!
+
+So someone who insists that we
+reach a binary decision without
+any intermediate quantification
+is being riduculous.
+
+Examples:
+
+1.  Those who say we shouldn't
+use grades (A, B, C, D, F), because
+they dont tell the whole story.
+(yet they know that society will make
+lots of binary decisions such as to
+hire or not, to promote or not.... Would
+they rather that these ultimate quantifications
+be based on nothing????).
+
+2.  Faculty Promotion and Tenure
+decisions:  Evaluation committees
+are constantly harassed for
+"paper counting" and "grant $
+counting" because it over quantifies
+the decision.  Yet the decision
+itself is the ultimate quantification (Y/N)!
+
+
+If we are put in a position of
+authority and are faced with making
+a discrete (most often binary)
+decision, we have a right if not
+an obligation to use intermediate
+quantifications and then hone them
+down to the ultimate decision.  Else
+we are relying on some magic amorphous
+reasoning process which is not well
+structured.  DDS's reach or support
+decisions by quantifying at ever more
+precise levels.  Thus, the criticism that
+DSSs dehumanize is nonsense.  Users of
+DDSs may be criticized for misusing them,
+but the systems themselves, if correctly
+programmed and understood, only aid in
+good decision making.
+
+
+
+Decision making is not an art.
+Decision making is a science.
+
+Don't be intimidated by those who
+insist that you perform the ultimate
+quantification (decided yes/no) without
+benefit of ever-finer intermediate
+quantifications. 
+
+Remind them that the human mind is a
+fantastic pattern recognizer, but the
+poorest context repository in the world
+(humans can hold 7 +- 2 ideas or contexts
+in short-term memory at a time.  If another
+is added, one of the previously held is lost.
+
+
+Remember you parents saying
+ "don't interupt me!  I'm concentrating
+  - translated, that means:
+    "I cannot retain any more contexts"
+
+
+What is the likelihood that the last 7
+thoughts you had are the 7 most important in
+making a decision?
+
+Wouldn't it be better to take
+the hierarchical approach?
+
+Group thoughts into groups of no more than 7
+each, pick most important of each group of 7
+  (or average them, e.g., quantify the group).
+From those thoughts, group into 7's,
+pick the most important of each group, ...
+That's basically what quantification is all about.
+
+
+When I do grades, I don't rely on some rough
+recollection of how you did in general
+(or on the last 7 things I remember about you.
+ I group into  exam1, exam2, project, ...,
+ giving a "grade" or quantification for each.
+ Then at the end of the course,
+ I take those intermediate
+ quantifications and come up with a final
+ quantifications based evenly on all of them.
+
+At the end of a year, the individual grades
+become intermediate quantifications for the
+decision as to whether you advance
+to the next class.
+
+At the end of 4 years, your grades are used
+to calculate a GPA and that is used
+(along with other numbers such as total credits)
+to decide whether you graduate or not.
+
+You may not like that system, but trust me,
+you would really dislike a system
+with no intermediate quantification
+(a committee just kicks back at the end
+of 4 years and thinks about how well you
+have done....  or a single comprehensive
+test is given and it decides all.)
+
+
+
+NOTES on entropy:
+
+In general, the more data you have, the
+less information you have.
+
+This relates to the previous section on
+quantification also.  This is why we need
+intermediate summary quantifications
+to make good decisions.
+
+Here is an example from relational
+databases:
+
+Suppose you are charged with choosing
+a recipient for a scholarship.  There
+is one scholarship and 5 finalists.
+
+
+This is the relational database.
+
+STUDENTS    COURSES     ENROLLMENTS
+._________. .________.  .___________.
+|S#|SNAME | |C#|CNAME|  |S#|C#|GRADE|
+|==|======| |==|=====|  |==|==|=====|
+|25|CLAY  | |8 |DSDE |  |32|8 | 98  |
+|32|THAISZ| |7 |CUS  |  |32|7 | 98  |
+|38|GOOD  | |6 |3UA  |  |25|7 | 98  |
+|17|BAID  | |5 |3UA  |  |25|6 | 98  |
+|57|BROWN | `--------'  |32|6 | 98  |
+`---------'             |38|6 | 98  |
+                        |17|5 | 98  |
+                        `-----------'
+
+If you do issue the command:
+
+SELECT S.SNAME, C.CNAME, E.GRADE
+FROM ENROLLMENTS, STUDENTS, COURSES
+WHERE S.S#=E.S# & C.C#=E.C# & GRADE>95;
+
+you will get lots of data but no
+useful information to help you select
+the winner.
+
+
+Data is managed by software systems
+called programs.  Programs are written
+in langauges.  Programs manage transient
+or persistent data  (or both).
+
+Most of the programs you have written so
+far in your career manage transient data
+(constants and variables which you create
+initialize and update within your program,
+but which dissappear when your program
+terminates (in software form - you may have
+printed out some of them).
+
+Persisitent data is stored in a "safe"
+place (like a disk file) and is exists
+as a software entity beyond the point
+in time when the program that created it
+terminates.
+
+How do we catagorize the languages we
+can use to write programs to manipulate
+data?
+
+LANGUAGE GENERATIONS
+
+FIRST GENERATION
+   Machine languages
+      binary coding
+      in the early days;
+      1. set a series of switches
+         (to represent 1st instruction)
+      2. pull the ENTER lever
+
+         repeat 1 & 2 until program
+         is complete
+
+SECOND GENERATION (mnemonic language and
+            Assemblers, code translators)
+   Assembler languages
+      Still one machine level instruction
+      per line f code, but the ASM
+      instructions are mnemonic
+      (more English-like).
+      Also, no longer had to set switches
+      and pull levers, system provided an
+      ASEMBLER to covert from ASM to the
+      machine language.
+
+THIRD GENERATION (High level languages,
+                  compilers, interpreters)
+
+   Higher level means each "statement"
+   translates into many machine instructions.
+
+   Three basic constructs;
+      sequence,
+      alternative (IF .. THEN .. ELSE)
+      iteration (WHILE, REPEAT)
+ 
+      (also transfer (GOTO), but its use
+       is discouraged)
+
+THIRD GENERATION
+PROGRAMMER PRODUCTIVITY CRISIS
+   *explosive need for new programs
+   *people versus computer costs
+   *real and invisible backlogs
+
+THIRD GENERATION
+PROGRAMMER PRODUCTIVITY SOLUTIONS
+   *improved third generation techniques
+       -software toolkits
+           PWB make SCCS
+       -structured methodologies
+
+THIRD GENERATION DEVELOPMENT CYCLE
+    - problem recognition
+        awareness of deficiency
+        "computerize" existing system
+           (manual or automated) 
+    - feasibility determination
+        find problem with current system
+        identify objectives of new system
+        estimate benefits of new systems
+        draw up preliminary descriptions
+        PRODUCT: decision to proceed with
+        specification or not?
+    - specification
+        interact with user (or user-dept)
+        what does current system do?
+        what new features needed? desired?
+        PRODUCT: functional specification 
+
+ANALYSIS AND DESIGN
+    - computer system analysis and design
+        organize specs for computerization
+        PRODUCTS:
+        preliminary design
+          (system flowcharts, narratives)
+        detailed design
+          (program flowcharts, data descr.)
+    - implementation
+        PRODUCT: code
+    - testing
+        subsystem testing
+        whole system testing
+        acceptance testing
+           (quality assurance)
+        PRODUCT: acceptance by user
+    - maintenance
+        delivery
+        small changes
+        major changes
+        problem recognition
+        feasibility study . . .
+
+BREAKDOWN OF EACH PHASE:
+
+UNSTRUCTURED APPROACH
+Traditional unstructured software
+development pie chart:
+
+ recognition     1%  _                 /
+ feasibility     3%  -   ___________.-'    
+ specification   3%  -  / |       |
+ design          5%  _    |       |
+                          |       |
+ implementation  7%  -    |       |
+                          |       |
+                          |       |
+ testing        15%  -    |       |
+                          |       |
+                          |       |
+                          |       |
+                          |       |
+                          |       |
+                          |       |
+ maintenance    67%  -    |       |
+
+
+goals of structured analysis and design:
+
+   reduced maintenance in the life cycle
+   maintenance component large due to
+     software errors and short-sightedness
+structured methods seek reduced errors thru
+   divide and conquer approach (top down)
+   minimize data passing
+
+USING STRUCTURED METHODOLOGIES
+   * Warnier-Orr method
+   * HIPO method
+   * Yourdon method
+   * Jackson method
+
+ recognition     1%  _                 /
+ feasibility     3%  -   ___________.-'    
+                        / |       |
+ specification  15%  _    |       |
+                          |       |
+                          |       |
+ design         25%  _    |       |
+                          |       |
+ implementation 15%  _    |       |
+                          |       |
+ testing        12%  -    |       |
+                          |       |
+                          |       |
+ maintenance    29%  -    |       |
+
+
+THIRD GENERATION LANGUAGES
+  Early Languages:
+     Fortran  ( FORmula TRANslation )
+       - scientific, engineering, graphics
+     COBOL (COmmon Business Oriented Lang)
+       - business, data processing
+  Later languages:
+     BASIC (Beginners Allpurpose
+       Symbolic Instruction Code)
+         "my first program" programs,
+          small business, games
+     Pascal, Modula
+         academics, algorithms,
+         some scientific, some business
+     C
+         systems coding, some scientific
+         & business
+
+  Newer languages:
+     ADA (DOD) systems, data processing,
+         structured code
+     Prolog, LISP (AI languages)
+
+COMPILERS
+* Process of running a program written
+     in a HLL can be:
+     - 2-step COMPILE AND RUN
+     - 1-step INTERPRET
+
+Compile = Trans Source code (program as
+written in HLL) into Object code (same
+program in a LLL, usually machine code)
+ _______
+/       |__
+|_______|  |__
+   |_______|  |__
+      |_______|  |__
+SOURCE   |_______|  |
+PROGRAM     |_______|
+              :
+              :submit
+    __________V____      _____________
+   | COMPILER PROG |--> | OBJECT PROG |
+   |_______________|    `-------------'
+                        run (executed
+                        or interpreted)
+INTERPRETERS
+* Source program is compiled & executed one
+  (or a few) statements at a time.
+
+
+THE FOURTH GENERATION, WHAT AND WHY
+* Structured 3rd gen techniques achieve 30%
+           productivity increase
+* estimated need for 50 million programmers
+     by 2000 with 3GLs only
+* some applications will need to be
+     generated without programmers
+* 3 sources of applications other than
+       traditional dp shop
+   1. end-user create own appl.
+      with powerful tools (4GLs)
+   2. Sys analyst working with end-user
+           (instead of writing prog specs)
+   3. purchase canned application
+   * 1 and 2 above require:
+      - 4th Gen Lang
+        (nonprocedural, very high level)
+        4GL = 10x performance over COBOL
+        user-friendly interface
+           (forms-driven, menus)
+      - Good database (relational?)
+        fully integrated with 4GL query
+        and report facilities
+
+Examples:
+     SQL, QUEL, (database languages)
+     FOCUS
+
+
+SQL has become the intergallactic standard
+
+     Originally SEQUEL (Structured
+     English QUery Language)
+
+     IBM created language, originally the
+     database language for the experimental
+     IBM database system, System R
+
+Three statement categories
+
+     Data Definition Statements
+          (Defining, maintaining
+          database objects)
+
+     Data manipulation Statements
+          Accessing and modifying data
+
+     Misc
+
+
+Data Definition Language of SQL (DDL):
+
+ CREATE DATABASE <database name>
+
+CREATE TABLE <base-tbl-name>
+    (<fld-name> <fld-type> [NOT NULL],
+        .
+     <fld-name> <fld-type> [NOT NULL]);
+
+field types:
+     INTEGER   signed fullword binary
+     SMALLINT  signed halfword binary
+     DECIMAL(p,q)  signed packed dec,
+        p digits, dec-pt q from right.
+     FLOAT     signed dblword flpt
+     CHAR(n)   fixed len char string
+     VARCHAR(n) var len char str max=n
+     others
+
+ DROP DATABASE <database-name>;
+ DROP TABLE <base-table-name>;
+
+ALTER TABLE <base-tbl-name>
+     ADD <fld-name> <fld-type>;
+
+
+Data Manipulation Language of SQL (DML):
+
+ SELECT        <ATTR-LIST>   mandatory
+     FROM      <TABLE-LIST>   mandatory
+     WHERE     <CONDITION>
+     GROUP BY  <GROUPING-ATTR(s)> aggregate
+                 (eg, SUM,AVG,..) on groups
+     HAVING    <GROUP-COND> exclude groups
+     ORDER BY  <ATTR-LIST>  display ordering
+
+Example:
+
+SELECT S#, GRADE, COUNT(*)
+     FROM ENROLL
+     WHERE S# > 50
+     GROUP BY S#
+     HAVING COUNT(*) >= 3
+     ORDER BY S#;
+
+ UPDATE <tbl-name>
+     SET <fld-name> = expression
+       [,<fld-name> = expression]...
+     [ WHERE <cond> ];
+
+
+ DELETE FROM <tbl-name>
+     [ WHERE <cond> ];
+
+
+ INSERT INTO <tbl-name>
+     [ ( <fld> [,<fld>] ... ) ]
+     VALUES
+     ( const [, const] ... };
+
+
+Example session with SQL (DB2):
+
+| create table student
+|    ( num smallint,
+|      nam char(6)
+|      city char (5);
+|
+| insert into student (num,nam,city)
+|    select num, nam, city from s-data;
+|
+| create table enroll
+|    ( snum smallint,
+|      cnum smallint,
+|      grade smallint );
+|
+| insert into student ( snum, cnum, grade )
+|    values ( 32, 8, 89 );
+|
+| insert into student
+|    values ( 32, 7, 91 );
+|
+| select student.nam, enroll.grade from
+| student, enroll where student.num =
+| enroll.snum
+| and enroll.cnum = 5; ---------> stdout
+|                .------------------------.
+| update enroll  |student.nam|enroll.grade|
+| set grade = 100|baid       |        96  |
+| where cnum = 7; ------------------------
+|
+| delete from enroll where cnum in (6,7);
+|
+| insert into enroll values ( 25, 7, 99);
+|
+| select * from enroll; ----------> stdout
+|
+|select student.nam, enroll.grade from
+|student, enroll where student.num =
+|enroll.snum and enroll.cnum = 7 and
+|student.nam between 'a' and 'n';->stdout
+|
+| select avg(grade) from enroll;->stdout
+|                                   .--.
+|                                   |94|
+|                                    --
+| select count(distinct cnum) from enroll;
+|                                    .-.
+|                                    |2|
+| select cnum, avg(grade) from enroll;-
+| where grade > 75             |8|89|
+| group by cnum; ------------->|5|98|
+|
+ -off----------------------------------
+
+
+SQL versions have been standardized by
+the American National Standards Institute
+(ANSI)
+
+ SQL1 (1986) included the basic 4th generation
+constructs as described above.
+
+ SQL2 (1992) added many "failure resiliences",
+ability to make request over a network,
+embeddability in most 3rd generation languages.
+
+
+ SQL3 (1996?) slated to include
+full object orientation (ADT def,
+inheritance, encapsulation, polymorphisms),
+also complete block structure programming
+constructs; IF, THEN, ELSE; CASE, LOOP, CALL,
+WHILE, REPEAT; so there will be no need to
+use another language and embed anymore.
+
+
+
+FIFTH GENERATION AND ARTIFICIAL INTEL
+* AI = ability of machines to simulate
+       human thought
+* Simpler: program's ability to learn from
+       mistakes and improve its performance
+* More concrete: Pass Turing test;
+       You hand questions around a curtain.
+       If you can't tell whether answer was
+       human or machine generated, AI-machine
+
+EXPERT SYSTEMS
+* Most success in AI has been in Expert Sys:
+  - Knowledgebase (database of rules)
+     - inference engine (apply the rules)
+     - Factual database
+       (data on subject matter itself)
+     - Explanation system to explain
+       and support conclusions
+* Successful example expert systems
+  - MYCIN medical disorder diagnosis (Stanford)
+  - STEAMBAL technical training support (MN)
+  - DEC VAX CONFIGURATOR does detailed configs
+    for VAX orders
+
+SIXTH GENERATION
+* ability of machines to simulate human
+  thought and action
+    - human communication
+      (voice generation, speech recognition)
+    - human movement and manipulation
+      (robots)

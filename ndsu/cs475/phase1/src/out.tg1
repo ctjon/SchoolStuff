@@ -1,0 +1,323 @@
+tg1: creating Group 1 thread 1
+tg1: Group 1 thread created, TId=2
+tg1: creating Group 1 thread 2
+tg1: Group 1 thread created, TId=3
+tg1: creating Group 1 thread 3
+tg1: Group 1 thread created, TId=4
+tg1: creating Group 1 thread 4
+tg1: Group 1 thread created, TId=5
+tg1: creating Group 1 thread 5
+tg1: Group 1 thread created, TId=6
+tg1: creating Group 1 thread 6
+tg1: Group 1 thread created, TId=7
+tg1: creating Group 1 thread 7
+tg1: Group 1 thread created, TId=8
+tg1: creating Group 1 thread 8
+tg1: Group 1 thread created, TId=9
+tg1: creating Group 1 thread 9
+tg1: Group 1 thread created, TId=10
+tg1: creating Group 1 thread 10
+tg1: Group 1 thread created, TId=11
+tg1: readying Group 1 thread TId=2
+tg1: Group 1 thread TId=2 ready
+tg1: readying Group 1 thread TId=3
+tg1: Group 1 thread TId=3 ready
+tg1: readying Group 1 thread TId=4
+tg1: Group 1 thread TId=4 ready
+tg1: readying Group 1 thread TId=5
+tg1: Group 1 thread TId=5 ready
+tg1: readying Group 1 thread TId=6
+tg1: Group 1 thread TId=6 ready
+tg1: readying Group 1 thread TId=7
+tg1: Group 1 thread TId=7 ready
+tg1: readying Group 1 thread TId=8
+tg1: Group 1 thread TId=8 ready
+tg1: readying Group 1 thread TId=9
+tg1: Group 1 thread TId=9 ready
+tg1: readying Group 1 thread TId=10
+tg1: Group 1 thread TId=10 ready
+tg1: readying Group 1 thread TId=11
+tg1: Group 1 thread TId=11 ready
+tg1: creating Group 2 thread 1
+tg1: Group 2 thread created, TId=12
+tg1: readying Group 2 thread TId=12
+tg1: Group 2 thread TId=12 readied
+tg1: creating Group 2 thread 2
+tg1: Group 2 thread created, TId=13
+tg1: readying Group 2 thread TId=13
+tg1: Group 2 thread TId=13 readied
+tg1: creating Group 2 thread 3
+tg1: Group 2 thread created, TId=14
+tg1: readying Group 2 thread TId=14
+tg1: Group 2 thread TId=14 readied
+tg1: creating Group 2 thread 4
+Group 1 thread thread_t=425776 identifying
+Group 1 thread thread_t=425776 loop pass 1
+Group 1 thread thread_t=425776 loop pass 2
+Group 1 thread thread_t=425776 loop pass 3
+Group 1 thread thread_t=425776 loop pass 4
+Group 1 thread thread_t=425776 loop pass 5
+Group 1 thread thread_t=425776 loop pass 6
+Group 1 thread thread_t=425776 loop pass 7
+Group 1 thread thread_t=425776 loop pass 8
+Group 1 thread thread_t=425776 loop pass 9
+Group 1 thread thread_t=425776 loop pass 10
+Group 1 thread thread_t=425776 loop pass 11
+Group 1 thread thread_t=425776 loop pass 12
+Group 1 thread thread_t=425776 loop pass 13
+Group 1 thread thread_t=425776 loop pass 14
+Group 1 thread thread_t=425776 loop pass 15
+Group 1 thread thread_t=425776 loop pass 16
+Group 1 thread thread_t=425776 loop pass 17
+Group 1 thread thread_t=425776 loop pass 18
+Group 1 thread thread_t=425776 loop pass 19
+Group 1 thread thread_t=425776 loop pass 20
+Group 1 thread thread_t=450352 identifying
+Group 1 thread thread_t=450352 loop pass 1
+Group 1 thread thread_t=450352 loop pass 2
+Group 1 thread thread_t=450352 loop pass 3
+Group 1 thread thread_t=450352 loop pass 4
+Group 1 thread thread_t=450352 loop pass 5
+Group 1 thread thread_t=450352 loop pass 6
+Group 1 thread thread_t=450352 loop pass 7
+Group 1 thread thread_t=450352 loop pass 8
+Group 1 thread thread_t=450352 loop pass 9
+Group 1 thread thread_t=450352 loop pass 10
+Group 1 thread thread_t=450352 loop pass 11
+Group 1 thread thread_t=474928 identifying
+Group 1 thread thread_t=474928 loop pass 1
+Group 1 thread thread_t=474928 loop pass 2
+Group 1 thread thread_t=474928 loop pass 3
+Group 1 thread thread_t=474928 loop pass 4
+Group 1 thread thread_t=474928 loop pass 5
+Group 1 thread thread_t=474928 loop pass 6
+Group 1 thread thread_t=474928 loop pass 7
+Group 1 thread thread_t=474928 loop pass 8
+Group 1 thread thread_t=474928 loop pass 9
+Group 1 thread thread_t=474928 loop pass 10
+Group 1 thread thread_t=474928 loop pass 11
+Group 1 thread thread_t=507696 identifying
+Group 1 thread thread_t=507696 loop pass 1
+Group 1 thread thread_t=507696 loop pass 2
+Group 1 thread thread_t=507696 loop pass 3
+Group 1 thread thread_t=507696 loop pass 4
+Group 1 thread thread_t=507696 loop pass 5
+Group 1 thread thread_t=507696 loop pass 6
+Group 1 thread thread_t=507696 loop pass 7
+Group 1 thread thread_t=507696 loop pass 8
+Group 1 thread thread_t=507696 loop pass 9
+Group 1 thread thread_t=507696 loop pass 10
+Group 1 thread thread_t=507696 loop pass 11
+Group 1 thread thread_t=507696 loop pass 12
+Group 1 thread thread_t=507696 loop pass 13
+Group 1 thread thread_t=507696 loop pass 14
+Group 1 thread thread_t=532272 identifying
+Group 1 thread thread_t=532272 loop pass 1
+Group 1 thread thread_t=532272 loop pass 2
+Group 1 thread thread_t=532272 loop pass 3
+Group 1 thread thread_t=532272 loop pass 4
+Group 1 thread thread_t=532272 loop pass 5
+Group 1 thread thread_t=532272 loop pass 6
+Group 1 thread thread_t=532272 loop pass 7
+Group 1 thread thread_t=532272 loop pass 8
+Group 1 thread thread_t=532272 loop pass 9
+Group 1 thread thread_t=532272 loop pass 10
+Group 1 thread thread_t=556848 identifying
+Group 1 thread thread_t=556848 loop pass 1
+Group 1 thread thread_t=556848 loop pass 2
+Group 1 thread thread_t=556848 loop pass 3
+Group 1 thread thread_t=556848 loop pass 4
+Group 1 thread thread_t=556848 loop pass 5
+Group 1 thread thread_t=556848 loop pass 6
+Group 1 thread thread_t=556848 loop pass 7
+Group 1 thread thread_t=556848 loop pass 8
+Group 1 thread thread_t=556848 loop pass 9
+Group 1 thread thread_t=556848 loop pass 10
+Group 1 thread thread_t=556848 loop pass 11
+Group 1 thread thread_t=556848 loop pass 12
+Group 1 thread thread_t=556848 loop pass 13
+Group 1 thread thread_t=556848 loop pass 14
+Group 1 thread thread_t=556848 loop pass 15
+Group 1 thread thread_t=556848 loop pass 16
+Group 1 thread thread_t=556848 loop pass 17
+Group 1 thread thread_t=556848 loop pass 18
+Group 1 thread thread_t=556848 loop pass 19
+Group 1 thread thread_t=556848 loop pass 20
+Group 1 thread thread_t=581424 identifying
+Group 1 thread thread_t=581424 loop pass 1
+Group 1 thread thread_t=581424 loop pass 2
+Group 1 thread thread_t=581424 loop pass 3
+Group 1 thread thread_t=581424 loop pass 4
+Group 1 thread thread_t=581424 loop pass 5
+Group 1 thread thread_t=581424 loop pass 6
+Group 1 thread thread_t=581424 loop pass 7
+Group 1 thread thread_t=581424 loop pass 8
+Group 1 thread thread_t=581424 loop pass 9
+Group 1 thread thread_t=581424 loop pass 10
+Group 1 thread thread_t=606000 identifying
+Group 1 thread thread_t=606000 loop pass 1
+Group 1 thread thread_t=606000 loop pass 2
+Group 1 thread thread_t=606000 loop pass 3
+Group 1 thread thread_t=606000 loop pass 4
+Group 1 thread thread_t=606000 loop pass 5
+Group 1 thread thread_t=606000 loop pass 6
+Group 1 thread thread_t=606000 loop pass 7
+Group 1 thread thread_t=606000 loop pass 8
+Group 1 thread thread_t=606000 loop pass 9
+Group 1 thread thread_t=606000 loop pass 10
+Group 1 thread thread_t=606000 loop pass 11
+Group 1 thread thread_t=606000 loop pass 12
+Group 1 thread thread_t=606000 loop pass 13
+Group 1 thread thread_t=606000 loop pass 14
+Group 1 thread thread_t=638768 identifying
+Group 1 thread thread_t=638768 loop pass 1
+Group 1 thread thread_t=638768 loop pass 2
+Group 1 thread thread_t=638768 loop pass 3
+Group 1 thread thread_t=638768 loop pass 4
+Group 1 thread thread_t=638768 loop pass 5
+Group 1 thread thread_t=638768 loop pass 6
+Group 1 thread thread_t=638768 loop pass 7
+Group 1 thread thread_t=638768 loop pass 8
+Group 1 thread thread_t=638768 loop pass 9
+Group 1 thread thread_t=638768 loop pass 10
+Group 1 thread thread_t=638768 loop pass 11
+Group 1 thread thread_t=638768 loop pass 12
+Group 1 thread thread_t=638768 loop pass 13
+Group 1 thread thread_t=638768 loop pass 14
+Group 1 thread thread_t=663344 identifying
+Group 1 thread thread_t=663344 loop pass 1
+Group 1 thread thread_t=663344 loop pass 2
+Group 1 thread thread_t=663344 loop pass 3
+Group 1 thread thread_t=663344 loop pass 4
+Group 1 thread thread_t=663344 loop pass 5
+Group 1 thread thread_t=663344 loop pass 6
+Group 1 thread thread_t=663344 loop pass 7
+Group 1 thread thread_t=663344 loop pass 8
+Group 1 thread thread_t=663344 loop pass 9
+Group 1 thread thread_t=663344 loop pass 10
+Group 1 thread thread_t=663344 loop pass 11
+Group 1 thread thread_t=663344 loop pass 12
+Group 1 thread thread_t=663344 loop pass 13
+Group 1 thread thread_t=663344 loop pass 14
+Group 2 thread thread_t=687920 identifying
+Group 2 thread thread_t=687920 blocking
+Group 2 thread thread_t=712496 identifying
+Group 2 thread thread_t=712496 blocking
+Group 2 thread thread_t=737072 identifying
+Group 2 thread thread_t=737072 blocking
+tg1: Group 2 thread created, TId=15
+tg1: readying Group 2 thread TId=15
+tg1: Group 2 thread TId=15 readied
+tg1: creating Group 2 thread 5
+tg1: Group 2 thread created, TId=16
+tg1: readying Group 2 thread TId=16
+tg1: Group 2 thread TId=16 readied
+tg1: creating Group 2 thread 6
+tg1: Group 2 thread created, TId=17
+tg1: readying Group 2 thread TId=17
+tg1: Group 2 thread TId=17 readied
+tg1: creating Group 2 thread 7
+tg1: Group 2 thread created, TId=18
+tg1: readying Group 2 thread TId=18
+tg1: Group 2 thread TId=18 readied
+tg1: creating Group 2 thread 8
+tg1: Group 2 thread created, TId=19
+tg1: readying Group 2 thread TId=19
+tg1: Group 2 thread TId=19 readied
+tg1: creating Group 2 thread 9
+Group 1 thread thread_t=450352 loop pass 12
+Group 1 thread thread_t=450352 loop pass 13
+Group 1 thread thread_t=450352 loop pass 14
+Group 1 thread thread_t=450352 loop pass 15
+Group 1 thread thread_t=450352 loop pass 16
+Group 1 thread thread_t=450352 loop pass 17
+Group 1 thread thread_t=450352 loop pass 18
+Group 1 thread thread_t=450352 loop pass 19
+Group 1 thread thread_t=450352 loop pass 20
+Group 1 thread thread_t=474928 loop pass 12
+Group 1 thread thread_t=474928 loop pass 13
+Group 1 thread thread_t=474928 loop pass 14
+Group 1 thread thread_t=474928 loop pass 15
+Group 1 thread thread_t=474928 loop pass 16
+Group 1 thread thread_t=474928 loop pass 17
+Group 1 thread thread_t=474928 loop pass 18
+Group 1 thread thread_t=474928 loop pass 19
+Group 1 thread thread_t=474928 loop pass 20
+Group 1 thread thread_t=507696 loop pass 15
+Group 1 thread thread_t=507696 loop pass 16
+Group 1 thread thread_t=507696 loop pass 17
+Group 1 thread thread_t=507696 loop pass 18
+Group 1 thread thread_t=507696 loop pass 19
+Group 1 thread thread_t=507696 loop pass 20
+Group 1 thread thread_t=532272 loop pass 11
+Group 1 thread thread_t=532272 loop pass 12
+Group 1 thread thread_t=532272 loop pass 13
+Group 1 thread thread_t=532272 loop pass 14
+Group 1 thread thread_t=532272 loop pass 15
+Group 1 thread thread_t=532272 loop pass 16
+Group 1 thread thread_t=532272 loop pass 17
+Group 1 thread thread_t=532272 loop pass 18
+Group 1 thread thread_t=532272 loop pass 19
+Group 1 thread thread_t=532272 loop pass 20
+Group 1 thread thread_t=581424 loop pass 11
+Group 1 thread thread_t=581424 loop pass 12
+Group 1 thread thread_t=581424 loop pass 13
+Group 1 thread thread_t=581424 loop pass 14
+Group 1 thread thread_t=581424 loop pass 15
+Group 1 thread thread_t=581424 loop pass 16
+Group 1 thread thread_t=581424 loop pass 17
+Group 1 thread thread_t=581424 loop pass 18
+Group 1 thread thread_t=581424 loop pass 19
+Group 1 thread thread_t=581424 loop pass 20
+Group 1 thread thread_t=606000 loop pass 15
+Group 1 thread thread_t=606000 loop pass 16
+Group 1 thread thread_t=606000 loop pass 17
+Group 1 thread thread_t=606000 loop pass 18
+Group 1 thread thread_t=606000 loop pass 19
+Group 1 thread thread_t=606000 loop pass 20
+Group 1 thread thread_t=638768 loop pass 15
+Group 1 thread thread_t=638768 loop pass 16
+Group 1 thread thread_t=638768 loop pass 17
+Group 1 thread thread_t=638768 loop pass 18
+Group 1 thread thread_t=638768 loop pass 19
+Group 1 thread thread_t=638768 loop pass 20
+Group 1 thread thread_t=663344 loop pass 15
+Group 1 thread thread_t=663344 loop pass 16
+Group 1 thread thread_t=663344 loop pass 17
+Group 1 thread thread_t=663344 loop pass 18
+Group 1 thread thread_t=663344 loop pass 19
+Group 1 thread thread_t=663344 loop pass 20
+Group 2 thread thread_t=769840 identifying
+Group 2 thread thread_t=769840 blocking
+Group 2 thread thread_t=425776 identifying
+Group 2 thread thread_t=425776 blocking
+Group 2 thread thread_t=794416 identifying
+Group 2 thread thread_t=794416 blocking
+Group 2 thread thread_t=818992 identifying
+Group 2 thread thread_t=818992 blocking
+Group 2 thread thread_t=843568 identifying
+Group 2 thread thread_t=843568 blocking
+tg1: Group 2 thread created, TId=20
+tg1: readying Group 2 thread TId=20
+tg1: Group 2 thread TId=20 readied
+tg1: creating Group 2 thread 10
+tg1: Group 2 thread created, TId=21
+tg1: readying Group 2 thread TId=21
+tg1: Group 2 thread TId=21 readied
+Group 2 thread thread_t=868144 identifying
+Group 2 thread thread_t=868144 blocking
+Group 2 thread thread_t=663344 identifying
+Group 2 thread thread_t=663344 blocking
+DEADLOCK - HALTING ON ERROR CONDITION 3
+current process scheduling subsystem status
+--------------------------------------------------------
+   created  completed      ready    blocked
+        21         11          0         10
+	The following threads remain on blocked queue
+	tid12 tid13 tid14 tid15 tid16 tid17 tid18 tid19 tid20 tid21 
+
+current semaphore subsystem status
+--------------------------------------------------------
+       SID    InitCnt    CurrCnt       Name     #opens
+         0         20         20          1          0
+	blocked ->

@@ -1,0 +1,120 @@
+(***********************************************************************)
+(*  DEFINITION MODULE TREES                                            *)
+(*    WRITTEN BY CHRISTOPHER C. TJON                                   *)
+(*    NAID: 110975-8                                                   *)
+(*    WRITTEN: 5 NOV 1989                                              *)
+(*    MODIFIED: 19 JANUARY 1990                                        *)
+(*                                                                     *)
+(*    THIS DEFINITION MODULE CONTAINS A NUMBER OF UTILITY PROCEDURES   *)
+(*    FOR THE MANIPULATION OF TREES.                                   *)
+(*                                                                     *)
+(*    THEY INCLUDE THE FOLLOWING:                                      *)
+(*                                                                     *)
+(*    1. CREATE TREE                6. IS IN TREE                      *)
+(*    2. TREE IS EMPTY              7. INSERT WORD IN TREE             *)
+(*    3. DATA                       8. WORD COUNT                      *)
+(*    4. LEFTCHILD                  9. WRITE TREE                      *)
+(*    5. RIGHTCHILD                 10. CREATE NEW NODE                *)
+(*                                                                     *)
+(*    THE GIVEN PROCEDURES ARE ADAPTATIONS AND ALTERATIONS OF          *)
+(*    SIMILAR TREE PROCEDURES GIVEN IN THE BOOK:                       *)
+(*                                                                     *)
+(*       A SECOND COURSE IN COMPUTER SCIENCE WITH MODULA-2             *)
+(*                                                                     *)
+(*       WRITTEN BY: DANIEL D. MCCRACKEN AND WILLIAM I. SALMON         *)
+(*                                                                     *)
+(*       COPYRIGHT 1987, BY JOHN WILEY AND SONS, INC.                  *)
+(*                                                                     *)
+(*    THE SOURCE PROCEDURES CAN BE FOUND ON PAGES 273 THRU 283         *)
+(*                                                                     *)
+(*                                                                     *)
+(***********************************************************************)
+
+
+DEFINITION MODULE trees;
+
+FROM words IMPORT WORDTYPE;
+
+FROM FInOut IMPORT FILE;
+
+FROM listadt IMPORT LIST;
+
+TYPE TREE; (* OPAQUE TYPE. *)
+
+TYPE DATATYPE = RECORD
+                 WORD : WORDTYPE;      (** REMOVE WORDCOUNT WHEN DONE **)
+                 WCOUNT : CARDINAL;    (*** WORD COUNT ***)
+                 PAGEPNTR : LIST;
+                 END;
+
+
+
+PROCEDURE CREATETREE (VAR T : TREE);
+(* REQUIRES : NOTHING                                                  *)
+(* MODIFIES : T                                                        *)
+(* EFFECTS  : CREATES AN EMPTY TREE T                                  *)
+
+
+PROCEDURE TREEISEMPTY (T : TREE):BOOLEAN;
+(* REQUIRES : T HAS BEEN INITIALIZED                                   *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS TRUE IF T IS EMPTY; FALSE OTHERWISE              *)
+
+
+PROCEDURE DATA (T : TREE) : DATATYPE;
+(* REQUIRES : T IS NOT EMPTY                                           *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS THE DATA ITEM AT THE ROOT NODE OF T              *)
+
+
+PROCEDURE LEFTCHILD (VAR T : TREE);
+(* REQUIRES : T IS NOT EMPTY                                           *)
+(* MODIFIES : T                                                        *)
+(* EFFECTS  : MAKES T THE LEFT CHILD OF T                              *)
+
+
+PROCEDURE RIGHTCHILD (VAR T : TREE);
+(* REQUIRES : T IS NOT EMPTY                                           *)
+(* MODIFIES : T                                                        *)
+(* EFFECTS  : MAKES T THE RIGHT CHILD OF T                             *)
+
+
+PROCEDURE ISINTREE (T    : TREE;
+                    WORD : WORDTYPE) : BOOLEAN;
+(* REQUIRES : T HAS BEEN INITIALIZED                                   *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS TRUE IF WORD IS IN T; OTHERWISE FALSE            *)
+
+
+PROCEDURE INSERTWORDINTREE (VAR T       : TREE;
+                                NEWWORD : WORDTYPE;
+                                PAGENUM : CARDINAL);
+(* REQUIRES : T HAS BEEN INITIALIZED                                   *)
+(* MODIFIES : T                                                        *)
+(* EFFECTS  : IF NEWWORD IS ALREADY IN T, THEN INCREMENTS THE COUNT    *)
+(*            FOR NEWWORD, OTHERWISE ADDS NEWWORD TO T AND INITIALIZES *)
+(*            COUNT FOR THE NEW NEWWORD TO 1                           *)
+
+
+PROCEDURE WORDCOUNT (T : TREE) : CARDINAL;
+(* REQUIRES : T HAS BEEN INITIALIZED                                   *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS THE NUMBER OF WORDS IN T                         *)
+
+
+PROCEDURE WRITETREE (T : TREE);
+(* REQUIRES : T HAS BEEN INITIALIZED                                   *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : DOES AN INORDER TRAVERSAL OF T, WRITING WORD AND         *)
+(*            WORDCOUNT FOR EACH NODE OF T TO THE SCREEN AND AN        *)
+(*            OUTPUT FILE                                              *)
+
+
+PROCEDURE CREATENEWNODE (VAR T   : TREE;
+                         NEWWORD : WORDTYPE;
+                         PAGENUM : CARDINAL);
+(* REQUIRES : T HAS BEEN INITIALIZED                                   *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : CREATES A NEW NODE AND INITIALIZES WORD COUNT TO 1       *)
+
+END trees.

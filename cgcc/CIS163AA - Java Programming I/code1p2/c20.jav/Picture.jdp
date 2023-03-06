@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Picture
+Location=C:\MIKES FILES\BOOKJ11\C20.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Picture.java=1
+Picture.html=1
+
+[Visualforms]
+Picture.java=1
+Picture.html=0

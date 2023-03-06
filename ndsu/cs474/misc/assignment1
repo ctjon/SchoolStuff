@@ -1,0 +1,21 @@
+This is your first network assignment.  You are to send mail to me, which
+includes this message as a sub-part.  This is the way network types often
+respond to questions they receive.  To do this, simply type "m gammill"
+after the prompt that results at the end of looking at this message.  Type
+a subject line of: CS474, and then for a body type ~m, which will insert
+this message in the body of your mail.  Then add your signature, and finally
+hit ctrl-D.  Finally, look at the following text.  If you install it as .mailrc
+in your login directory, it will make using mail much easier.  You are welcome
+to check the .mailrc file in ~gammill for other alias ideas.
+
+set ask
+set "indentprefix=>  "
+set crt 24
+alias bob	gammill@plains.NoDak.edu
+--------------------- .mailrc file text ends above -------------------------
+     __    ____  ______      ________  ____  ____
+    / /\  / / / / / __ \    / / ____/ / / / / / /  Prof. Robert Gammill (Bob)
+   / /  \/ / / / / /\ \ \  / / /___  / / / / / /  Dept. of Computer Science
+  / / /\ \/ / / / / / / / /_/___  / / / / / / /  North Dakota State University
+ / / /\ \  / / / /_/_/ / ____/_/ / / / /_/_/ /  Fargo, ND 58105-5075
+/_/_/  \_\/ /_/_______/ /_/_____/  \_\______/  gammill@plains.NoDak.edu

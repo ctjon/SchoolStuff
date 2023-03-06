@@ -1,0 +1,62 @@
+    Fall 1993                EE/CS 373 - Homework #3                  Gammill
+
+
+    Due: At class on Wednesday, October 6, 1993.  
+            (NO LATE HOMEWORK WITHOUT A PREVIOUS WRITTEN REQUEST)
+    You are to write two functions, and the main program to test them.  These
+    functions  are  the  FIX  and FLOAT functions of FORTRAN, which allow the
+    conversion of a floating point number (scientific notation) to  a  binary
+    integer (FIX) and vice versa (FLOAT), see text page 119.  We will use the
+    IEEE  standard  floating  point  notation, single precision (32 bits), as
+    described on pages 116-118 of  the  text.   FIX  should  throw  away  any
+    fractional  portion of the floating point value.  FLOAT should throw away
+    low order bits of integers which  are  more  than  24  bits  long.   Both
+    functions  must  handle  positive or negative numbers.  FIX should return
+    with the carry bit set if the floating point  number  was  too  large  to
+    generate  an  integer that fits in 32 bits (overflow).  Be sure the carry
+    bit is cleared when the result is correct.
+
+    Throughout this course your program must ALWAYS be structured as  a  main
+    program which calls a set of subroutines, which will be included.  If the
+    subroutine  is  a  function  then  it  will  return its value in D0.  All
+    arguments to subroutines will be passed by pushing them (L size) onto the
+    system stack.  The argument may be  either  the  actual  value  (call  by
+    value) or the address of the thing being passed (call by reference).  The
+    latter  technique  is important when the object to be passed is too large
+    to fit in 4 bytes, such as an array or record structure.
+
+    Your main program for homework 3 must carry out several tests on the  FIX
+    and  FLOAT  functions.   The  code  should  be  located at $1000, and the
+    storage for data at $900.  $908-$909  (W)  should  be  an  integer  N  to
+    specify what test is to be run.
+
+       N=1 FLOAT the integer in $900-$903 and put result at $904-$907.
+       N=2  FIX  the  floating  pt  number in $904-$907 and put the result at
+           $900-$903.  If the result overflows (FIX returns  with  carry  bit
+           set), set N to -1 and go into a stop loop (BRA *).
+       N=3  first  run  the  N=1 case then the N=2, to FLOAT and then FIX the
+           integer stored in $900-$903.
+       N=4 first run the N=2 case then the N=1, to FIX  and  then  FLOAT  the
+           floating pt number in $904-$907.
+
+    NOTE:  cases  N=3 and N=4 can make subroutine calls on the code for cases
+    N=1 and N=2.  These subroutine calls  need  not  conform  to  our  normal
+    standards since they will have no arguments.
+
+    The report on this problem consists of:
+      -  written  description  (problem description, solution to the problem,
+        verification)
+      - carefully designed test cases including floatfix.data  given  in  the
+        class directory
+      - flowchart
+      - program listing
+      - program results (annotated simulator output listing)
+
+
+
+
+
+
+
+
+

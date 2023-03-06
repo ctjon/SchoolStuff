@@ -1,0 +1,28 @@
+Article 239 of ndhecn.cs475:
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!slobber!roehrich
+From: roehrich@slobber.acm.ndsu.NoDak.edu (Dean Roehrich)
+Subject: Assign1 Implementation
+Sender: usenet@ns1.nodak.edu (Usenet login)
+Message-ID: <C378yG.JG6@ns1.nodak.edu>
+Date: Mon, 1 Mar 1993 07:32:40 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: slobber.acm.ndsu.nodak.edu
+Organization: North Dakota State University ACM -- Fargo, ND
+Lines: 13
+
+Please read ~roehrich/cs475/doc/hand_in for a description of what you should
+hand in.  On March 4 you will need to put your source in
+/contrib/cs475/<groupname>.  Please make sure the tar file you put there is
+world readable (so I can read it).  No other groups will be able to get to
+your directory, so this should be ok.
+
+
+In ~roehrich/cs475/assign1/tlib you will find the file tg.o which contains
+the test threads you must link into your program.  There are some "Readme"
+files which describe what the different threads are trying to do.
+
+
+Dean
+
+

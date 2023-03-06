@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Buttons
+Location=C:\MIKES FILES\BOOKJ11\C13.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Buttons.java=1
+Buttons.html=1
+
+[Visualforms]
+Buttons.java=1
+Buttons.html=0

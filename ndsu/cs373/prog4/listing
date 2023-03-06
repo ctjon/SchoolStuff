@@ -1,0 +1,194 @@
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    1
+
+
+     1                     *                                                    
+     2                     * Chris Tjon                                         
+     3                     * CS373                                              
+     4                     * Program 4                                          
+     5                     * 20 October 1993                                    
+     6                     *                                                    
+     7        00000900     	ORG	$900                                            
+     8        00000014     SIZE	EQU	5*4		;size of the array * 4 to get longs    
+     9 000900 0050         ARRAY	DS.L	SIZE		;number of array elements           
+    10        00001000     	ORG  	$1000                                         
+    11 001000 2e7c00003000 MAIN    MOVE.L	#$3000,SP	;initialize the stack pointe
+    12 001006 4e560000     	LINK	A6,#0		;create a copy of the stack pointer     
+    13 00100a 4878114a     	PEA	CLT		;push the address of the compare function  
+    14 00100e 2f3c00000014 	MOVE.L	#SIZE,-(SP)	;push the number of elements in t
+    15 001014 48780900     	PEA	ARRAY		;push the address of the array           
+    16 001018 6100009a     	BSR	SORT		;call sort                                
+    17 00101c dffc0000000c 	ADDA.L	#12,SP		;fix the stack pointer               
+    18 001022 4e5e         	UNLK	A6		;unlink the A6 stack pointer               
+    19 001024 60fe         END	BRA	END		;terminate execution                    
+    20                                                                          
+    21                                                                          
+    22                     *                                                    
+    23                     * fix subroutine                                     
+    24                     *	D0 = return value                                  
+    25                     *	D1 = original parameter                            
+    26                     *	D2 = the exponent                                  
+    27                     *	D3 = temporary storage                             
+    28                     *	D4 = the mantissa                                  
+    29                     *                                                    
+    30 001026 4e560000     FIX	LINK	A6,#0		;link the A6 register                
+    31 00102a 48e77800     	MOVEM.L	D1-D4,-(SP)	;save the registers on the stack
+    32 00102e 4280         	CLR.L	D0		;clear D0                                 
+    33 001030 4281         	CLR.L	D1		;clear D1                                 
+    34 001032 4282         	CLR.L	D2		;clear D2                                 
+    35 001034 4283         	CLR.L	D3		;clear D3                                 
+    36 001036 4284         	CLR.L	D4		;clear D4                                 
+    37 001038 222e0008     	MOVE.L	8(A6),D1	;get parameter off the stack and pla
+    38 00103c 203c80000000 	MOVE.L	#$80000000,D0	;place mask for sign bit in D0 
+    39 001042 c081         	AND.L	D1,D0		;AND sign mask with parameter in D1 - s
+    40 001044 243c7f800000 	MOVE.L	#$7F800000,D2	;place exponent mask in D2     
+    41 00104a c481         	AND.L	D1,D2		;AND exponent mask with parameter in D1
+    42 00104c ee8a         	LSR.L	#7,D2		;left justify the exponent             
+    43 00104e 4842         	SWAP	D2		;put exponent in lower word of D2          
+    44 001050 66000008     	BNE	NZERO		;check if exponent == 0                  
+    45 001054 4284         	CLR.L	D4		;clear D4                                 
+    46 001056 60000044     	BRA	DONE		;branch to DONE                           
+    47 00105a 0402007f     NZERO	SUB.B	#$7F,D2		;exponent != 0                  
+    48 00105e 363c001f     	MOVE.W	#$1F,D3		;place $1F in D3                    
+    49 001062 9642         	SUB.W	D2,D3		;D3 = D3 - D2                          
+    50 001064 6f000024     	BLE	OVERFLW		;check for overflow                    
+    51 001068 283c007fffff 	MOVE.L	#$7FFFFF,D4	;place mantissa mask in D4       
+    52 00106e c881         	AND.L	D1,D4		;AND mantissa mask with parameter in D1
+    53 001070 08c40017     	BSET.L	#$17,D4		;take care of hidden bit            
+    54 001074 e18c         	LSL.L	#8,D4		;left justify the mantissa             
+    55 001076 e28c         SHIFT	LSR.L	#1,D4		;shift D4 by over by D3 bits      
+    56 001078 5303         	SUBQ.B	#1,D3		;subtract 1 from D3                   
+    57 00107a 66fa         	BNE	SHIFT		;if D3 != 0 branch to SHIFT              
+    58 00107c 0800001f     	BTST.L	#$1F,D0		;check to see if result is negative 
+    59 001080 6700001a     	BEQ	DONE		;if result >= 0 then branch to done       
+    60 001084 4484         	NEG.L	D4		;result < 0 so NEG it                     
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    2
+
+
+    61 001086 60000014     	BRA 	DONE		;branch to DONE                          
+    62 00108a 0800001f     OVERFLW	BTST.L	#$1F,D0		;check sign bit of return val
+    63 00108e 66000016     	BNE	SPEC		;if return value < 0 do the shift         
+    64 001092 44fc0001     	MOVE.W	#1,CCR		;else we have overflow, set CCR to 1 
+    65 001096 31fcffff0908 	MOVE.W	#$FFFF,$908	;set n = -1                      
+    66 00109c 2004         DONE	MOVE.L	D4,D0		;place result in D0               
+    67 00109e 4cdf001e     	MOVEM.L	(SP)+,D1-D4	;restore previous registers from
+    68 0010a2 4e5e         	UNLK	A6		;unlink the A6 register                    
+    69 0010a4 4e75         	RTS                     ;return                     
+    70 0010a6 283c80000000 SPEC	MOVE.L	#$80000000,D4	;place sign bit mask in D4 
+    71 0010ac 4cdf001e     	MOVEM.L	(SP)+,D1-D4	;restore previous registers from
+    72 0010b0 4e5e         	UNLK	A6		;unling the A6 register                    
+    73 0010b2 4e75         	RTS			;return                                       
+    74                                                                          
+    75                                                                          
+    76                     *                                                    
+    77                     * sort routine                                       
+    78                     *	A1 = address of the array                          
+    79                     *	A2 = address of the function to call               
+    80                     *	D1 = number of array elements                      
+    81                     *	D2 = index                                         
+    82                     *	D3 = temp storage                                  
+    83                     *                                                    
+    84 0010b4 4e560000     SORT	LINK	A6,#0		;link the A6 register               
+    85 0010b8 48e77860     	MOVEM.L	D1-D4/A1-A2,-(SP)	;save the registers on the
+    86 0010bc 226e0008     	MOVE.L	8(A6),A1	;retreive the address of the array  
+    87 0010c0 222e000c     	MOVE.L	12(A6),D1	;retrieve the number of elements in
+    88 0010c4 246e0010     	MOVE.L	16(A6),A2	;retrieve the address of the functi
+    89 0010c8 0c8100000004 SRTLP   CMP.L	#4,D1		;compare D1 > 1                 
+    90 0010ce 6f000026     	BLE	SRT_RTS		;D1 <= 1 so get out of this loop       
+    91 0010d2 4852         	PEA	(A2)		;push the effective address of comparelt  
+    92 0010d4 2f01         	MOVE.L	D1,-(SP)	;push the number of array elements  
+    93 0010d6 4851         	PEA	(A1)		;push the effective address of the array  
+    94 0010d8 61000028     	BSR	SELECT		;call the select subroutine             
+    95 0010dc dffc0000000c 	ADDA.L	#12,SP		;fix the stacck                      
+    96 0010e2 2400         	MOVE.L	D0,D2		;copy the return value                
+    97 0010e4 5981         	SUBQ.L	#4,D1		;subtract one from the number of eleme
+    98 0010e6 28312000     	MOVE.L	0(A1,D2),D4	;temp = array[index]             
+    99 0010ea 23b110002000 	MOVE.L	0(A1,D1),0(A1,D2)	;array[index] = array[size]
+   100 0010f0 23841000     	MOVE.L	D4,0(A1,D1)	;array[size] = temp              
+   101 0010f4 60d2         	BRA	SRTLP		;continue to loop                        
+   102 0010f6 20290000     SRT_RTS	MOVE.L	0(A1),D0	;return the first element of 
+   103 0010fa 4cdf061e     	MOVEM.L (SP)+,D1-D4/A1-A2	;restore the register prio
+   104 0010fe 4e5e         	UNLK	A6		;unlink the A6 register                    
+   105 001100 4e75         	RTS			;return                                       
+   106                                                                          
+   107                                                                          
+   108                     *                                                    
+   109                     * select subroutine                                  
+   110                     *	D1 = size of the array                             
+   111                     *	A1 = address of the array                          
+   112                     *	A2 = address of comparelt                          
+   113                     *	D2 = sub_index (see flowchart)                     
+   114                     *	D3 = x (see flowchart)                             
+   115                     *	D4 = temporary storage                             
+   116                     *                                                    
+   117 001102 4e560000     SELECT	LINK	A6,#0		;link the A6 register             
+   118 001106 48e77860     	MOVEM.L	D1-D4/A1-A2,-(SP)	;save current register sta
+   119 00110a 226e0008     	MOVE.L	8(A6),A1	;retrieve array address from the sta
+   120 00110e 222e000c     	MOVE.L	12(A6),D1	;retrieve size of the array from th
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    3
+
+
+   121 001112 246e0010     	MOVE.L	16(A6),A2	;retrieve address of comparelt from
+   122 001116 7400         	MOVE.L	#0,D2		;set D2 to 0 - sub_index              
+   123 001118 7604         	MOVE.L	#4,D3		;set D3 to 4 - x                      
+   124 00111a 5981         	SUBQ.L	#4,D1		;subtract one from the size of the arr
+   125 00111c 2f312800     SELOOP	MOVE.L	0(A1,D2.L),-(SP)	;push the sub_index va
+   126 001120 2f313800     	MOVE.L	0(A1,D3.L),-(SP)	;push the x value           
+   127 001124 4eaa0000     	JSR	0(A2)		;call comparelt                          
+   128 001128 dffc00000008 	ADDA.L	#8,SP		;fix the stack                        
+   129 00112e 4a80         	TST.L	D0		;check result of comparelt                
+   130 001130 67000004     	BEQ	SKIP		;if D0 == 0 branch to SKIP                
+   131 001134 2403         	MOVE.L	D3,D2		;set sub_index = x                    
+   132 001136 5883         SKIP	ADDQ.L	#4,D3		;increment x                      
+   133 001138 b681         	CMP.L	D1,D3		;compare x (D3) and size of the array (
+   134 00113a 6e000004     	BGT	SELRTS		;if x > size of array                   
+   135 00113e 60dc         	BRA	SELOOP		;otherwise continue                     
+   136 001140 2002         SELRTS	MOVE.L	D2,D0		;setup return value             
+   137 001142 4cdf061e     	MOVEM.L (SP)+,D1-D4/A1-A2	;restore the previous regi
+   138 001146 4e5e         	UNLK	A6		;unlink the A6 register                    
+   139 001148 4e75         	RTS			;return                                       
+   140                                                                          
+   141                                                                          
+   142                     *                                                    
+   143                     * comparelt subroutine                               
+   144                     *	D1 = first argument                                
+   145                     *	D2 = second argument                               
+   146                     *                                                    
+   147 00114a 4e560000     CLT	LINK	A6,#0		;link the A6 register                
+   148 00114e 48e76000     	MOVEM.L	D1-D2,-(SP)	;save the current register statu
+   149 001152 222e0008     	MOVE.L	8(A6),D1	;retrieve the first argument and pla
+   150 001156 242e000c     	MOVE.L	12(A6),D2	;retrieve the second argument and p
+   151 00115a 2f01         	MOVE.L	D1,-(SP)	;push first argument onto the stack 
+   152 00115c 6100fec8     	BSR	FIX		;call fix subroutine                       
+   153 001160 584f         	ADDQ	#4,SP		;fix the stack                          
+   154 001162 2200         	MOVE.L	D0,D1		;place fix return value into D1       
+   155 001164 2f02         	MOVE.L	D2,-(SP)	;push second argument onto the stack
+   156 001166 6100febe     	BSR 	FIX		;call fix subroutine                      
+   157 00116a 584f         	ADDQ	#4,SP		;fix the stack                          
+   158 00116c 2400         	MOVE.L	D0,D2		;place fix return value into D2       
+   159 00116e b282         	CMP.L	D2,D1		;compare the integer representations of
+   160 001170 6b000008     	BMI	NEGLT		;if D1 < D2 then branch to NEGLT         
+   161 001174 7000         	MOVE.L	#0,D0		;else D1 > D2 so return 0             
+   162 001176 60000004     	BRA	CLTRTS		;branch to CLTRTS                       
+   163 00117a 7001         NEGLT	MOVE.L	#1,D0		;D1 < D2 so return 1             
+   164 00117c 4cdf0006     CLTRTS	MOVEM.L	(SP)+,D1-D2	;restore the previous regi
+   165 001180 4e5e         	UNLK	A6		;unlink the A6 register                    
+   166 001182 4e75         	RTS			;return                                       
+   167                                                                          
+   168                                                                          
+   169                     	END                                                 
+
+ ****** TOTAL ERRORS    0--  169 -- TOTAL LINES  163
+
+
+ APPROX  2102 UNUSED SYMBOL TABLE ENTRIES
+
+ ARRAY    000900 CLT      00114a CLTRTS   00117c DONE     00109c END      001024
+ FIX      001026 MAIN     001000 NEGLT    00117a NZERO    00105a OVERFLW  00108a
+ SELECT   001102 SELOOP   00111c SELRTS   001140 SHIFT    001076 SIZE     000014
+ SKIP     001136 SORT     0010b4 SPEC     0010a6 SRTLP    0010c8 SRT_RTS  0010f6

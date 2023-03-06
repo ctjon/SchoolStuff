@@ -1,0 +1,17 @@
+RESPONSE TO QUESTIONS ASKED IN THE PROBLEM ASSIGNMENT
+Page 258 #23
+
+
+In addressing the question of the elimination of infrequently
+occuring words I think that to eliminate infrequently occuring
+words would me a mistake since the majority of important words
+may only occur once.  The types of words which should be
+eliminated should include prepositions and non-significant nouns.
+A way in which this could be accomplished is to keep two
+dictionaries.  One would hold insignificant words and the other
+would hold significant words.  A check could then be done to
+determine if the words are significant or not.  If a word is not
+found in either dictionary the user could be prompted and asked
+which one it should be stored in.  This process should be done
+as the block of text is read so as to gain maximum effeciency in
+use of memory.

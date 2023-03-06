@@ -1,0 +1,13 @@
+UNIT TEST 7
+;
+; Program tests Register indirect addressing.
+;
+PROGRAM  TEST7
+X1      DH    (52)    
+Y       DH    (0)     
+START   MOVH    [SP],R2  
+        MOVH    [R1],R2 
+        MOVH    R2,[SP]
+        MOVH    R2,[R1]
+ENDP 
+END 

@@ -1,0 +1,98 @@
+--
+select MAX(salary)
+from employees
+where job_id like '%REP%'
+
+--
+select MAX(salary), AVG(salary), MIN(Salary), MAX(commission_pct)
+from employees
+where job_id like '%REP%'
+
+--
+select MAX(salary), AVG(salary), MIN(Salary), AVG(commission_pct),
+AVG( NVL(commission_pct,0))
+from employees
+where job_id like '%REP%'
+
+--
+select MAX(salary), AVG(salary), MIN(Salary), AVG(commission_pct),
+AVG( NVL(commission_pct,0))
+from employees
+where job_id like '%REP%'
+
+--
+select COUNT(commission_pct)
+FROM EMPLOYEES
+where job_id like '%REP%';
+
+--
+select COUNT(DISTINCT job_id)
+from employees;
+
+--
+select department_id, AVG(salary)
+from employees
+GROUP BY department_id;
+
+--
+select department_id, job_id, AVG(salary)
+from employees
+GROUP BY department_id, job_id;
+
+--
+select department_id, job_id, AVG(salary)
+from employees
+GROUP BY department_id, job_id
+ORDER BY AVG(SALARY) ASC;
+
+--
+select department_id, AVG(salary)
+from employees
+HAVING avg(salary) > 9000
+GROUP BY department_id
+
+-- IF YOU WANT TO USE WHERE CLAUSE, THEM YOU MUST USE A HAVING CLAUSE ALSO
+select department_id, AVG(salary)
+from employees
+Where department_id > 50
+HAVING avg(salary) > 6000
+GROUP BY department_id
+
+--
+Select last_name, salary
+from employees
+where salary < (select salary from employees where last_name = 'Abel')
+
+--
+Select last_name, salary
+from employees
+where salary > (
+    select avg(salary)
+    from employees);
+
+--
+Select last_name, salary
+from employees
+where salary > 
+(select avg(salary)
+from employees
+where last_name = 'Abel');
+
+--
+Select last_name, department_id, salary
+from employees
+where salary > 
+   (select avg(salary)
+   from employees)
+AND department_id =
+   (select department_id
+   from employees
+   where last_name = 'Kochhar')
+
+-- USING the IN statement
+Select last_name,  salary, department_id
+from employees
+where salary IN
+   ( select min(salary)
+    from employees
+    group by department_id);

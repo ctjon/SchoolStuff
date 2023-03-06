@@ -1,0 +1,60 @@
+        Spring 1994       CS 459 - Local Area Networks         R. Gammill
+
+
+        Homework #3: due at class time on Wednesday, Feb. 9, 1994
+
+        You  are to implement UDP ping (the protocol name is "echo").  To
+        get something working quickly you can modify either the UDP  time
+        or  daytime  routine  from  chapter  10, being sure to send out a
+        different sequence number in each packet.  The reason we are  not
+        doing  the  ping  in  chapter 11 is that ICMP ping requires a raw
+        socket to be opened, and this cannot be done without being  super
+        user  (or using setuid).  To see this, look at the permissions on
+        /etc/ping, the system's ICMP ping program.  We will try ICMP ping
+        on our Pentium cluster when we and it are ready.
+
+        UDP ping works on Sun's, Solbourne's and  Next's.   Be  sure  and
+        make  your  UDP  ping  provide the similar output to the standard
+        ICMP ping (see sample output on page 459 of the text  and/or  run
+        /etc/ping).    Also,   be   sure  that  any  host  that  "refuses
+        connection" causes a reasonable message to be  printed  and  does
+        NOT abort and cause a core dump.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      - 1 -

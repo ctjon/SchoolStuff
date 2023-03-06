@@ -1,0 +1,18 @@
+This is an example to show that the macro processor can handle ordinary
+text, so long as it does not contain any $$ signs, and simply copies
+from its standard input to its standard output.  However, macros may
+be very useful in providing tables:
+$- begin macro definitions
+$@|
+|$@=n012$@'3   '$@=t011$@.I$n$t$%%) .$
+$- the following is the table
+$I31BOYS$ItaBob$ItbJoe$ItcJim$n$I32GIRLS$ItaJill$ItbMary$n
+The only problems can occur $
+$1 here we are invisibly glueing together two sentences
+when a $$ sign occurs in the text in an
+unforseen way as in $503.45.  That would be unfortunate.
+In addition, it is important that a % sign in the text have no
+effect (% is meaningful only inside a macro body) and $% should
+always be an undefined macro, unless it appears in a macro body or 
+$0'%has been defined.'$
+$%

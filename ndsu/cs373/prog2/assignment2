@@ -1,0 +1,61 @@
+
+
+
+        Fall 1993               EE/CS 373               Gammill
+                              Homework #2
+
+        Due: At class on Friday September 24, 1993
+             (NO LATE HOMEWORK WITHOUT WRITTEN REQUEST AND PERMISSION)
+
+        Write  a  recursive  implementation  of  factorial(n)  in MC68000
+        assembly language on the HP-UX assembler m68ka, and test it using
+        the simulator m68ks.  You are to write this so that the factorial
+        routine is a function subroutine called recursively from  a  main
+        program,  with  its  single  argument  (a 32 bit integer, L type)
+        pushed on the stack.  The recursive  definition  of  factorial(n)
+        follows (given in C):
+
+              main() { int n; if(n >= 1) printf("%d %dn",n,fact(n)); }
+
+              long int fact(n) int n;
+              {       if(n <= 1) return(1);
+                      else return( n * fact(n-1) );
+              }
+
+        Your  program can do no input/output, so you should put the input
+        value of n at $904 through $907, and the result of the  factorial
+        calculation  on  n  should  be  placed  at $900 through $903.  In
+        addition to the initial check  for  an  illegal  argument,  which
+        should stop with a zero as its result (in $900 through $903), you
+        are  to  implement  an  overflow  test which aborts the factorial
+        calculation and places a -1 in  the  result  location  ($900)  to
+        indicate  that the overflow occurred.  What to do about the stack
+        in such an overflow abort is up to you,  but  your  documentation
+        (in the program, and elsewhere) should describe what is done, and
+        briefly justify that.
+
+        Your  program code should start at location $1000.  Be sure after
+        each call of the function (which involved pushing  its  argument)
+        that  you  remember  to  pop  that argument off the stack, so the
+        stack does not continually grow.
+
+        Your output should show a variety of test cases, both  legal  and
+        illegal.   All  features  of the code should be tested.  Also, be
+        sure to show a display of the stack before calling, at the bottom
+        of the recursive nest (when n  ==  1),  and  when  the  factorial
+        calculation is complete, for the largest number for which you can
+        compute  the  factorial without overflow.  A display of the stack
+        requires BOTH the SP value and the memory contents.
+
+        The report on this problem consists of:
+          - written description (problem  description,  solution  to  the
+            problem, verification)
+          - flowchart
+          - program listing
+          -  program  results (a listing of the simulator output with all
+            results underlined and annotated).
+
+
+
+
+

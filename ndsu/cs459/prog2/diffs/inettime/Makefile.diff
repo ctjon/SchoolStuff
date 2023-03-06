@@ -1,0 +1,19 @@
+*** Makefile	Tue Feb  1 12:24:12 1994
+--- ../inettime.orig/Makefile	Tue Feb  1 13:25:44 1994
+***************
+*** 4,10 ****
+  
+  CFLAGS	= -O
+  OBJ	= main.o inettime.o
+! MYLIB	= ../libnet/libnet.a
+  
+  all:
+  	make `systype.sh`
+--- 4,10 ----
+  
+  CFLAGS	= -O
+  OBJ	= main.o inettime.o
+! MYLIB	= ../libnet.a
+  
+  all:
+  	make `systype.sh`

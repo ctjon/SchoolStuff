@@ -1,0 +1,156 @@
+Script started on Wed Nov 17 18:57:28 1993
+11% telnet star24
+Trying 134.129.107.130...
+Connected to star24.NoDak.edu.
+Escape character is '^]'.
+
+
+* WELCOME TO THE NDSU ACADEMIC HOST PACX/STARMASTER *
+
+
+NOTICE:  Enter class HELP for Communication Parameter change on August 10, 1993.
+
+
+Please enter class 32
+
+You are system address A1032
+You are connected to P4301
+
+Class ready for start
+
+
+
+WHAT
+
+TUTOR  2.0 > 
+WHAT
+
+TUTOR  2.0 > TM
+
+*TRANSPARENT* EXIT=$01 = CTL A
+
+
+
+* WELCOME TO THE NDSU ACADEMIC HOST PACX/STARMASTER *
+
+
+NOTICE:  Enter class HELP for Communication Parameter change on August 10, 1993.
+
+
+Please enter class 6
+
+* HECN UNIX VIA NDSU STARMASTER * 
+
+PRESS [carriage return] SEVERAL TIMES AFTER START MESSAGE 
+
+
+
+You are system address A3672
+You are connected to P3022
+
+Class ready for start
+
+
+
+4.03D OS/MP UNIX (plains)
+
+login: tjon
+Password:
+Last login: Wed Nov 17 18:55:39 from class6
+ OS/SMP 4.0Da_Export (PLAINS/root) #1: Tue Nov 10 21:18:44 1991
+ Copyright (c) 1989, 1990 Sun Microsystems, Inc. and Solbourne Computer, Inc.
+
+Terminal recognized as vt100 (ANSI/VT100 Clone)
+Hit Backspace:   
+
+--------------------------------------------------------------------------
+Disk quotas for tjon (uid 324):
+Filesystem     usage  quota  limit    timeleft  files  quota  limit    timeleft
+/project           0      1      1                  0      0      0            
+/class             0      1      1                  0      0      0            
+/student           0      1      1                  0      0      0            
+/student/mnt/xd8g
+                5791   6000  12000                519      0      0            
+/student/mnt/cf0a
+                   0      1      1                  0      0      0            
+/faculty2          0      1      1                  0      0      0            
+/faculty           0      1      1                  0      0      0            
+/faculty/mnt/cf0b
+                   0      1      1                  0      0      0            
+--------------------------------------------------------------------------
+/dev/ttysa
+speed 38400 baud; evenp hupcl 
+erase = ^H
+-inpck ixany imaxbel 
+crt tostop 
+No mail for tjon
+No new messages.
+  6:59pm  up 1 day, 23:45,  69 users,  load average: 2.88, 2.41, 1.97
+11% cd src/class/cs373/prog7
+/student/mnt/xd8g/89/tjon/src/class/cs373/prog7
+assignment7	listing		output		prog7.s.base
+gradesht.hw7	object		prog7.s
+12% 
+TUTOR  2.0 > LO;X=cat object
+cat object
+S00600004844521B
+S1070200000010DC0A
+S107021000001112C3
+S1130900000000FA0000138800000008010302063A
+S1130910040C0809203D2049444C4520434F554EC2
+S1130920540A0D00203D204E554D424552204F465D
+S1130930204D4F544F5220524556455253414C532B
+S11309400A0D00203D204E554D424552204F462071
+S1130950483120494E5445525550545320494E472E
+S10C09604E4F5245440A0D0001FA
+S11310004FF809144BF9000100002038090001CD04
+S113101000251B7C008000231B7C0084000B1B7CB0
+S1131020000000011B7C001800031B7C00FB000D6A
+S11310301B7C003000011B7C00A1002146FC210028
+S113104013FC00FF00010005247C0000090C428110
+S11310504282428378012A3809042C3809047E002C
+S113106052814AF8096866F81B7C0000001146FCAE
+S113107027001B7C000000212F014878091461001F
+S11310800022508F2F024878092461000016508FE7
+S11310902F03487809436100000A508F1E3C00E486
+S11310A04E4E4E50FFB048E7FF7E2C489DFC00009A
+S11310B000502028000C1E3C00EC4E4E2268000814
+S11310C01CD966FC538E2A489BFC000000501E3C31
+S11310D000F34E4E4CDF7EFF4E584E75538566002E
+S11310E0000A42B809684EF8110A0C0400016600AF
+S11310F0000852874EF810FE0687FFFFFFFF0287A5
+S1131100000000071B72700000111B7C00010035F9
+S11311104E73BA866F00000852834EF811284604B5
+S113112052822C059CB809081B7C0001001B4E73DD
+S9030000FC
+TUTOR  2.0 > GO 1000
+PHYSICAL ADDRESS=00001000
+801952 = IDLE COUNT
+1 = NUMBER OF MOTOR REVERSALS
+443 = NUMBER OF H1 INTERUPTS INGNORED
+
+TUTOR  2.0 > TM
+
+*TRANSPARENT* EXIT=$01 = CTL A
+
+
+13% exit
+14% logout
+[;H[2J-------------------------------------------------------------------------------
+Truly great madness can not be achieved without significant
+intelligence.
+		-- Henrik Tikkanen
+-------------------------------------------------------------------------------
+
+
+
+GOODBYE 
+
+telnet> send break
+
+TUTOR  2.0 > 
+telnet> close
+Connection closed.
+12% exit
+13% 
+script done on Wed Nov 17 19:00:21 1993

@@ -1,0 +1,12 @@
+The following program is a spell checker.  It will scan through a block of
+text and look for words that are not in its dictionary.  If it finds such
+a word it will do one of three things.
+
+	1. write the word to the output document without changing
+
+	2. suggest alternative words to the user
+
+	3. add the word to the dictionary and leave the document unchanged
+
+YOU MUST TRAIN THIS SPELL CHECKER!!!!  it will not be very smart the
+first time you run it.

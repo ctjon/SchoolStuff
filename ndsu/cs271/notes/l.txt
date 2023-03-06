@@ -1,0 +1,210 @@
+
+                                                                      L-1
+                  VARIABLE LENGTH DATA PROCESSING
+ .  WE WANT TO MOVE A NAME FRIM LOCATION LOC2 TO LOC1.
+ .  LENGTH OF NAME OS STORED IN LOCATION NSIZE.
+ .  EXAMPLE 1:
+          MOVE      START
+                    USING MOVE,15
+                    L     1,NSIZE
+                    SR    2,2
+          LOOP      IC    0,LOC2(2)
+                    STC   0,LOC1(2)
+                    A     2,=F'1'
+                    BCT   1,LOOP
+                    BR    14
+          NSIZE     DC    F'7'
+          LOC1      DC    CL80' '
+          LOC2      DC    CL80'DONOVAN'
+                    END
+ . HOW CAN THIS BE DONE USING THE MVC INSTRUCTION AND NO LOOP?
+ . HINT: WHY CAN'T USE MVC  LOC1(NSIZE),LOC2 ?
+ . MODIFYING THE MVC:
+
+                             OP LENGTH  ADDR1   ADDR2
+                            ___________________________
+ . MVC INSTRUCTION FORMAT  : D2 :    :        :        :
+                           :____:____:________:________:
+                            0    1    2        4
+
+          MOVE      START
+                    USING MOVE,15
+                    L     1,NSIZE
+                    STC   1,MVCINST+1
+          MVCINST   MVC   LOC1(0),LOC2
+                    BR    14
+          NSIZE     DC    F'6'
+          LOC1      DC    CL80' '
+          LOC2      DC    CL80'DONOVAN'
+                    END
+
+
+                    EXECUTE INSTRUCTION
+ . RX FORMAT
+ . ASSEMBLY FORM:   EX    R,A
+ . "BLANK CHECK" INSTRUCTION - CAN BE MADE OUT TO BE ANY ONE
+ .  LAST BYTE OF REGISTER R IS LOGICALLY OR'ED WITH  2ND BYTE OF
+   THE INSTRUCTION AT LOCTION A.
+ . THE RESULTING INSTRUCTION IS EXECUTED AS A 370 MACHINE INSTRUCTION.
+
+        ___________________________________
+    R  :        :        :        :        :
+       :________:________:________:________:
+                                    \____/
+                                      :
+                                      V
+                        ___  OR  ____/
+                      /
+                   __V_
+                 /      \
+        ___________________________________
+    A  :        :        :        :        :
+       :________:________:________:________:
+
+ . NEITHER REGISTER R NOR THE INSTRUCTION IN MEMORY (AT A) ARE MODIFIED.
+ . EXECUTION CONTINUES FOLLOWING THE EXECUTE INSTRUCTION.
+ . HOW DOES EX HELP ACCOMPLISH THE VARIABLE LENGTH MOVE?
+
+. EXAMPLE OF EXECUTE INSTRUCTION:
+          MOVE      START
+                    USING MOVE,15
+                    L     1,NSIZE
+                    EX    1,MOVEIT
+                    BR    14
+          MOVEIT    MVC   LOC1(0),LOC2
+          NSIZE     DC    F'6'
+          LOC1      DC    CL80' '
+          LOC2      DC    CL80'DONOVAN'
+                    END
+ . IS THE INSTRUCTION AT MOVEIT EXECUTED?  HOW?
+ . WHY IS (0) LENGTH SPECIFIED IN MOVEIT?
+ . IS THE MOVEIT INSTRUCTION ACTUALLY CHANGED?
+ . WHAT IF NSIZE WERE LARGER THAN 256 BYTES?
+ . ANOTHER EXAMPLE OF EXECUTE:
+ . WANT ARITHMETIC CALCULATION ROUTINE WHICH OPERATES ON DATA IN R1 & R2.
+ . OPERATION TO BE PERFORMED DEPENDS UPON VALUE IN REGISTER 1, AS FOLLOWS
+             REG 1   RESULT
+             -----   ------
+              0      R2=R2+R3
+
+              1      R2=R2-R3
+
+              2      R2=R2 AND R3
+
+              3      R2=R2 OR R3
+
+              4      R2=R2-1
+
+              5      R2=0
+ . HOW CAN EX BE USED TO IMPLEMENT THIS ROUTINE?
+                    CONTROL SECTIONS (CSECT'S)
+. BLOCKS OF CODE WHICH CAN BE RELOCATED IN MEMORY INDEPENDENT OF THE REST
+
+. INDEPENDENT ROUTINES (SUBROUTINES) WITHIN A PROGRAM
+  . EACH HAS ITS' OWN SYMBOL TABLE
+  . BREAK UP PROGRAMMING TASK INTO SEVERAL INDEPENDENTLY WRITTEN "PIECES"
+  . ALLOW OFTEN-USED ROUTINES TO BE SAVED APART FROM WHOLE
+  . FIRST CONTROL SECTION BEGINS WITH START; ALL OTHERS BEGIN WITH CSECT
+. HOW CAN ONE CONTROL SECTION ACESS DATA FROM ANOTHER?
+  . THE CSECT WITH THE DATA WILL LEAVE AN ADDRESS IN A REGISTER
+. HOW DOES USER CSECT KNOW THE LAYOUT OF DATA?
+  . CONSTRUCT A TEMPLATE FOR THE FIELD-LAYOUT OF RECORDS (DSECT).
+
+DUMMY CONTROL SECTION (DSECT)
+. "TEMPLATE" CONTROL SECTIONS
+. ALOCATED NO MEMORY AND THEREFORE NOT EXECUTED.
+. WIDELY USED TECHNIQUE IN SYSTEMS PROGRAMS TO MANAGE TABLES AND CSECTS.
+. SIMILAR TO BASED VARIABLES IN PL/1.
+              .
+. EXAMPLE:    .
+              LA    2,EMP1
+              USING EMPLOYEE,2
+              LH    1,EMPAGE    REPLACES LH  1,18(0,2) OR LH  1,AGE(EMP)
+              .
+   EMP1       DC    CL17'HARRY DONOVAN',C'M',H'46',A(EMP4)
+   EMP2       DC    CL17'JIM DONOVAN',C'M',H'64',A(0)
+              .
+   EMPLOYEE   DSECT
+   EMPNAME    DS    CL17
+   EMPSEX     DS    C
+   EMPAGE     DS    H
+   EMPMATE    DS    A
+              END
+. ACCESSING DISTANT DATA (IN ANOTHER CSECT)
+. ADD 49 TO JOHN DONOVAN'S AGE.  THE DATA FILE IS IN ANOTHER CSECT,
+  BUT THE ADDRESS OF EMPLOYEE TABLE (EMP1) IS IN REGISTER 2.
+              CSECT
+              USING   AGE49,15
+              USING   EMPLOYEE,2
+   LOOP       CLC     EMPNAME,=CL17'JOHN DONOVAN'
+              BE      FOUND
+              A       2,=F'24'
+              B       LOOP
+   FOUND      LH      1,EMPAGE   REPLACES LH  1,18(0,2) OR LH  1,AGE(EMP)
+              AH      1,=H'49'
+              STH     1,EMPAGE
+              BR      14
+   EMPLOYEE   DSECT
+   EMPNAME    DS      CL17
+   EMPSEX     DS      C
+   EMPAGE     DS      H
+   EMPMATE    DS      A
+              END
+LOC    OBJECT CODE     STMT   SOURCE STATEMENT
+000000                    1 SETUP START
+000000 05C0               2       BALR  12,0
+000002                    3       USING *,12
+000002 4120 C00E          4       LA    2,EMP1
+000006 58F0 C0CE          5       L     15,=V(AGE49)
+00000A 05AF               6       BALR  10,15
+00000C 07FE               7       BR    14
+000010                    8       DC    0F'0'
+000010 C8C1D9D9E840C4D6  9 EMP1 DC CL17'HARRY DONOVAN',C'M',H'46',A(EMP4)
+000028 D1C9D440C4D6D5D6 10 EMP2 DC CL17'JIM DONOVAN',C'M',H'64',A(0)
+000040 D1D6C8D540C4D6D5 11 EMP3 DC CL17'JOHN DONOVAN',C'M',H'29',A(EMP5)
+000058 D1C1D5C540C4D6D5 12 EMP4 DC CL17'JANE DONOVAN',C'F',H'24',A(EMP1)
+000070 C2D6D4C2C5E840C4 13 EMP5 DC CL17'BOMBEY DONOVAN',C'F',H'28',A(EMP3)
+000088 E2C9C440C8E4C6C6 14 EMP6 DC CL17'SID HUFF',C'M',H'35',A(0)
+0000A0 C3C8C9D740E9C9C5 15 EMP7 DC CL17'CHIP ZIERING',C'M',H'36',A(EMP8)
+                         17       LTORG
+0000D0 000000D8          18       =V(AGE49)
+                         19 *************************************
+                         20 *  SEPARATE CSECTS IN SAME ASSEMBLY *
+                         21 *************************************
+0000D8                   22 AGE49 CSECT
+0000D8                   23       USING AGE49,15
+000000                   24       USING EMPLOYEE,2
+0000D8 E060 F000 012C    25       XDUMP AGE49,300
+0000DE D510 2000 F036    26 LOOP  CLC   EMPNAME,=CL17'JOHN DONOVAN'
+0000E4 4780 F018         27       BE    FOUND
+0000E8 5A20 F030         28       A     2,=F'24'
+0000EC 47F0 F006         29       B     LOOP
+0000F0 4810 2012         30 FOUND LH    1,EMPAGE
+0000F4 4A10 F034         31       AH    1,=H'49'
+0000F8 4010 2012         32       STH   1,EMPAGE
+0000FC E060 F000 012C    33       XDUMP AGE49,300
+000102 07FA              34       BR    10
+                         35       LTORG
+000108 00000018          36       =F'24'
+00010C 0031              37       =H'49'
+00010E D1D6C8D540C4D6D5  38       =CL17'JOHN DONOVAN'
+000000                   39 EMPLOYEE  DSECT
+000000                   40 EMPNAME   DS    CL17
+000011                   41 EMPSEX    DS    C
+000012                   42 EMPAGE    DS    H
+000014                   43 EMPMATE   DS    A
+                         44           END
+
+
+CORE DUMP BEFORE EXECTITON
+
+0000C0  40E9C9C5 D9C9D5C7 40C60020 000000A0  000000D8 F5F5F5F5 E060F000 012CD510
+0000E0  2000F036 4780F018 5A20F030 47F0F006  48102012 4A10F034 40102012 E060F000
+000100  012C07FA F5F5F5F5 00000018 0031D1D6  C8D540C4 D6D5D6E5 C1D54040 404040F5
+
+
+CORE DUMP AFTER EXECUTION
+
+0000C0  40E9C9C5 D9C9D5C7 40C60020 000000A0  000000D8 F5F5F5F5 E060F000 012CD510
+0000E0  2000F036 4780F018 5A20F030 47F0F006  48102012 4A10F034 40102012 E060F000
+000100  012C07FA F5F5F5F5 00000018 0031D1D6  C8D540C4 D6D5D6E5 C1D54040 404040F5

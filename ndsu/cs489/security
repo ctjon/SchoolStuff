@@ -1,0 +1,21 @@
+From perrizo Mon Feb  8 17:03:46 1993
+Received: by plains.NoDak.edu; Mon, 8 Feb 1993 17:03:31 -0600
+Date: Mon, 8 Feb 1993 17:03:31 -0600
+From: William Perrizo <perrizo>
+Message-Id: <199302082303.AA05214@plains.NoDak.edu>
+To: axtman, bingeman, broin, bye, conner, dsatrom, forseth, freadhof, glum,
+        kong, kroh, mmyhre, peddu, roe, rorvig, sajmb@vm1.NoDak.edu, salas-ma,
+        sbadinge, schmaltz, sharter, tjon
+Subject: ATTENTION
+Status: R
+
+After today's discussion, I have decided to put a large file called "security"
+in the library for your use.  It is a long set of notes on mandatory security
+issues.  It includes a more detailed discussion of what was presented in
+class today, together with volumes of additional detail.  The citations from
+which the material were taken are given also (for your convenient reference).
+
+As you can see, I miss-spoke.  I said "no system today is C2!"  What I meant
+to say is "no system today is B1!".  Apologies to Chris.
+Thanks
+

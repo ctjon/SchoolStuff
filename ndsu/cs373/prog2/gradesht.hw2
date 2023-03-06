@@ -1,0 +1,59 @@
+Fall 1993                    EEE / CS 373               Gammill
+                             Home Work #2
+                             Grading Sheet
+
+                                        Name:__________________
+
+        ITEM                                       POINTS
+        ----                                 -------------------
+                                               Maximum   Score
+1. Written Description
+
+        Overview (Problem Description):          5 pts
+                                                        --------
+
+        Problem Solution and Verification:       5 pts
+                                                        --------
+
+2. Program Design and Documentation 
+
+  a) Flowchart  (clean, readable, appropriate   10 pts
+                degree of detail)                       --------
+      
+  b) Single stack (SP only)                     10 pts
+                                                        --------
+
+  c) Program Listing
+
+        Clarity (good names and readability,    10 pts
+                clean recursion (NO RAT'S NEST),        --------
+                and arg pushed on stack before call)
+
+        Comments (brief, relevant, readable)    10 pts
+                                                        --------
+
+
+3. Program Results (TESTING!)
+
+        Basic Results (bad input tests,         15 pts
+                fact(8) = $9d80 at least)               --------
+
+        Completeness: (advanced tests)
+
+                (correct overflow detection)    10 pts
+                                                        --------
+                (fact(9) = $58980)               5 pts
+                                                        --------
+                (fact(12) = $1c8cfc00)          10 pts
+                                                        --------
+
+4. Miscellaneous (appearance and readability)   10 pts
+        e.g. grammar, folder, etc.                      --------
+
+                                       ----------------------------
+
+                                       TOTAL:  100 pts
+                                                        --------
+
+
+

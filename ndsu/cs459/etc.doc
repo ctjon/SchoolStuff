@@ -1,0 +1,87 @@
+#
+# CS 459
+# Assignment
+# Chris Tjon
+# Jeff Bakke
+# Jason Kroh
+# 20 April 1994
+#
+
+# Contents of the FreeBSD /etc directory with comments
+aliases 	- default aliases for Mail redirection
+csh.cshrc	- Standard cshrc for csh account setup
+csh.login	- Standard .login for csh account setup
+csh.logout	- Standard .logout for csh account setup
+daily*		- Root script run by cron daily to remove junk and clean
+		  up general tmp files	
+disktab		- Disc geometry and layout table for partitions
+disktab.install - Disk geometry and layout for installation
+disktab.orig    - Original distribution copy of disktab.install
+dm.conf		- Game control file for limiting use on high activity
+dumpdates	- Used to list dates for auto/cron use of 'dump'
+fstab		- File system descriptions and mount locations used by mount
+fstab.generic	- Distributed generic version of fstab
+fstab.wd	- Another copy of fstab
+ftpusers	- List of users NOT allowed ftp access
+gettytab	- Terminal definitions for getty async lines
+group		- List of groups and associated members
+host.conf	- Configuration for lookup-method.  Bind first then
+		  /etc/hosts is consulted
+hostname.ed0	- ???????you tell us
+hosts		- List of local hosts.  Allows for name resolution
+		  but only contains important local hosts.  All others
+		  are obtained via a DNS
+hosts.equiv	- List of legal aliases for the current hostname
+hosts.lpd	- Permission file for lpd.  host requesting a print 
+		  must exist in here or /etc/hosts.equiv
+inetd.conf	- Configuration of inetd.  Lists services available along
+		  with associated socket and program to connect to.
+localtime@	- A symbolic link to the zoneinfo file for the 
+		  current time zone.
+magic		- Magic contains binary signatures of types of files. 
+		  Used by the 'file' command to identify file types.
+mail.rc		- Default mailer settings and options
+manpath.config* - Used by 'man' to indication location of man pages on 
+		  the system.
+master.passwd	- The master user database and password.  Protected from
+		  non-root access.
+monthly*	- Contains any tasks to be run on a monthly basis
+motd		- Message of the day displayed to new logins 
+mtree/		- Contains files with the distribution layout of the files
+myname		- Contains this machine's hostname
+namedb/		- Configuration and setup files for 'named' internet
+		  name server program.
+netstart	- script called to initialize networking system
+		  when the machine is booted.
+networks	- Used to define local network and subnet information
+passwd		- /etc/passwd file with user login information
+phones		- Contains a private list of phone numbers for use by 'tip'
+printcap	- List of available printers used by lpd
+printcap.orig	- Original distributed printcap file
+protocols	- Contains information and aliases for all known DARPA
+		  internet protocols. 
+pwd.db		- Insecure password database file
+rc		- After the system boots and the kernel is loaded, this
+		  script is called to initialize the sytem.
+rc.local	- This script is called by /etc/rc to initialize and
+		  local special boot requirements.
+remote		- termcap-like description of all remote-hosts available
+		  to tip connection.
+resolv.conf	- Resolver local fixed-locations
+rpc		- RPC program number to name alias database
+security	- script to provide simple day-to-day security checks
+sendmail.cf	- Default Sendmail configuration.
+services	- List of network services and associated socket
+		  address and type.
+shells		- List of legal  system shells.  Used by chsh and
+		  also by ftpd.  User cannot login via ftp unless
+		  their shell is listed here.
+spwd.db         - Secure password database file.
+syslog.conf	- Syslog configuration for destination of system-logged
+		  errors and messages
+termcap@	- Symbolic link to the termcap library
+ttys		- List of all ports requiring 'getty' for login and
+		  associated getty command and protocol information.
+uucp/		- Configuration and setup files for uucp suite of 
+		  programs.  
+weekly*		- Tasks to be executed weekly

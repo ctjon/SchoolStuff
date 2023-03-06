@@ -1,0 +1,51 @@
+From gammill Wed Dec  2 09:17:15 1992
+Received: by plains.NoDak.edu; Wed, 2 Dec 1992 09:17:05 -0600
+Date: Wed, 2 Dec 1992 09:17:05 -0600
+From: bob gammill <gammill>
+Message-Id: <199212021517.AA20342@plains.NoDak.edu>
+To: broberg, broin, bye, dnelson, dsatrom, fluth, frank, glaeske, heemeyer,
+        howatt, isdahl, klakeman, kroh, lemke, lothspei, lwang, maier,
+        mcintyre, pepka, reiter, roe, rorvig, sharter, tjon, tofte, vold,
+        wetzstei, wilken
+Subject: CS474
+Status: R
+
+        This  is an exercise in using "whois", "finger" and "nslookup" in
+        finding the internet mail address of someone at a distance.   For
+        each  person  whose  mail  address  you are able to find you must
+        provide the following information, which you will send me via  e-
+        mail.
+
+          1.  The  output  of  the  function which gave you the top level
+             domain name and name  server  in  which  the  person's  mail
+             address  resides.   All  of these people are in .EDU, so top
+             level here means the domain below that.
+
+          2. The sequence of steps (possibly empty) which allowed you  to
+             find  the  host  machine  within the domain where the person
+             receives his mail.  P.T. Magee has a generic  mailbox  which
+             is given out by finger on umn.edu.  That address has no host
+             machine specified.  I want his host machine and login.
+
+          3. The output of the finger call which verifies that the person
+             has  a  login on the chosen host machine, giving all of that
+             person's logins.
+
+        The following list of person's should be "found" on the internet.
+        DO NOT send mail to any of them, as they have no idea their names
+        are being used.
+
+          1. Rick Walker's logins at Moorhead State University.  Find all
+             of them.
+
+          2. Craig Lien at Concordia College.
+
+          3. Denbigh Starkey, Chair of CS at Montana State University.
+
+          4. Paul T. Magee, Chair of Molecular Biology,  located  in  the
+             Center   for   Biological  Sciences  at  the  University  of
+             Minnesota.
+
+	For this assignment ONLY person number 3 (Denbigh Starkey) is required.
+	All others are optional.
+

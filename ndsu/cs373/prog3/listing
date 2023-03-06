@@ -1,0 +1,161 @@
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    1
+
+
+     1        00000900     	ORG	$900                                            
+     2 000900 0004         INT	DS.L	1		;integer data storage area $900-$903     
+     3 000904 0004         FP	DS.L	1		;float Data storage area $904-$907        
+     4 000908 0002         OPTN	DS.W	1		;option N to determine what to do $908-$
+     5        ff800000     HBM	EQU	$FF800000	;define high bit mask              
+     6        007fffff     LBM	EQU	$007FFFFF	;define low bit mask               
+     7                                                                          
+     8        00001000     	ORG	$1000                                           
+     9 001000 2e7c00004000 MAIN	MOVE.L	#$4000,SP	;initialize the stack pointer  
+    10 001006 0c7800010908 OPT1	CMP	#1,OPTN		;check to see if option == 1       
+    11 00100c 6600000a     	BNE	OPT2		;if option != 1 branch to OPT2            
+    12 001010 61000044     	BSR	N1		;if option == 1 call N1 subroutine          
+    13 001014 6000003e     	BRA	END		;branch to end                             
+    14 001018 0c7800020908 OPT2	CMP 	#2,OPTN		;check to see if option == 2      
+    15 00101e 6600000a     	BNE	OPT3		;if option != 2 branch to OPT3            
+    16 001022 61000044     	BSR	N2		;if option == 2 call N2 subroutine          
+    17 001026 6000002c     	BRA	END		;branch to end                             
+    18 00102a 0c7800030908 OPT3	CMP 	#3,OPTN		;check to see if option == 3      
+    19 001030 6600000a     	BNE	OPT4		;if option != 3 branch to OPT4            
+    20 001034 6100004e     	BSR	N3		;if option == 3 call N3 subroutine          
+    21 001038 6000001a     	BRA	END		;branch to end                             
+    22 00103c 0c7800040908 OPT4	CMP	#4,OPTN		;check to see if option == 4       
+    23 001042 6600000a     	BNE	NOTV		;if option != 4 branch to NOTV            
+    24 001046 61000044     	BSR	N4		;if option == 4 call N4 subroutine          
+    25 00104a 60000008     	BRA 	END		;branch to end                            
+    26 00104e 31fc00000908 NOTV	MOVE.W	#0,OPTN		;option is not valid, place 0 in
+    27 001054 60fe         END	BRA	END		;LOOP forever (STOP)                    
+    28                                                                          
+    29 001056 4e71         N1	NOP			;subroutine to setup N = 1                  
+    30 001058 2f380900     	MOVE.L	INT,-(SP)	;place integer argument on the stac
+    31 00105c 61000036     	BSR	FLOAT		;call the float function                 
+    32 001060 588f         	ADDQ.L	#4,SP		;fix the stack                        
+    33 001062 21c00904     	MOVE.L	D0,FP		;place floating point result in FP    
+    34 001066 4e75         	RTS			;return                                       
+    35                                                                          
+    36 001068 4e71         N2	NOP			;subroutine to setup N = 2                  
+    37 00106a 2f380904     	MOVE.L	FP,-(SP)	;place float argument on the stack  
+    38 00106e 61000076     	BSR	FIX		;call the fix function                     
+    39 001072 588f         	ADDQ.L	#4,SP		;fix the stack                        
+    40 001074 68000008     	BVC	OK		;if carry bit != 1 then branch to OK        
+    41 001078 31f8ffff0908 	MOVE.W	-1,OPTN		;OVERFLOW -  put a -1 into OPTN	    
+    42 00107e 21c00900     OK	MOVE.L	D0,INT		;place integer result in INT       
+    43 001082 4e75         	RTS			;return                                       
+    44                                                                          
+    45 001084 4e71         N3	NOP			;subroutine to setup N = 3                  
+    46 001086 61ce         	BSR	N1		;call the N1 subroutine                     
+    47 001088 61de         	BSR	N2		;call the N2 subroutine                     
+    48 00108a 4e75         	RTS			;return                                       
+    49                                                                          
+    50 00108c 4e71         N4	NOP			;subroutine to setup N = 4                  
+    51 00108e 61d8         	BSR	N2		;call the N2 subroutine                     
+    52 001090 61c4         	BSR	N1		;call the N1 subroutine                     
+    53 001092 4e75         	RTS			;return                                       
+    54                                                                          
+    55 001094 4e71         FLOAT   NOP			;function to convert binary int to IEEE
+    56 001096 4280         	CLR.L	D0		;clear D0 - stores return value           
+    57 001098 4281         	CLR.L	D1		;clear D1 - stores integer to convert     
+    58 00109a 4282         	CLR.L	D2		;clear D2 - stores exponent               
+    59 00109c 4283         	CLR.L	D3		;clear D3 - temporary storage             
+    60 00109e 222f0004     	MOVE.L	4(SP),D1	;retrieve parameter and place in D1 
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    2
+
+
+    61 0010a2 0c410000     	CMP	#0,D1		;compare D1 and 0                        
+    62 0010a6 6e00000c     	BGT	LOOP		;if integer > 0 then branch to LOOP       
+    63 0010aa 67000036     	BEQ	FZERO		;if integer == 0 branch to FZERO         
+    64 0010ae 4481         	NEG.L	D1		;negate D1 with 2's compliment            
+    65 0010b0 08c0001f     	BSET	#31,D0		;set the sign of the result to be negat
+    66 0010b4 5282         LOOP	ADDQ.L	#1,D2		;D2++                             
+    67 0010b6 e389         	LSL.L	#1,D1		;shift left one bit                    
+    68 0010b8 64fa         	BCC	LOOP		;if carry clear(no carry) then branch to L
+    69 0010ba e089         	LSR.L	#8,D1		;shift D1 right 8 bits                 
+    70 0010bc e289         	LSR.L 	#1,D1		;shift D1 right 1 more bit            
+    71 0010be 263c0000009f 	MOVE.L	#159,D3		;place 159 into D3                  
+    72 0010c4 9682         	SUB.L	D2,D3		;exponent = D3 - D2 - result in D3     
+    73 0010c6 2403         	MOVE.L	D3,D2		;copy exponent to D2                  
+    74 0010c8 7617         	MOVE.L	#23,D3		;place 23 in D3 - number of bits to L
+    75 0010ca e7aa         	LSL.L	D3,D2		;shift left 23 bits                    
+    76 0010cc 0282ff800000 	AND.L	#HBM,D2		;mask out all except the exponent    
+    77 0010d2 8082         	OR.L	D2,D0		;place exponent in D0                   
+    78 0010d4 0281007fffff 	AND.L	#LBM,D1		;mask out all except the mantissa    
+    79 0010da 8081         	OR.L	D1,D0		;place mantissa in D1                   
+    80 0010dc 4283         	CLR.L	D3		;clear D3 - temporary storage             
+    81 0010de 60000004     	BRA	FRTS		;branch to floats rts statement           
+    82 0010e2 7000         FZERO	MOVE.L	#0,D0		;place 0 in D0                   
+    83 0010e4 4e75         FRTS	RTS                                             
+    84                                                                          
+    85 0010e6 4e71         FIX	NOP			;function to convert IEEE fp to binary int 
+    86 0010e8 4e560000     	LINK	A6,#0                                          
+    87 0010ec 48e77800     	MOVEM.L	D1-D4,-(SP)	                                
+    88 0010f0 4280         	CLR.L	D0                                            
+    89 0010f2 4281         	CLR.L	D1                                            
+    90 0010f4 4282         	CLR.L	D2                                            
+    91 0010f6 4283         	CLR.L	D3                                            
+    92 0010f8 4284         	CLR.L	D4                                            
+    93 0010fa 222e0008     	MOVE.L	8(A6),D1                                     
+    94 0010fe 203c80000000 	MOVE.L	#$80000000,D0                                
+    95 001104 c081         	AND.L	D1,D0	                                        
+    96 001106 243c7f800000 	MOVE.L	#$7F800000,D2	                               
+    97 00110c c481         	AND.L	D1,D2		                                       
+    98                                                                          
+    99 00110e ee8a         	LSR.L	#7,D2		                                       
+   100 001110 4842         	SWAP	D2		                                           
+   101 001112 66000008     	BNE	NZERO		                                         
+   102 001116 4284         	CLR.L	D4                                            
+   103 001118 60000044     	BRA	DONE                                            
+   104                                                                          
+   105 00111c 0402007f     NZERO	SUB.B	#$7F,D2                                  
+   106 001120 363c001f     	MOVE.W	#$1F,D3                                      
+   107 001124 9642         	SUB.W	D2,D3                                         
+   108 001126 6f000024     	BLE	OVERFLW		                                       
+   109                                                                          
+   110 00112a 283c007fffff 	MOVE.L	#$7FFFFF,D4	                                 
+   111 001130 c881         	AND.L	D1,D4		                                       
+   112 001132 08c40017     	BSET.L	#$17,D4		                                    
+   113 001136 e18c         	LSL.L	#8,D4		                                       
+   114                                                                          
+   115 001138 e28c         SHIFT	LSR.L	#1,D4		                                  
+   116 00113a 5303         	SUBQ.B	#1,D3                                        
+   117 00113c 66fa         	BNE	SHIFT                                           
+   118 00113e 0800001f     	BTST.L	#$1F,D0		                                    
+   119 001142 6700001a     	BEQ	DONE		                                          
+   120 001146 4484         	NEG.L	D4		                                          
+ 
+ 
+ 
+ MC68000 ASM REV:  1.52- COPYRIGHT  MOTOROLA 1978                PAGE    3
+
+
+   121 001148 60000014     	BRA 	DONE		                                         
+   122 00114c 0800001f     OVERFLW	BTST.L	#$1F,D0		                             
+   123 001150 66000016     	BNE	SPEC		                                          
+   124 001154 44fc0001     	MOVE.W	#1,CCR		                                     
+   125 001158 31fcffff0908 	MOVE.W	#$FFFF,$908                                  
+   126 00115e 2004         DONE	MOVE.L	D4,D0                                    
+   127 001160 4cdf001e     	MOVEM.L	(SP)+,D1-D4                                 
+   128 001164 4e5e         	UNLK	A6                                             
+   129 001166 4e75         	RTS                                                 
+   130 001168 283c80000000 SPEC	MOVE.L	#$80000000,D4                            
+   131 00116e 4cdf001e     	MOVEM.L	(SP)+,D1-D4                                 
+   132 001172 4e5e         	UNLK	A6                                             
+   133 001174 4e75         	RTS                                                 
+   134                     	END                                                 
+
+ ****** TOTAL ERRORS    0--  134 -- TOTAL LINES  134
+
+
+ APPROX  2098 UNUSED SYMBOL TABLE ENTRIES
+
+ DONE     00115e END      001054 FIX      0010e6 FLOAT    001094 FP       000904
+ FRTS     0010e4 FZERO    0010e2 HBM      800000 INT      000900 LBM      7fffff
+ LOOP     0010b4 MAIN     001000 N1       001056 N2       001068 N3       001084
+ N4       00108c NOTV     00104e NZERO    00111c OK       00107e OPT1     001006
+ OPT2     001018 OPT3     00102a OPT4     00103c OPTN     000908 OVERFLW  00114c
+ SHIFT    001138 SPEC     001168

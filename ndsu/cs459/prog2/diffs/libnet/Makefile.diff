@@ -1,0 +1,77 @@
+*** Makefile	Tue Feb  1 12:05:10 1994
+--- ../libnet.orig/Makefile	Tue Feb  1 12:08:27 1994
+***************
+*** 7,20 ****
+  #
+  
+  AR	= ar
+! LIBNET	= libnet.a
+  COMM_OBJ   = daemon.o dgsendrecv.o error.o hosterror.o \
+  		lock.o nspipe.o pty.o readline.o readn.o \
+  		rresvport.o rtt.o spipe.o \
+  		tcpopen.o timer.o ttymode.o ttyraw.o \
+  		udpopen.o writen.o
+  BSD_OBJ	   = idpopen.o sppopen.o sigchild.o
+- SUN_OBJ	   = sigchild.o
+  S5_OBJ	   = semaph.o
+  XENIX_OBJ  = semaph.o
+  RANLIB     = ranlib
+--- 7,19 ----
+  #
+  
+  AR	= ar
+! LIBNET	= ../libnet.a
+  COMM_OBJ   = daemon.o dgsendrecv.o error.o hosterror.o \
+  		lock.o nspipe.o pty.o readline.o readn.o \
+  		rresvport.o rtt.o spipe.o \
+  		tcpopen.o timer.o ttymode.o ttyraw.o \
+  		udpopen.o writen.o
+  BSD_OBJ	   = idpopen.o sppopen.o sigchild.o
+  S5_OBJ	   = semaph.o
+  XENIX_OBJ  = semaph.o
+  RANLIB     = ranlib
+***************
+*** 23,44 ****
+  	make `systype.sh`
+  
+  ${COMM_OBJ}:	systype.h
+! ${BSD_OBJ}:	systype.h
+  ${S5_OBJ}:	systype.h
+  ${XENIX_OBJ}:	systype.h
+  
+  lib:	${OBJS}
+  	${AR} rv ${LIBNET} $?
+  	${RANLIB} ${LIBNET}
+- sun:
+- 	make "CFLAGS = -O " \
+- 		"OBJS = $(COMM_OBJ) $(SUN_OBJ)" "RANLIB = ranlib" lib
+  
+- next:
+- 	make "CFLAGS = -O -bsd" \
+- 		"OBJS = $(COMM_OBJ) $(BSD_OBJ)" "RANLIB = ranlib" lib
+- 
+  bsd:
+  	make "CFLAGS = -O" \
+  		"OBJS = $(COMM_OBJ) $(BSD_OBJ)" "RANLIB = ranlib" lib
+--- 22,35 ----
+  	make `systype.sh`
+  
+  ${COMM_OBJ}:	systype.h
+! #${BSD_OBJ}:	systype.h
+  ${S5_OBJ}:	systype.h
+  ${XENIX_OBJ}:	systype.h
+  
+  lib:	${OBJS}
+  	${AR} rv ${LIBNET} $?
+  	${RANLIB} ${LIBNET}
+  
+  bsd:
+  	make "CFLAGS = -O" \
+  		"OBJS = $(COMM_OBJ) $(BSD_OBJ)" "RANLIB = ranlib" lib
+***************
+*** 53,56 ****
+  
+  clean:
+  	rm -f *.o a.out core temp.* $(LIBNET)
+- 
+--- 44,46 ----

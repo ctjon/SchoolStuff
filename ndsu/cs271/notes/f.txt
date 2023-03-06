@@ -1,0 +1,350 @@
+                                                                                
+                IBM SYSTEM/370 MACHINE LANGUAGE ADDRESSING            F-1       
+                ------------------------------------------                      
+                                                                                
+WARM UP. WRITE A PROGRAM TO ADD 49 TO 3 NUMBERS, DATA, DATA2, AND DATA3.        
+                                                                                
+LONG WAY                   :          TRANSLATE                                 
+                           :                                                    
+LATER:  1.  USE ADDRESS OFFSET                                                  
+        2.  INDEXING                                                            
+        3.  INSTRUCTIONS AS DATA      @                                         
+                                       @                                        
+                                        @                                       
+                                        ::                                      
+WAYS TO ADDRESS HOUSE #3             / .::                                      
+                                    /   .:                           /.         
+             /.      _________     /     .                          /  .        
+            /  .     :       :    /       .      _____             /    .       
+   __      /    .    :       :     : ___ :     /       .           :    :       
+  /  .    /      .   :_______:     :: 0 ::    /         .          :    :       
+ :    :    :    :    :       :     ::_:_::    :        :         #5:____:       
+  .__/     :    :    :       :     :     :    :        :            __          
+   :       :____:#1  :_______:#2   :_____:#3  :________:#4        /    .        
+  /:.   ________________________________________________________/       :       
+   :             PARK STREET                                            :       
+   :    ________________________________________________________        :       
+  / .                                                           .       :       
+                                                                  . __ /        
+ABSOLUTE AND RELATIVE ADDRESSING                                                
+--------------------------------                                                
+       ___MEMORY____________                                                    
+     0:                     :  - SUPPOSE WANT TO REFERENCE ABSOLUTE 8004.       
+      :_____________________:                                                   
+     4:                     :                                                   
+      :_____________________:                                                   
+     8:                     :                                                   
+      :_____________________:                                                   
+      .                     .                                                   
+      .                     .  - WHAT ARE OTHER WAYS TO REFER TO 8004?          
+       _____________________                                                    
+ 8,000:                     :                                                   
+      :_____________________:                                                   
+ 8,004:               426   :   - EXAMPLE: 4 BYTES BEYOND NUMBER                
+      :_____________________:   CONTAINED IN REG 15 (4+8000 = 8004)             
+ 8,008:                     :                                                   
+      :_____________________:                                                   
+ 8,012:                     :  - OTHER "RELATIVE" ADDRESSES FOR 8004?           
+      :_____________________:                                                   
+      .                     .                                                   
+      .                     .                                                   
+       _____________________                                                    
+20,200:                     :                                                   
+      :_____________________:                                                   
+20,204:                     :                                                   
+      :_____________________:                                                   
+      .                     .                                                   
+      .                     .  - BENEFITS OF "RELATIVE" ADDRESSES?              
+      :_____________________:  (TELEPHONE NUMBER ANALOGY)                       
+                                                                                
+                                                                                
+                                OFFSET + C(BASE REG) + C(INDEX REG)             
+                                                                                
+      ___REGISTERS__                                                            
+    0:       7000   :                                                           
+     :______________:                                                           
+    1:          4   :                                                           
+     :______________:                                                           
+    2:       6000   :                                                           
+     :______________:                                                           
+     .              .                                                           
+     .              .                                                           
+      ______________                                                            
+   15:       8000   :                                                           
+     :______________:                                                           
+                                                                                
+                                                                                
+370 BASE/DISPLACEMENT ADDRESSING                                                
+--------------------------------                                                
+                                                                                
+RX FORMAT INSTRUCTION                                                           
+                                                                                
+ MACHINE FORM                               ASSEMBLY FORM                       
+ 0______7____11___15___19___________31                                          
+:  OP    : R1 : X2 : B2 :     D2     :      OP   R1,D2(X2,B2)                   
+:________:____:____:____:____________:                                          
+                          12 BITS                                               
+                                                                        *       
+SECOND OPERAND ADDRESS (A2) COMPUTED:   A2 =  D2 + C(REG X2) + C(REG B2)        
+                                                                                
+                                                                                
+                                                                                
+       ___MEMORY____________                                                    
+      :                     : - WE CAN ADDRESS LOCATION 8004=                   
+      .                     .                                                   
+      .                     .           L  1,4(0,15)                            
+      :_____________________:                                                   
+ 8,000:                     :                                                   
+      :_____________________:                                                   
+ 8,004:               426   :  - OTHER WAYS?                                    
+      :_____________________:                                                   
+ 8,008:                     :                                                   
+      :_____________________:                                                   
+ 8,012:                     :  - OTHER "RELATIVE" ADDRESSES FOR 8004?           
+      :_____________________:                                                   
+      .                     .                                                   
+      .                     .                                                   
+      :_____________________:                                                   
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+      ___REGISTERS__                                                            
+    0:       7000   :                                                           
+     :______________:                                                           
+    1:          4   :                                                           
+     :______________:                                                           
+    2:       6000   :                                                           
+     :______________:                                                           
+     .              .                                                           
+     .              .                                                           
+      ______________                                                            
+   15:       8000   :                                                           
+     :______________:                                                           
+                                                                                
+                                                                                
+*                                                                               
+ ADDRESSING RULES:                                                              
+                                                                                
+    -   0 <=   D2  <= 4095                                                      
+    -   1 <= B2,X2 <= 15                                                        
+    -   IF B2 OR X2 = 0,  CONTENTS ARE ASSUMED TO BE ZERO.                      
+                          (I.E., IF REGISTER 0 IS USED AS A BASE                
+                           OR INDEX REGISTER, ITS' CONTENTS ARE ASSUMED         
+                           TO BE 0.  THAT IS, ITS' USE IS SUPPRESSED.)          
+                                                                                
+TRANSLATE PROGRAM                                                               
+                                                                                
+PROGRAM:                        MACHINE LANGUAGE                                
+-------                         ----------------                                
+                                                                                
+NET       START                                                                 
+                                                                                
+                                                                                
+          USING *,15                                                            
+                                                                                
+                                   OP      R1   X2   B2      D2                 
+                                 ____________________________________           
+FIRST     L     1,DATA          :        :    :    :    :            :          
+                                :________:____:____:____:____________:          
+                                                                                
+                                                                                
+                                 ____________________________________           
+          A     1,FORTY9        :        :    :    :    :            :          
+                                :________:____:____:____:____________:          
+                                                                                
+                                                                                
+                                 ____________________________________           
+          ST    1,DATA          :        :    :    :    :            :          
+                                :________:____:____:____:____________:          
+                                                                                
+                                    OP     R1   R2                              
+                                 __________________                             
+          SR    1,1             :        :    :    :                            
+                                :________:____:____:                            
+                                                                                
+                                                                                
+                                 __________________                             
+          BR    14              :        :    :    :                            
+                                :________:____:____:                            
+                                                                                
+                                                                                
+                                 ____________________________________           
+FORTY9    DC    F'49'           :                                    :          
+                                :____________________________________:          
+                                                                                
+                                                                                
+                                 ____________________________________           
+DATA      DC    F'365'          :                                    :          
+                                :____________________________________:          
+                                                                                
+          END                                                                   
+_________________________________________________________________________       
+                                                                                
+ADDRESS  =  D2   +   C( REG X2 ) +C( REG B2 )                                   
+                                                                                
+                                                                                
+PROBLEMS:   .  WHO TELLS THE ASSEMBLER WHAT BASE REGISTER  (B2)  TO USE?        
+                                                                                
+            .  HOW DOES THE ASSEMBLER CALCULATE THE DISPLACEMENT  (D2)?         
+                                                                                
+ANSWER: USING PSEUDO-OP                                                         
+             __________________                                                 
+            : USING   FIRST,15 :                                                
+            :__________________:                                                
+                                                                                
+  . "PLEASE MR. ASSEMBLER, CAN YOU USE REG 15 AS A BASE REGISTER WHENEVER       
+    YOU NEED ONE TO RESOLVE SYMBOLIC ADDRESSES INTO D2 + C(X2) + C(B2)."        
+    "ALSO, ASSUME THAT IS CONTAINS THE ADDRESS OF FIRST."                       
+  . NOW TRY TO ASSEMBLE PREVIOUS PROGRAM.                                       
+ASSUME PROGRAM  NET  LOADED STARTING AT LOCATION  40,000:                       
+                                                           ____________         
+                                                      R15 :  40,000    :        
+                                                          :____________:        
+      :                         :                                               
+LOC   :  ASSEMBLY LANGUAGE      :  MACHINE LANGUAGE                             
+---   :  -----------------      :  ----------------                             
+      :  NET      START         :                                               
+      :                         :                                               
+      :           USING *,15    :     OP      R1   X2   B2      D2              
+      :                         :   ____________________________________        
+40,000:  FIRST    L     1,DATA  :  :        :    :    :    :            :       
+      :                         :  :________:____:____:____:____________:       
+      :           A     1,FORTY9:                                               
+      :                         :                                               
+      :           ST    1,DATA  : . WHERE IS LOCATION DATA?                     
+      :                         :                                               
+      :           SR    1,1      :                                              
+      :                         :                                               
+      :           BR    14      :                                               
+      :                         :                                               
+      : FORTY9    DC    F'49'   : . WHAT IS MACHINE LANGUAGE FOR THE            
+      :                         :   INSTRUCTION  FIRST ?                        
+?---> : DATA      DC    F'5'    :                                               
+      :                         :                                               
+      :           END           :                                               
+      :                         :                                               
+                                                                                
+ASSUME PROGRAM  NET  LOADED STARTING AT LOCATION 120,000:                       
+                                                           ____________         
+                                                      R15 : 120,000    :        
+                                                          :____________:        
+       :                        :                                               
+ LOC   : ASSEMBLY LANGUAGE      :  MACHINE LANGUAGE                             
+ ---   : -----------------      :  ----------------                             
+       : NET      START         :                                               
+       :                        :                                               
+       :          USING *,15    :     OP      R1   X2   B2      D2              
+       :                        :   ____________________________________        
+120,000: FIRST    L     1,DATA  :  :        :    :    :    :            :       
+       :                        :  :________:____:____:____:____________:       
+       :          A     1,FORTY9:                                               
+       :                        :                                               
+       :          ST    1,DATA  : . WHERE IS LOCATION DATA?                     
+       :                        :                                               
+       :          SR    1,1      :                                              
+       :                        :                                               
+       :          BR    14      :                                               
+       :                        :                                               
+       :FORTY9    DC    F'49'   : . WHAT IS MACHINE LANGUAGE FOR THE            
+       :                        :   INSTRUCTION  FIRST ?                        
+ ?---> :DATA      DC    F'5'    :                                               
+       :                        :                                               
+       :          END           :                                               
+       :                        :                                               
+                                                                                
+BASE REGISTER SETTING                                                           
+---------------------                                                           
+                                                                                
+. WHO SETS BASE REGISTER AT EXECUTION TIME?                                     
+                                                                                
+. CHOICES                                                                       
+                                                                                
+     -ASSEMBLER                                                                 
+                                                                                
+     -LOADER                                                                    
+                                                                                
+     -OPERATING SYSTEM  -- REGISTER 15 IS BASE REGISTER CONVENTIN               
+                                                                                
+     -YOU  --  WHY CAN'T YOU USE  L  INSTRUCTION?                               
+                                                                                
+           --  NEED INSTRUCTION THAT CAN LOAD AN ADDRESS INTO A REGISTER        
+               WITHOUT USING A BASE REGISTER                                    
+               -------                                                          
+                                                                                
+                         ____________                                           
+BALR INSTRUCTION:       : BALR   R,0 :                                          
+----------------        :____________:                                          
+                                                                                
+ . LOADS ADDRESS OF NEXT INSTRUCTION INTO REGISTER R.                           
+                                                                                
+ EXAMPLE:                                                                       
+           8000   BALR  15,0                                                    
+           8002   L     1,A                                                     
+                  .                                                             
+                  .                                                             
+           LOADS THE NUMBER 8002 INTO REG 15 (AT EXECUTION TIME ).              
+ASSEMBLER PRINTOUT:                                                             
+------------------                                                              
+ . LET'S LOOK AT YOUR OUTPUT                                                    
+ . NOTE:                                                                        
+   - SOURCE CODE LISTING                                                        
+   - LOCATIONS ASSIGNED                                                         
+   - OBJECT CODE GENERATED                                                      
+       . BASE REGISTER FIELD                                                    
+       . DISPLACEMENT FIELD                                                     
+   - SYMBLO TABLE                                                               
+   - CROSS REFERENCES                                                           
+   - LOADER INFORMATION                                                         
+   - CORE DUMP                                                                  
+(SEE NEXT PAGE.)                                                                
+*******************ASSEMBLER OUTPUT****************                             
+                                 EXTERNAL SYMBOL DICTIONARY                     
+SYMBOL    TYPE   ID   ADDR  LENGTH LDID                                         
+EXAMPLE    SD   0001 000000 00001C                                              
+                                                                                
+  LOC  OBJECT CODE ADDR1  ADDR2   STMT  SOURCE STATEMENT                        
+000000                            1 EXAMPLE  START                              
+                          00000   2          USING *,15                         
+000000 5810 F010   00010          3          L     1,X      GET X               
+000004 5A10 F014   00014          4          A     1,Y      ADD Y               
+000008 5010 F018   00018          5          ST    1,Z                          
+00000C 07FE                       6          BR    14       RETURN              
+00000E 0000                                                                     
+000010 00000030                   7 X        DC    F'48'                        
+000014 00000024                   8 Y        DC    F'36'                        
+000018 00000000                   9 Z        DC    F'0'                         
+                                 10          END                                
+                                                                                
+                                     CROSS-REFERENCE                            
+SYMBOL    LEN   VALUE   DEFN    REFERENCES                                      
+X        00004 00000010 00007  00003                                            
+Y        00004 00000014 00008  00004                                            
+Z        00004 00000018 00009  00005                                            
+                                     ASSEMBLER DIAGNOSTICS AND STATISTICS       
+                                                                                
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY                                          
+HIGHEST SEVERITY WAS 0                                                          
+OPTIONS FOR THIS ASSEMBLY-ALIGN,ALOGIC,BUFSIZE(STD),NODECK,ESD,FLAG(0),         
+LINECOUNT(55),LIST,NOMCALL,NOYFLAG,NOMLOGIC,NUMBER,OBJECT,NORENT,RLD,           
+STMT,NOLIBMAC,TERMINAL,NOTEST,XREF(SHORT),SYSPARM()                             
+                                                                                
+WORK FILE BUFFER SIZE = 7294                                                    
+TOTAL RECORDS READ FROM SYSTEM INPUT        10                                  
+TOTAL RECORDS READ FROM SYSTEM LIBRARY       0                                  
+TOTAL RECORDS PUNCHED    3                                                      
+TOTAL RECORDS PRINTED   34                                                      
+******************LOADER OUTPUT AND CORE DUMP**************                     
+EXAMPLE  SD 020000                                                              
+            020000    5810F010  5A10F014  5010F018  07FE0000                    
+            020010    00000030  00000024  00000000  00000000                    
+            020020    00000000  00000000  00000000  00000000                    
+NOTE:                                                                           
+ 1.  INSTRUCTION AND DATA CONVERSION                                            
+ 2.  SYMBOL TABLE                                                               
+ 3.  DIAGNOSTICS                                                                
+ 4.  WHERE LOADED IN MEMORY                                                     
+ 5.  CORE DUMP                                                                  
+       - LOCATE:  (A) FIRST INSTRUCTION                                         
+                  (B) X & Y                                                     
+                  (C) Z                                                         

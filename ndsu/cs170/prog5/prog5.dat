@@ -1,0 +1,24 @@
+This whole file (including these very words) is the test data for the fifth
+programming problem;  it contains a number of words with some words occurring
+more than once.  It was a description that I gave in a previous quarter to help the
+students structure their code so as to produce a "well-structured", more
+"elegant" solution.
+The fifth programming assignment is on page 283.  Do problem number 10.
+Use an array of records where each record contains the word and the count
+for that word.  You will  have  to  guess at the size for the array but
+if you declare it in a constant declaration it will be easy to change
+when you find out just how big it needs to be to run with the data.  Keep
+track of how many words are in the array at any given time with a
+variable.  Make good use of procedures.  You might consider
+breaking the problem solution up into pieces as follows:
+Create a module Words, which has operations, IsAnotherWord, GetNextWord,
+and any other operations you think you might need, such as a routine to
+ConvertToUpperCase.  Create a module WordList that has the array
+of words and frequencies as a type, and provides operations to insert
+a word in the list, to see if a word is present already, to increment
+the count for a word that is present, to sort the list, to display the
+list, and any other operations you discover you need.  The solution
+can then be described in terms of these various operations in a
+straight-forward way. Build and test these modules then do the solution
+to the given problem in terms of the new operations you have created.
+

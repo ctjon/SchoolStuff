@@ -1,0 +1,41 @@
+Article 221 of ndhecn.cs475:
+Newsgroups: ndhecn.cs475
+Path: ns1.nodak.edu!plains.NoDak.edu!tofte
+From: tofte@plains.NoDak.edu (Nathan Tofte)
+Subject: defining Sychro functions
+Message-ID: <C1wFB9.ELL@ns1.nodak.edu>
+Sender: Nathan Tofte (tofte) 
+Date: Thu, 4 Feb 1993 00:42:45 GMT
+Distribution: ndhecn
+Nntp-Posting-Host: plains.nodak.edu
+Organization: North Dakota Higher Education Computing Network
+Lines: 26
+
+	Our group is trying to understand the functionality of the semaphore
+functions.  Here is what we've figure they do:
+
+        s_create -> allocates new semaphore
+                    no-one given access to it yet though
+                    calling thread "owns" semaphore
+ 
+        s_destroy -> deallocates semaphore (if not in use)
+
+        s_open    -> gives a thread access to the semaphore and returns
+                     a "handle" (SID).
+
+        s_close   -> releases access to a semaphore 
+
+        s_signal  -> UP's a semaphore, releasing the resource.
+                     If threads are blocked waiting for a resource,
+                     it gives one thread the resource--putting it on
+                     ready status.
+
+        s_wait    -> DOWN's a semaphore, taking a resource.
+                    thread is blocked if no resources left. 
+
+
+	Are we understanding this clearly?
+
+Nathan Tofte
+
+

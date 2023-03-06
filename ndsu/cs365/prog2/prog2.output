@@ -1,0 +1,26 @@
+
+
+Prefix to Postfix Conversion Program
+
+  Written By: Christopher C. Tjon   
+  For Dr. Erickson's CS365          
+  9 December 1991                   
+
+The Prefix Expression --> A
+Has The Postfix Expression --> A
+
+The Prefix Expression --> +AB
+Has The Postfix Expression --> AB+
+
+The Prefix Expression --> -+*AB/CD-ef
+Has The Postfix Expression --> AB*CD/+ef--
+
+The Prefix Expression --> *A-B/CD
+Has The Postfix Expression --> ABCD/-*
+
+The Prefix Expression --> -*A+B/CDE
+Has The Postfix Expression --> ABCD/+*E-
+
+The Prefix Expression --> *+AB-CD
+Has The Postfix Expression --> AB+CD-*
+

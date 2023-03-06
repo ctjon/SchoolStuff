@@ -1,0 +1,10 @@
+Script started on Tue May  3 22:51:09 1994
+bourne# make
+/usr/bin/cc -o rdate date_clnt.c rdate.c -lrpc
+/usr/bin/cc -o date_svc date_proc.c date_svc.c -lrpc
+bourne# ./rdate joy.cs.ndsu.nodak.edu
+time on host joy.cs.ndsu.nodak.edu = 768027037
+time on host joy.cs.ndsu.nodak.edu = Tue May  3 23:50:23 1994
+
+bourne# exit
+Script done on Tue May  3 22:51:24 1994

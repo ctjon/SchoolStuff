@@ -1,0 +1,17 @@
+[PROJECT]
+Name=ExceptionDemo1
+Location=C:\MIKES FILES\BOOKJ11\C16.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+ExceptionDemo1.java=1
+ExceptionDemo1.html=1
+
+[Visualforms]
+ExceptionDemo1.java=1
+ExceptionDemo1.html=0

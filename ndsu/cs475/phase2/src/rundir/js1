@@ -1,0 +1,68 @@
+//JOB PEANUT_BAG
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+DIR
+CREATE TEST1
+Text should be in file TEST1 initially.
+//
+DIR
+CREATE TEST2
+Text should be in file TEST2 initially.
+//
+CAT TEST2
+DIR
+DEL TEST2
+DIR
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+DIR
+CREATE TEST3
+Text should be in file TEST3 initially.
+//
+DIR
+COPY TEST1 TEST2
+COPY TEST1 TEST3
+COPY TEST3 TEST4
+DIR
+COPY TEST3 TEST4
+DIR
+CAT TEST4
+DEL TEST2
+DEL TEST3
+DEL TEST4
+DIR
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB
+DIR
+COPY TEST1 TEST6
+DIR
+DEL TEST6
+DIR
+CAT TEST6
+/*
+//JOB
+/*
+//JOB
+/*
+//JOB IS_EMPTY
+/*

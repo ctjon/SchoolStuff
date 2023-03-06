@@ -1,0 +1,51 @@
+             
+                                                    CHRISTOPHER C. TJON
+                                                    110975-8
+                                                    15 FEBRUARY 1990
+                                                    QUESTION #23 PAGE 311
+
+
+B:  The first player can force a win if he can continue to force the other
+    player to move along a certian subtree.  This is where the minimax tree
+    comes in.  If a player continues to chose moves which have a max value
+    for him he will win if he ever had a chance in the first place.  It is
+    fair to say that if one faces a set of even piles of chips he cannot
+    win unless his opponent makes a mistake.
+    
+    
+C:  PROCEDURE BUILDTREE(M, N : CARDINAL; VAR T : TREE);
+    (*****************************************************************************)
+    (* REQUIRES : MEMORY IS AVAILABLE                                            *)
+    (* MODIFIES : NOTHING                                                        *)
+    (* EFFECTS  : CREATES T                                                      *)
+    (*****************************************************************************)
+
+    BEGIN
+        IF (Available(SIZE(T@))) THEN
+            ALLOCATE(T,SIZE(T@));
+            T@.M := M;
+            T@.N := N;
+            T@.LCHILD := NIL;
+            T@.RCHILD := NIL;
+        ELSE
+            WriteString("ERROR! NOT ENOUGH MEMORY AVAILABLE! RUN ABORTED!");
+            WriteLn;
+            HALT;
+        END; (* IF AVAILABLE *)
+
+        IF (M # 0) THEN
+            BUILDTREE(M - 1, N, T@.LCHILD);
+        END; (* IF M # 0 *)
+
+        IF (N # 0) THEN
+            BUILDTREE(M, N-1, T@.RCHILD);
+        END; (* IF N # 0 *)
+    END BUILDTREE;
+
+    NOTE : THIS DOES NOT BUILD A STANDARD GAMETREE.  CHILDREN ARE ARRANGED
+           IN SUCH A WAY THAT IF M IS DECREASED A LEFT CHILD IS CREATED AND
+           IF N IS DECREASED A RIGHT CHILD IS CREATED.  IT IS MY FEELING THAT
+           THIS STRUCTURE IS MORE MEMORY EFFECIENT AND CERTAINLY MUCH EASIER
+           TO MANIPULATE. 
+ 
+ 

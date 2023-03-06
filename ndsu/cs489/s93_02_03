@@ -1,0 +1,353 @@
+   Authority Vs Responsibility (in proportion)
+
+   Critical thinking
+
+   Work within a structure
+
+   Labor Union :
+     - is union still serving its purposes ?
+     - should worker performs at top level or at union level ?
+     - is a union a help in the decision to fire or retain a worker ?
+     - pros and cons of union.
+
+   Good society needs good rules and regulations
+
+   Famous entrepreneurs :
+     - Sam Walton	Walmart
+     - Semour Cray	Cray Computers
+     - Steve Jobs	Apple/NeXT
+     - Bill Gates	MicroSoft
+     - Mitch Kapoor	Lotus
+     - Bill Joy		Sun Microsystems
+
+    Any one can do it in the computing industry.  Most of these people started
+    in their basements or garages (figuratively) and went on to be millionare
+    leaders in the industry.  Each of these people actually produced the
+    winning product or killer idea (at least initially).
+    They were not just "management" of a successful company.
+
+    Why does Sam Walton head the list
+    (why is he even on this computer-genius-list?)?
+      - his killer idea, on which he built his company and became america's
+        richest man, was Computerized Precision Sales and User Freindliness.
+      - Walmart is so successful because they are "user freindly"
+        (a greeter at every door, checkouts say your name or you get a free...)
+        and they have mastered the science (computer or database science) of
+		 the right products,
+		 at the right place,
+        	 in the right quantities,
+		 at the right time.
+
+
+   Bankruptcy law (are they fair?):
+     - business
+     - personal
+
+   Public domain - not copyrighted, no cost.
+   Shareware     - copyrighted, registration fee needed, can upgrade and
+                   get customer support.
+   Freeware      - copyrigthed, free of charge.
+
+   What are the purposes of minimum wage ?
+   What are the pros and cons of minimum wage ?
+   Is minimum wage needed in the U.S. ?
+
+
+
+CHANGE  (Observation of differences over time)
+------  
+
+Evolutionary  -  Revolutionary  -  Catastrophic
+
+As functions:
+  Evolution & revolution are continuous changes over time
+     (usually smooth - differentiable)
+
+           change
+evolution   ^      /
+            |     /
+            |    /
+            |   /
+   _________|__/______>time
+            | /
+            |/
+            /
+           /|
+
+
+          change
+revolution  ^    |  
+            |   /
+            |   | 
+            |   |
+   _________|__/______>time
+            | /
+            |/
+            /
+           /|
+
+
+SHAKE UP these ideas.
+--------------------
+
+What is the x-axis here (basic time-axis)?
+     It is "time" as measured or metered by the wall clock.
+
+The whole analysis of change is based on our acceptance of certain premises
+     (which aren't necessarily true!)
+
+Baseline in our analysis and quantification of change is "time" line.
+If I glance at the clock 3 times:
+
+      ^
+      |
+      |
+      *-->      *-->-->    <----*-->
+      3:00      3:15            3:45
+
+I "know" twice as much time has elapsed in the second interval as in the first.
+(twice as much time change has occurred.)
+
+There are at least two problems with this:
+1.  Whose clock is right? (are all clocks synchronized as to speed and setting?)
+     - can it be done?
+     - in order to synchronize two clocks, you have to take your eyes off one
+       and focus on the other - time will elapse in the process.
+
+     The North Star Clock project assumed it could be done (place a
+     geo-stationary satellite in the shape of a big-hand and little-hand
+     which always shows correct gmt time to the northern hemisphere (northern
+     hemisphere prejudice?).
+
+     Defining a consistent global clock in distributed database systems is
+     impossible, if we rely on wall clock notions only.
+
+2.  Does time really elapse when no change takes place? (i.e., does time really
+    "march on" no matter what is changing, if anything?)
+
+    - suppose all change shutdown for a period.  Would time elapse in that
+      period (wall clock would tell you NO).  How much time would elapse?
+
+    - If you did sleep (I know, students don't sleep), would time elapse?
+      We are conditioned to assume time has elapsed (by looking at the clock).
+      This denies your instincts which tell you time has not elapsed (assuming
+      you have not just had a rememberable (maybe even memorable) dream -
+      which could get us off into another interesting direction - are dreams
+      real?  if not are you dreaming now?   but this would be too much of
+      a digresioin)
+
+    - If a newborn were put in a Skinner box for 20 years and not given any
+      evidence and instruction that change occurs while sleeping, would that
+      person ever really believe time elapses during sleep?  I don't think so.
+
+    - A study was done in which a person (voluntarily) lived in a large
+underground sealed capsule for extended periods of time and was ask to record
+her guesses as to the hour ticks.  After 3 months, what she thought was a
+day was actually 3 days.  There was very little change in the capsule so there
+seemed to be less elapsing of time.  
+
+
+Leads us (in a rough sort of way) to the whole idea of MODELING.
+
+Models (frameworks with which to analyze, study, investigate and/or predict)
+come in three categories:
+
+experimental (Chemists, Biologists, ...)
+theoretical (Mathematicians, other_propellor-heads,..)
+computorial  (Simulators, programmers, us..)
+
+experimentalists use real inputs to their system and real apparati.
+theoreticians use mathematical formulas and numerical or representational inputs
+computiacs use simulated inputs, programs and simulations as apparati.
+
+BOTTOM-LINE on Modeling:
+Correct, valid models are not to be judged as right/wrong.  Models are either
+convenient/inconvenient, adequate/inadequate to explain, analyze, evaluate
+and/or predict change
+
+SOCIAL IMPLICATIONS:  Never judge a model as right or wrong (and don't let
+others judge your models as right or wrong).  They can, of course, be
+internally correct/incorrect (faulty or not, error_free or not), but error_free
+models are never wrong!  They can also be invalid for a particular user,
+in the sense that the assumptions made in the model run counter to
+the experience of the user.  But if they are internally correct and valid, they
+still may not detailed enough or sophisticated enough
+to predict, explain, evaluate, or analyze to the degree required. Then a new and
+more detailed model is needed.  That doesn't make the old model wrong, just
+inoperable for the purpose at hand.
+
+Now, with respect to quantification (think grading), the Yes/no
+decision that represents the output of your model may not be adequate
+for the purpose, it is correct, provided your model is error_free and valid.
+
+It is legitimate to argue that an more sophisticated model is needed,
+but not that the model is wrong.
+For instance, grading as we know it (or hiring, or promotion, or
+any other quantification-produced binary decision) may well need to be
+replaced some day, but certainly not with a "let it all hang out" less
+sophisticated "flower child" method-less method of making a decision that
+needs to be made.  Opps!  That was my one editorialization.  It is my
+opinion only.  It is directed at those who would say that grades must
+go (no-one in the class has yet defended that point of view).
+ 
+
+Incidentally...
+   Catastrophe is discontinuous change (no predictable relationship between
+     input and output)  (e.g., stock market crash)
+
+           change
+catastrophe ^
+            |
+            |
+            |   /
+   _________|__/______>time
+            | /
+            |/   \
+            /     \
+           /|      \
+
+
+Calculus and math analysis handle
+	 evolution i(low sloped curves) and
+	 revolution (high slope curves)
+
+Until 20 years ago, it was thought that mathematics couldn't be used to analyze
+catastrophes (except for some "singularity analysis" techniques, which made a
+small attempt).
+
+Then came CATASTROPHE THEORY (mathematical theory of catastrophes).
+                                                 3
+     Assuming that all change is "reasonable"  (C  meaning continuous 3rd
+     derivatives) even catastrophes can be analyzed and categorized.  I.e.,
+     there are only a few ways in which catastrophes can occur.
+
+For example, assuming dogs attack or flee depending on only one input parameter
+(size of opponent) and that nothing else matters, then the only way this
+catastrophe can occur (dog changes catastropically from flight to attack) is the
+"fold catastrophe model":
+
+attack      ^
+            |  -.
+            |    `-.
+    ^       |       `-.
+    |       |          `.
+aggression  |           |
+dimension   |        .-'
+    |       |small .'               big
+    v       |------|------------------->  opponent's size dimension
+            |       `-.
+            |          `-.
+            |             `-.
+            |                `-.
+flight      |                   `-.
+
+
+This model may not be sophisticated enough to suit.  E.I, it may be the case
+that you think aggression is modeled better  by a combination of dog-fear and
+dog-rage than by just opponent size.  you would want a more sophisticated model.
+(that is, you think that using opponent-size along is likely to give you
+results which are inconvenient, such as an unpredicted dog bite).
+                   -----------
+
+This doesn't mean that the first model is wrong!  It means only that the first
+model was inconvenient for the purpose (e.g., avoiding a dog bite 80% of the
+time).  Presumably, if you were big enough, your size would guarantee 
+that fear dominates rage in the dog and the first model would suffice, but if
+your are average size or if the dog is a pit bull, maybe not.
+
+Then you must go to a more convenient model, e.g., one which assumes two input
+parameters (fear=ears_back and rage=teeth_bared) which depend on the
+dog and are observable.
+
+This gives the "cusp catastrophe".
+
+
+               .-----------------.
+attack      ^  |                 |
+            |  -.     .          |
+            |    `-.   .         |
+    ^       |       `-. .        |
+    |       |        . `.        |
+aggression  |       .   :        |
+dimension   |      . .-'         |
+    |       |      .'            |
+    v       |      :             |
+            |       `-.          |
+            |          `-.       |
+            |             `-.    |
+            |                `-._|
+flight      v
+
+              <-.
+                 `-.
+                .-' `-.
+             .-'       `-.
+          .-'             `-.
+  fear<<-'                   `-<< rage
+
+
+
+STOCK MARKET CRASH
+
+
+One model is that the rate of change in the price index (rcpi) is dependent on
+the amount of demand.  In that case a stock market crash is a fold catastrophe:
+
+
+            ^
+            |  -.
+            |    `-.
+    ^       |       `-.
+    |       |          `.
+   rcpi     | crash     |
+    |       |     \  .-'
+    |       |      .'             large
+    v       |------|------------------->  demand
+            |       `-.
+            |          `-.
+            |             `-.
+            |                `-.
+            |                   `-.
+
+
+With this model you may fail to predict a crash or predict a phantom crash
+(one which doesn't occur).  If you are just an observer, missing it a little
+may be no big deal, but if you are a broker or major investor, it is important.
+So you may want to include "speculation" as an input parameter.  (the above
+model sort of assumes constant speculation levels - albeit, quite high).
+
+Then your model is a cusp catastrophe:
+
+               .-----------------.  <- - low speculation (evolutoinary change)
+            ^  |                 |
+            |  -.       .        |  <- - medium spec (revolutionary change)
+            |    `-.    .        |
+    ^       |       `-. .        |
+    |       |        . `.        |
+  rcpi      |       .   :        |  <- - high spec (catastrophic change)
+    |       |      . .-'         |
+    |       |      .'            |
+    v       |      :             |
+            |       `-.          |
+            |          `-.       |
+            |             `-.    |
+            |                `-._|
+            v
+                     .- - - - - - - - -> demand
+                    / 
+                   / 
+                  /
+                 /
+                /
+               V
+          Speculation
+
+
+This is an interesting model since the speculation parameter really governs
+whether the change function is
+
+ evolutionary (low speculation - toward the back of the response surface;
+
+ revolutionary (middle depths); or
+
+ catastrophic (front of surface).

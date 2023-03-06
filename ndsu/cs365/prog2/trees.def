@@ -1,0 +1,61 @@
+DEFINITION MODULE Trees;
+FROM Items IMPORT Item;
+TYPE
+  Tree;
+  Child = (Left,Right);
+
+PROCEDURE NullTree() : Tree;
+(* effects - returns the Null Tree.  May be used to initialize a
+             variable of type Tree
+*)
+
+PROCEDURE Copy (theTree : Tree) : Tree;
+(* effects - Returns a copy of theTree
+*)
+
+PROCEDURE Clear (VAR TheTree : Tree);
+(* requires - TheTree has been initialized to a valid Tree
+   modifies - TheTree
+   effects  - Removes all nodes if any from TheTree and makes TheTree
+              null.
+*)
+
+PROCEDURE Construct(TheItem     : Item;
+                 VAR AndTheTree : Tree;
+                    OnTheChild  : Child);
+(* requires - AndTheTree must be a valid tree, possibly null.
+   modifies - AndTheTree
+   effects  - Adds TheItem at the root of AndTheTree;  the original
+              tree (passed in AndTheTree) becomes the specified child
+              of the new node and the
+              other child of AndTheTree is made null.
+*)
+
+PROCEDURE SwapChild(TheChild  : Child;
+               VAR OfTheTree  : Tree;
+               VAR AndTheTree : Tree);
+(* requires - OfTheTree and AndTheTree must have been initialized to
+              valid trees.
+   modifies - OfTheTree and AndTheTree
+   effects  - Exchanges the specified child of OfTheTree with the entire
+              tree AndTheTree.
+*)
+
+PROCEDURE IsNull(TheTree: Tree):BOOLEAN;
+(* requires - TheTree must have been initalized to a valid tree.
+   effects  - Returns TRUE if TheTree is Null else returns FALSE.
+*)
+
+PROCEDURE ItemOf(TheTree : Tree;
+             VAR TheItem : Item);
+(* requires - TheTree is a non null tree.
+   modifies - TheItem
+   effects  - Sets TheItem to TheItem of the root node of TheTree
+*)
+
+PROCEDURE ChildOf(TheTree :  Tree;
+                  TheChild : Child): Tree;
+(* requires - TheTree must be a nun null tree
+   effects  - Returns the specified child of the given tree.
+*)
+END Trees.

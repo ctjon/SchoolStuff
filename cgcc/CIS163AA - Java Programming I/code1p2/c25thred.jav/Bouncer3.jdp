@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Bouncer3
+Location=C:\MIKES FILES\BOOKJ11\C25THRED.JAV
+Applet=1
+Unitcount=2
+Time=15
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Bouncer3.java=1
+Bouncer3.html=1
+
+[Visualforms]
+Bouncer3.java=1
+Bouncer3.html=0

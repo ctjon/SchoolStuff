@@ -1,0 +1,172 @@
+CS475 - Operating System Design
+Design Document
+
+
+
+FORMAT
+
+The following is the recommended format for the design document you are to turn
+in for each assignment for CS475.  Your design document is to be either
+typewritten or printed on 8-1/2 by 11 inch paper, and should be burst and
+stapled or put into a folder.
+
+Section 1 - Overview
+
+In this section you should include an overview of the assignment for which the
+design is for.  The overview should restate the assignment statement.
+
+Section 2 - Structure Design
+
+This section should contain a textual and possibly a graphical description of
+your team's data and file structures for the assignment.  You must not only
+give a description of your data structures, but the reasons why you chose those
+data structures over any other possibilities.  It is recommended that you
+organize this with the changes your team will be making to any existing data
+and file structures first, followed by any new data and file structures your
+team will be adding.
+
+An example textual data structure description for a sample linked list follows.
+The format for a data structure can be the same as the C source you would use
+to describe it.  You are free to use any format as you feel necessary in
+order to better describe your data and file structures.
+
+struct LLNode
+File: linkedlist.c
+	void *data;
+	struct LLNode *next;
+
+Singly-linked list node, containing a pointer to data and a pointer to the
+next node in the list.  This node declaration allows the storage of any
+type of data at the node, making this much more flexible.  Other choices for
+this type could include node types for every possible data type to be stored,
+but this is not necessary since the C type casting mechanism can be used to
+overcome this.
+
+struct LinkedList
+File: linkedlist.h
+	int size;
+	void (*releaseData)(/* void *data*/);
+	void *head;
+	void *tail;
+
+Singly-linked list definition.  The linked list type contains the size of
+the list; a pointer to a function which releases the storage occupied by the
+data at a given list node when the list itself is released; and a pointer to
+the head and tail of the list, which are actually LLNode pointers.  Only this
+information has been found as necessary for this design.  Both the head and
+the tail of the list are included in this type, in order to speed append
+operations on longer lists.
+
+Section 3 - Function Design
+
+The first part of this section contains a description of the functional
+hierarchy for your project to date.  An example functional hierarchy is
+given below.  Note that any time after the first time that a function is used
+it is enclosed in parenthesis, and that each function is indented to the
+lowest level at which it is used.  Note also that functionD is at the highest
+level; this is because it is not yet used.  You are to make additions to this
+as you modify your project.
+
+PROJECT_NAME
+	main
+		functionA
+			functionB
+		functionC
+			(functionB)
+	functionD
+		functionE
+			functionF
+			(functionB)
+
+In the next part of this section each module and function for the assignment's
+design should be described.  It is recommended that you also organize this much
+like Section 2, with the changes your team plans to make to existing modules
+and functions being first, followed by any additional modules and functions
+your team will be adding.
+
+Below is an example expanding on the linked list design from above,
+containing the LinkedList module and ll_create function descriptions.  You
+can deviate from this example as you feel necessary in order to better
+describe your modules and functions.  As a rough guideline, it should only
+take you one sentence to adequately describe the purpose of one of your
+functions, but a more detailed algorithm description may be necessary.
+
+Module LinkedList
+Filenames: linkedlist.h, linkedlist.c
+
+This module contains code for a singly-linked list implementation.  No
+global storage is declared in this module.
+
+The module was created because it was necessary to encapsulate the functions
+required for linked list maintenance, thus creating a common location for
+the function source code.  Grouping the functions in a common location eases
+maintenance of the source code, and provides both information hiding and
+hiding of the private functions and storage.
+
+Function ll_create
+Parameters: void (*releaseData)();
+Returns: *LinkedList
+
+This function creates a new, empty linked list, returning a pointer to the
+list.
+
+This function allocates storage for the linked list, initializes the size
+field to 0, the releaseData to the parameter passed in, and the head and
+tail pointers to nil.  It then returns a pointer to the new linked list.
+
+Section 4 - Test Design
+
+The Test Design section is reserved for the description of the test cases you
+will perform to prove that your code works as it should.  An example test
+case which tests the linked list module above is given below.
+
+Test Case 1
+
+This test case tests several things at once: the creation of a new, empty
+linked list (ll_create, ll_size), the appending of 10 pieces of arbitrary
+data to the list (ll_append), the correct list length count after each append
+(ll_size), the traversal of the list using an iterator (li_create, li_next,
+and li_destroy), and the destruction of the list nodes by deleting the head of
+the list repeatedly (ll_deletehead and ll_size), and finally the destruction
+of the list itself (ll_destroy).  The anticipated result of this testing is
+that the list size will reflect the actual count of nodes in the list at
+all times, and the append and delete head operation performs as designed.
+This test case was chosen over individual, simpler test cases since it tests
+the interactions between the list management functions when working on the
+same list.  It also provides a good overview test of the list management
+functions.
+
+Section 5 - Other Design Considerations
+
+This section is designed to allow you to include any other relevant design
+details that you wish to note.  You can put here anything you feel would be
+necessary to better understand your design.  This section can be omitted.
+
+
+CRITERIA
+
+Each of the designs that you turn in will be graded on the following criteria.
+This is intended to be a guide or checklist for you to verify your design
+document against.  If you follow the checklist your design should contain
+everything that is expected.
+
+Readability of the design as a whole.
+Section 1
+      * Completeness.
+      * Shows an understanding of the assignment.
+Section 2
+      * Completeness and correctness.
+      * Clarity and understandability of structure.
+      * Reasoning for data structure changes and choices of data structure.
+Section 4
+      * Completeness and correctness.
+      * Follows the functional hierarchy diagram specified in this document,
+	and the design follows it also.
+      * Clarity and understandability of functionality.
+      * Reasons for changes, modular breakdown, algorithms.
+Section 5
+      * Completeness of test suite.
+      * Reasons for choosing test cases.
+Section 6
+      * Clarity and understandability of additional items.
+      * Appropriateness of additional items.

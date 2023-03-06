@@ -1,0 +1,17 @@
+[PROJECT]
+Name=GraphDraw
+Location=C:\MIKES FILES\BOOKJ11\C12.JAV
+Applet=1
+Unitcount=2
+Time=281
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+GraphDraw.java=1
+GraphDraw.html=1
+
+[Visualforms]
+GraphDraw.java=1
+GraphDraw.html=0

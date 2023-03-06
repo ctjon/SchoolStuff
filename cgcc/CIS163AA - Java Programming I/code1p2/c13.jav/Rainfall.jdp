@@ -1,0 +1,27 @@
+[PROJECT]
+Name=Rainfall
+Location=C:\MIKES FILES\BOOKJ11\C13.JAV
+Applet=1
+Unitcount=2
+Time=505
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Rainfall.java=1
+Rainfall.html=1
+
+[Visualforms]
+Rainfall.java=1
+Rainfall.html=0
+
+[Rainfall.java]
+Time=31
+Height=150
+Width=300
+
+[Rainfall.html]
+Time=27
+Height=150
+Width=300

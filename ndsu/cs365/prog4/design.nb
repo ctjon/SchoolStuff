@@ -1,0 +1,275 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				DESIGN NOTEBOOK
+
+
+				 Spell Checker
+
+
+				14 February 1992
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				 By: Chris Tjon
+				    110975-8
+
+INTRODUCTION
+
+	Spell Checker is intended to analyze a block of text and determine 
+whether or not there are spelling errors.  In the event of an error or an
+encounter with an unkown word the user will be prompted for verification.
+A question mark can be entered for a suggestion if the word in question is 
+an error and not a new word.  Spell Checker will then do its best to scan
+its dictionary to find words similar in spelling to suggest to the user.
+If Spell Checker runs out of suggestions before the user selects a correct
+spelling it will then force the user to verify the word as a new word or
+substitute a different word in its place.  The correction will then be made
+in the text.
+
+	The Spell Checker dictionary is constructed as an AVL tree to allow 
+rapid lookup.  The average number of probes of the dictionary for a word 
+should be, in the worst case, on the order of ln(n) where n is the number 
+of nodes in the tree or in this case words in the dictionary.  An unsuccessful
+search will be deterimined in ln(n) probes as well.  This is considerable faster
+than the n/2 probes necessary to use standard data types such as arrays or
+linked lists.  Quite obviosly lookup time etc. will not be quite as fast as a 
+hash table implementation but the memory overhead is not as great either.
+Given the number of insertions that will be necessary an AVL tree should do
+a super job handling the dynamic aspects of the dictionary.
+
+	The suggestion process uses the "Soundex" algorithm, originally
+developed by Margaret K. Odell and Robert C. Russell. between 1918 and 1922.
+This algorithm can best be discribe as a four step process.
+
+	1. Retain the first letter of the word, and drop all occurences of 
+	   a, e, h, i, o, u, w, and y in other positions
+
+	2. Assign the following numbers to the remaining letters after the
+           first.
+
+			b,f,p,v         --> 1
+			c,g,j,k,q,s,x,z --> 2
+			d,t		--> 3
+			l		--> 4
+			m,n		--> 5
+			r		--> 6
+
+	3. If two or more letters with the same code were adjacent in the 
+	   original word (before step 1), omit all but the first.
+
+	4. Convert to the form "letter, digit, digit digit" by adding 
+	   trailing zeros (if there are less that three digits) or by 
+	   dropping rightmost digits (if there are more that three).
+
+	At this point one can compare to soundex codes and determine whether
+or not the words that they represent are similar or not.  Similar words will
+have identical soundex expressions.
+
+
+REQUIREMENTS
+
+	Input:  Any standard text file
+	Output: The same text file with corrected spelling errors
+
+	MODULE DEPENDENCY DIAGRAM
+
+			_________________
+			|		|
+			| Spell Checker	|
+			|_______________|
+	      	          /	      \
+             	         /             \
+            	        /               \
+	_________________		_________________
+	|		|		|		|
+	|Load Dictionary|		| Process Input |
+	|_______________|		|_______________|
+		|				|
+		|				|
+	_________________		_________________
+	|		|		|		|
+	|   Open File   |		|   Open File   |
+	|_______________|		|_______________|
+		|				|
+		|				|
+	_________________		_________________
+	|		|-<--|		|		|
+	| Get Next Word |    |		| Get Next Word	|-----<-----|
+	|_______________|    |		|_______________|           |
+		|            |   		|                   |
+		|	     |  		|                   |
+		|	     |  	_________________           |
+		|	     |		|		|           |
+		|	     |		| Process Word	|----->-----|
+		|	     |		|_______________|                   
+		|	     |		/		\                  
+		|	     |	       /		 \                
+		|	     |	______________		_______________  
+		|	     |	|	     |		|	      | 
+		|	     |	| Soundex    |		| Lookup word |
+		|	     |	|____________|		|_____________|    
+		|	     |	      |                        |
+	_________________    |        |	                       |
+	|		|    |	      |                        |
+	|   AVL Tree    |--->-        |                        |
+	|    Module	|---------------------------------------
+	|_______________| 	
+		|
+		|
+	_________________	              
+	|		|
+	|   AVL Tree	|
+	|   Functions	|
+	|_______________|
+		|
+		\
+		 \
+		  \		_________________
+		   \____________|		|
+				| Data Structure|
+				|_______________|
+
+
+SPECIFICATION OF FUNCTIONAL BEHAVIOR
+AVL Tree Module
+
+	struct tree
+		{
+		char *word;		/* Word				*/
+		int depth;		/* Depth (for balancing)	*/
+		struct tree *left;
+		struct tree *right;
+
+	struct tree *creat_tree();
+		-requires - nothing
+		-modifies - tree
+		-effects  - initializes the tree
+
+	struct tree *add_node(struct tree *t, char *word)
+		-requires - the tree has been initialized
+		-modifies - the tree
+		-effects  - inserts node containing *word in tree.
+
+	struct tree *delete_node(struct tree *t, char *word)
+		-requires - the tree has been initialized
+		-modifies - the tree
+		-effects  - deletes node containing *word from tree
+
+	int is_in(struct tree *t, char *word)
+		-requires - the tree has been initialized
+		-modifies - nothing
+		-effects  - returns 1 if *word is in the tree else returns 0
+
+	struct tree *balance(struct tree *t)
+		-requires - the tree has been initialized
+		-modifies - the tree
+		-effects  - rebalances the tree to maintain AVL standards
+
+	void inorder_traverse(struct tree *t)
+		-requires - the tree has been initialized
+		-modifies - nothing
+		-effects  - prints out the contents of the tree
+		
+	int height(struct tree *t)
+		-requires - the tree has been initialized
+		-modifies - nothing
+		-effects  - returns the height of the tree	
+
+	int depth(struct tree *t)
+		-requires - the tree has been initialized 
+		-modifies - nothing
+		-effects  - returns the depth of a node
+
+	char *word_of(struct tree *t)
+		-requires - the tree has been initialized
+		-modifies - nothing
+		-effects  - returns the word at a given node
+
+	char *soundex_rep_of(struct tree t*)
+		-requires - the tree has been initialized
+		-modifies - nothing
+		-effects  - returns the soundex_rep of *word for the node
+
+EFFICIENCY CONSTRAINTS
+
+	It is important that a check is made for the existance of a word
+prior to inserting it in the tree.  The reason being is that multiple
+occurances of the same dictionary entry would prove to destroy any real
+efficiency.  IF ALL of the guidlines set forth are followed then the 
+average lookup time should be less than ln(n) and in worst case exactly 
+ln(n)
+
+
+IMPLEMENTATION
+
+	The general idea is to build a dictionary which gets smarter over
+time.  Upon termination of the program the tree will be saved sorted in
+soundex equivalent order.  This sorting will help save loading time when
+the spell checker is invoked the next time.  After the dictionary is loaded
+the program will take in the stream of input data and verify spelling.  
+The user will be alerted to any errors in spelling and will be asked to 
+make a decision as to what to do about the error.  After the decision is 
+done the appropriate action will be taken and the next error found.
+
+
+TESTING
+
+	The module should be tested with several random documents.  After
+the dictionary is built sufficiently then run a document full of errors 
+through and see what happens.  The spell checker (if working properly)
+should detect all errors in spelling, prompt for the user to make a decision
+concerning the error, suggest alternative spellings to chose from (if 
+selected), and make the appropriate correction in the document.
+
+
+MISCELLANEOUS
+
+	The AVL tree module specified should be accompanied by a set of 
+routines to process the text, words etc.  These would include: get_file,
+get_next_word, process_word etc.  These have not been specified since
+they are fairly self-explanitory.
+
+
+more must be addressed to receive perfect 40..... this one 36/40

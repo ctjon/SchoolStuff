@@ -1,0 +1,45 @@
+From roehrich Wed Feb 17 15:43:26 1993
+Received: by plains.NoDak.edu; Wed, 17 Feb 1993 15:43:25 -0600
+Date: Wed, 17 Feb 1993 15:43:25 -0600
+From: Dean Roehrich <roehrich>
+Message-Id: <199302172143.AA25865@plains.NoDak.edu>
+To: kroh, tjon
+Status: R
+
+This is your grade for the Assignment #1 design document.  Grading criteria
+can be found in ~roehrich/cs475/assign1/criteria.
+
+Your document has more detailed comments.  You may pick them up either in
+class on thursday or in Dr. Soloviev's office anytime.
+
+
+**** OS4U
+Jason Kroh
+Chris Tjon
+
+
+
+Score:  5/7
+
+
+Scheduler:
+
+	Starvation?  Doesn't seem to be addressed.  In your case, it should
+	be.  You don't have to take this route.
+
+Semaphores: -1
+
+	I think you need to re-think the monitor plan.
+
+
+Buffer:
+
+	It is not apparent that your OS has a finite amount of memory?	
+
+Testing:
+
+Misc: -1.0
+
+	Your linkedlist functions don't match their descriptions.
+
+

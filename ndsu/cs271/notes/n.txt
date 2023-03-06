@@ -1,0 +1,319 @@
+
+                                                                     N-1
+               INTERNAL SUBROUTINES
+SOURCE                   OBJECT              CORE
+PROGRAMS   >>>>>>>>      PROGRAMS            IMAGE
+           ASSEMBLE
+ ______    TIME>>>>
+: MACRO:
+: AT   :               _MAIN____             _MAIN_&_S_____
+: @@  =======-        :0  .     :  >>>>     :90A0 .     *****<BEGIN
+: @@   :     ::       :         :  LOAD     :           *  :  EXECTUTION
+: MEND :     ::       :   .     :  TIME     :     .     *  :
+:------:     ::       :         :  >>>>     :           *  :
+:MAIN  :     ::       :   .     :           :     .     *  :
+: :    :     ::       :         :           :           *  :
+: AT   :     : ------->20 @@    :           :90C0 @@    *  :
+: :    :     :        :   @@    :           :     @@    *  :
+:CALL S:     :        :   :     :           :     :     *  :
+: :    :     :        :34 CALL S:           :90F4 CALL S ****>CONTROL>***
+: :    :     :        :   .     :       ******             :            *
+: :    :     :        :   .     :       *   :V    .        :            *
+:AT    :      -------->50 @@    :       R   :9144 @@       :            *
+: :    :              :   @@    :       E   :     @@       :            *
+:END___:              :   :     :       T   :     :        :            *
+          >>>>>>>>    :_________:       U   :______________:            *
+          ASSEMBLE                      R   :9168       ***<TRANSFERRED<*
+          >>>>>>>>                      N   :  :        *  :
+          >>TIME>>                      *   :9180       *  :
+ ______   >>>>>>>>     ___S____         ***<:_________<**__:
+:S     :              :0       :              /\
+::     :              ::       :              ::
+::     :              :18      :              ::
+:END___:              :________:           ABSOLUTE
+                       /\                  ADDRESSES
+                       ::                 ASSIGNMENTS
+                       ::                    (HEX)
+                   RELOCATABLE
+                    ADDRESSES
+                   ASSIGNMENTS
+                     (HEX)
+NOTE:
+ . SUBROUTINE REMAINS A SEPARATE ENTITY UNTIL LOAD TIME(WHEN IT IS BOUND)
+ . THE SUBROUTINE-CALL INSTRUCTION SEQUENCE MUST INCLUDE A BRANCH (BALR).
+ . THE MACRO-CALL IS A PSEUDO-OP (ONLY EXISTS PRIOR TO ASSEMBLING).
+ . SUBROUTINE MIGHT HAVE BEEN ASSEMBLED AT A DIFFERENT (EARLIER) TIME.
+   . EXTERNAL SUBROUTINE WRITTEN AS A SEPARATE CONTROL SECTION (CSECT)
+   . INTERNAL SUBROUTINE WRITTEN AS PART OF MAIN PROGRAM (AT END).
+
+ . SUBROUTINE  =  AN APPENDIX (STAPLE TO BACK OF MANUSCRIPT)
+
+ . MACRO  =  FORM LETTER  (INSERTED IN-LINE DURING PREPARATION)
+SUBROUTINE
+
+. INDEPENDENT SET OF INSTRUCTIONS
+. PERFORMS FUNCTION
+. USER THINKS OF IT AS AN INSTRUCTION
+. EXAMPLE: MAIN PROGRAM CALLS SUBROUTINE TO PREPARE A BILL.
+    MAIN PROGRAM               BILLING SUBROUTINE
+  ________________________
+ :  :                     :         ________
+ :CALL BILLER(MADNICK,5)  :------> : BILLER :
+ :  :                     :<-----  :________:
+ :CALL BILLER(ZIERING,800):------>
+ :________________________:<-----
+                :     :
+  MAIN PASSES NAME & AMOUNT TO BILLER
+
+ADVANTAGES OF SUBROUTINES
+ . MODULARITY
+ . DOCUMENTATION
+ . USABLE BY OTHER MAIN PROGRAMS
+ . SAVES SPACE
+ . EASE OF DEBUGGING
+ . DIFFERENCES WITH MACROS
+ . EASE TO UPDATE WITH MORE EFFECIENT MODULES
+
+ISSUES:
+ . TRANSFER CONTROL & RETURN (HOW?)
+ . SAVE REGISTER VALUES OF CALLER (HOW & WHICH?)
+ . PASS PARAMETERS-INFORMATION NEEDED BY SUB TO DO ITS' THING (HOW?)
+
+A USEFUL SUBROUTINE (FOR THIS COURSE ANYWAY)
+       *NUMBER TO BE ADDED IS IN REG2
+       *ANSWER TO BE LEFT IN REG2
+       ADD49   START
+               BALR  15,0
+               USING BEG,15
+               A     2,=F'49'
+               BR    14
+               END
+
+ . LOOKS JUST LIKE A MAIN PROGRAM (EXCEPTION: IF ASSEMBLED AT SAME TIME
+                                              SUBROUTINE MUST USE CSECT)
+ . IN FACT, OS TREATS MAIN AS ITS' SUBROUTINE.
+HOW TO TRANSFER TO SUBROUTINE?
+ . MUST BRANCH
+ . TO WHERE (MAIN MUST LOAD ADDRESS OF SUBROUTINE IN REGISTER (R15).
+             RECALL, REGISTERS ARE AVAILABLE TO ANY ROUTINE, WHEN ACTIVE)
+
+HOW TO RETURN FROM SUBROUTINE?
+ . MUST BRANCH
+ . TO WHERE (MAIN MUST LOAD ADDRESS OF RETURN POINT INTO A REGISTER (R14)
+
+NEED CONVENTIONS (SO BOTH ROUTINES KNOW WHERE TO FIND THINGS, ETC.)
+
+INTERNAL SUBROUTINE: (IN THE SAME CONTROL SECTION AS MAIN)
+. WHAT DOES MAIN NEED TO DO TO CALL ADD49? (CALL SEQUENCE)
+  . NEED TO KNOW WHERE ADD49 IS       L    15,=A(ADD49)
+  . SET RETURN ADDRESS AND TRANSFER   BALR 14,15
+
+EXAMPLE 1 PROGRAM TO ADD 49 TO 2 LOCATIONS USING AN INTERNAL SUBROUTINE:
+LOC
+2000 MAIN      START
+               BALR  15,0
+               USING BEG,15
+2002 BEG       L     2,DATA
+2006           L     6,=A(ADD49)
+200A           BALR  12,6
+200C           ST    2,DATA
+     **********ADD 49 TO NEXT NUMBER
+2010           L     2,DATA2                   ___________________
+2014           L     6,=A(ADD49)           R2 :                   :
+2018           BALR  12,6                     :___________________:
+201A           ST    2,DATA2               R6 :                   :
+201E           BR    14                       :___________________:
+2020 DATA      DC    F'4'                  R12:                   :
+2024 DATA2     DC    F'23'                    :___________________:
+     **********INTERNAL SUBROUTINE
+2028 ADD49     A     2,=F'49'
+202C           BR    12
+               END
+. WHY REG6 TO TRANSFER?
+. WHY REG12 FOR RETURN?
+. WHY NOT   L    15,=A(ADD49)
+            BALR 14,15
+
+. STANDARD CONVENTIONS EXPLAINED LATER
+EXTERNAL SUBROUTINES: (IN DIFFERENT CONTROL SECTIONS)
+
+     __MAIN1____                              _MAIN2_______
+    :           :                            :             :
+    : CALL ADD49:          _ADD49___         :  CALL ADD49 :
+    :           :         :         :        :             :
+    : CALL ADD49:         :         :        :  CALL ADD49 :
+    :___________:         :_________:        :_____________:
+  . WHERE IS ADD49?  (ASSEMBLED AT A DIFFERENT TIME AND STORED IN LIBRARY
+                      BUT LOADED WITH MAIN PROGRAM)
+  . SUBROUTINE MIGHT "CLOBBER" REGISTERS USED BY MAIN PROGRAM.
+  . MAIN PROGRAM DOESN'T KNOW SUBROUTINE'S REGISTER USEAGE.
+  . HOW TO GET BACK
+  . PURE AND IMPURE CODE CONSTRAINTS
+    . DISCUSS AS WE GO ALONG
+
+                  _________     _DISK_______
+   __________    :         :    :OBJECT DECK:
+ / SOURCE FOR:-->:ASSEMBLER:--->:OF ADD49   :
+ :   ADD49   :   :_________:    :           :
+ :___________:                  :           :                    _MEMORY
+                                :           :- - -              :   :   :
+                                :___________:      :            :   :   :
+                               SUBROUTINE LIB                   :   :   :
+                                                   :   PROGRAM  :_______:
+                    LAST WEEK                          LOADER   : MAIN  :
+ ************************************************* :       :    :       :
+                    THIS WEEK                    __V____   :    :_______:
+                                  __________    :LOADER :  :    : ADD49 :
+   ___________     _________    /OBJECT CODE:   :  OR   :  V    :       :
+ / SOURCE FOR :-->:         :->:   OF MAIN  :-->:LINKAGE:------>:_______:
+:      MAIN   :   :ASSEMBLER:  :____________:   :EDITOR :       :   :   :
+:_____________:   :_________:                   :_______:     ->:   :   :
+                                                   :        /   :   :   :
+                                   linkage editor->:       /    :   :   :
+                                                   :      /     :_______:
+. COMPARE LOADER WITH LINKAGE EDITOR         _DISK_V_____/
+                                            :  ________   :
+  . LINKAGE EDITOR                          : :_MIT____: <---LOAD MODULE
+    . DOES BINDING ONLY                     : :_ADD49__:  :
+      -RESOLVE EXTERNAL REFERENCES          :_____________:
+      -PRODUCES LOAD MODULE ON DISK
+      -REMOVED FROM CORE BEFORE EXECUTION
+  . LOADER
+    . ALLOCATES MEMORY
+    . BINDS MODULES(LINKS)
+    . RELOCATES (ADJUSTS ALL ADDRESS DEPENDENT REFERENCES)
+    . PHYSICALLY LOAD MODULE FOR EXECUTION
+    . REMAINS IN CORE DURING EXECUTION
+
+ADD 49 TO 2 LOCATIONS USING EXTERNAL SUBROUTINE:
+   MIT    START
+          BALR  12,0
+          USING *,12
+   BEG    L     2,DATA
+      /    \
+     < CALL >
+      \____/
+          ST    2,DATA
+          L     2,DATA2
+      /    \
+     < CALL >
+      \____/
+          ST    2,DATA2
+          BR    14
+   DATA   DC    F'4'
+   DATA2  DC    F'23'                    MAINROUTINE
+          END
+********************************************************************
+   ADD49  START                          SUBROUTINE
+          BALR  15,0
+          USING BEG,15
+   BEG    A     2,=F'49'     ARE THERE ANY PROBLEMS WITH THESE ROUTINES?
+          BR    14        <--WHERE DOES CONTROL GO FROM HERE?
+          END
+
+PROBLEM 1:      WHERE IS ADD49 ?
+     - NOT PART OF THE PROGRAM MIT, SO CAN'T USE  L  15,=A(ADD49) SINCE
+       ASSEMBLER WILL NOT FIND ADD49 IN MIT'S SYMBOL TABLE.
+     - V(ADD49) TELLS ASSEMBLER NOT TO LOOK FOR ADD49, BUT TO USE ADDR 0
+       FOR NOW.  LOADER WILL FIX IT UP AFTER ADD49 IS BOUND TO MIT.
+
+     - V TYPE ADDRESS CONSTANT IS USED FOR ANY "EXTERNAL" ADDRESS
+     - FOR EXTERNAL SUBROUTINE CALL THE CONVENTION IS:
+          L    15,=V(ADD49)
+          BALR 14,15
+CONVENTIONS THUS FAR:
+   1.  R15  SUBROUTINE ENTRY POINT (TELLS MAIN WHERE TO TRANSFER CONTROL)
+   2.  R14  RETURN POINT IN CALLER (TELLS SUB WHERE TO RETURN CONTROL)
+   3.  (OPTIONAL) BEFORE RETURNING CONTROL, SUB CAN INDICATE RETURN CODE
+       OR COMPLETION CODE IN R15:
+               0 MEANS EVERYTHING WENT OK
+               4 MINOR ERROR
+               8 SERIOUS ERROR ENCOUNTERED
+       THIS RETURN CODE IS USED BY THE IBM ASSEMBLER, FOR INSTANCE.
+PROBLEM 2: SUB MAY DESTROY CONTENTS OF REGISTERS
+
+        - SINCE R14 IS CHANGED BY MAIN BEFORE CALLING SUB, THE ORIGINAL
+          CONTENTS (RETURN POINT TO THE OPERATING SYSTEM) MUST BE SAVED.
+        - OTHER REGISTER CONTENTS MAY NEED SAVING ALSO.
+POSSIBLE SOLUTIONS:
+
+       1.  SUBROUTINE USES DIFFERENT REGISTERS (USUALLY TOO RESTRICTIVE)
+       2.  CALLER SAVES AND RESTORES ALL REGISTERS.
+       3.  SUBROUTINE SAVES AND RESTORES ALL REGISTERS (IBM CONVENTION)
+               -SAVES CODING TIME (SAVE AND RESTORE SEQUENCE CODED ONLY
+                ONCE, IN SUBROUTINE)
+NEW INSTRUCTIONS FOR STORING AND RESTORING ALL REGISTERS AT ONCE:
+             STM    0,15,SAVE     STORES CONTENTS OF REGISTERS 0 THROUGH
+                                  15 IN CONSECUTIVE FULLWORDS BEGINNING
+                                  AT THE ADDRESS SAVE.
+             LM     0,15,SAVE     LOADS CONSECUTIVE FULLWORDS OF MEMORY
+                                  STARTING AT SAVE INTO REGISTERS 0
+                                  THROUGH 15.
+   - NOTE:   STM    14,12,SAVE    STORES CONTENTS OF REGISTERS
+                                  14,15,0,1,2,...,11,12  IN CONSECUTIVE
+                                 FULLWORDS STARTING AT SAVE (WRAP AROUND)
+
+CONVENTION:-EVERY ROUTINE SAVES PREVIOUS ROUTINES REGISTERS AS FIRST ACT.
+            AND RESTORES THEM AS LAST ACT. (EVEN MAIN, SINCE IT IS A
+            SUBROUTINE OF THE OPERATING SYSTEM.  MORE DETAIL IN P).
+           -18 WORD SAVE AREA USED (TWO EXTRA WORDS EXPLAINED IN P)
+LOC                                 : LOC
+---                                 : ---
+2000 MAIN      START                : 2060 ADD49     START
+                                    :
+2000           BALR  12,0           : 2060           USING ADD49,15
+                                    :
+2002           USING *,12           : 2060           STM   3,1,SAVE
+                                    :
+2002           STM   0,15,SAVE      :
+                                    :
+                                    :
+                                    : 2064           A     2,=F'49'
+2006           L     2,DATA         :
+                                    :
+200A           L     15,=V(ADD49)   :
+                                    : 2068           LM    3,1,SAVE
+200E           BALR  14,15          :
+                                    : 206C           BR    14
+2010           ST    2,DATA         :
+                                    : 2070 SAVE      DS    18F
+                                    :
+                                    :                END
+2014           L     2,DATA2        :
+                                    :
+2018           L     15,=V(ADD49)   :
+                                    :        ______________________
+201C           BALR  14,15          :    R2 :                      :
+                                    :       :______________________:
+201E           ST    2,DATA2        :
+                                    :        ______________________
+                                    :   R14 :                      :
+                                    :       :______________________:
+2022           LM    0,15,SAVE      :
+                                    :        ______________________
+2026           BR    14             :   R15 :                      :
+                                    :       :______________________:
+
+2028 DATA      DC    F'4'
+202C DATA2     DC    F'50'           -SAVE AND RESTORE NEEDED IN ADD49?
+2030 SAVE      DS    18F
+               END
+SUMMARY:
+ 1.  TRANSFER CONTROL TO SUBROUTINE AND RETURN CONTROL FROM SUBROUTINE
+          L    15,=V(SUBR)       NOTE: THIS IS THE FULL IBM CONVENTION
+          BALR 14,15
+2.  SAVE AND RETURN REGISTERS:
+          STM  0,15,SAVE
+               .                       THIS IS NOT FULLY DEVELOPED YET
+               .                       (WHERE TO SAVE, WHY 18 FULLWORDS?)
+          LM   0,15,SAVE               FULL CONVENTIONS IN P.
+3.  PASS PARAMETERS:
+          IN REGISTER(S)               WHAT IF THERE ARE MORE THAN 16 OR
+                                       THEY ARE ODD SIZED?
+                                       FULL CONVENTION IN O.
+HOW DO SUBROUTINES AND MACROS DIFFER?
+                             SUBROUTINE                 MACRO
+                             ----------                 -----
+SPACE
+EXECUTION TIME
+PARAMETER PASSING

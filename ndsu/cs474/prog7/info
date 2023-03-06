@@ -1,0 +1,25 @@
+From gammill Thu Nov 19 15:58:22 1992
+Received: by plains.NoDak.edu; Thu, 19 Nov 1992 15:58:12 -0600
+Date: Thu, 19 Nov 1992 15:58:12 -0600
+From: bob gammill <gammill>
+Message-Id: <199211192158.AA13833@plains.NoDak.edu>
+To: broberg, broin, bye, dnelson, dsatrom, fluth, frank, glaeske, heemeyer,
+        howatt, isdahl, klakeman, kroh, lemke, lothspei, lwang, maier,
+        mcintyre, pepka, reiter, roe, rorvig, sharter, tjon, tofte, vold,
+        wetzstei, wilken
+Subject: CS474
+Status: R
+
+As mentioned in class, I have created ~gammill/cs474/lib which contains
+the source and object for the library file, libnet.a.  Use the Makefile
+(modified) to create this.  Also, you need to know that the various
+mechanisms that select what kind of system this is, occasionally fail.
+When that happens, you should assure them that this is a BSD system. 
+Generally either sun or bsd will get the right results.  Changes that
+need to be made in inettime.c involve changeing err_dump to err_ret
+and remembering to close(fd) and return.  Finally, if you find that
+your inettime cannot find off-campus computers by name (such as
+louie.udel.edu or cobber.cord.edu) then you need to change the cc line
+in your Makefile to have "-lresolv" to get the name resolver library
+linked in with your code.  Good luck.   Bob
+

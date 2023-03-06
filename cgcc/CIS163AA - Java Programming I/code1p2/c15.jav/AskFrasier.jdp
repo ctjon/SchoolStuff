@@ -1,0 +1,17 @@
+[PROJECT]
+Name=AskFrasier
+Location=C:\MIKESFILES\BOOKJ11\C15.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+AskFrasier.java=1
+AskFrasier.html=1
+
+[Visualforms]
+AskFrasier.java=1
+AskFrasier.html=0

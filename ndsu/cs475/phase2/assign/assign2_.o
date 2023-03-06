@@ -1,0 +1,198 @@
+Computer Science 475 - Operating System Design
+Assignment 2
+
+Design Document due:  Apr 8, 93
+Implementation due:  May 6, 93
+
+Last modified: Thu Mar 25 22:54:09 CST 1993
+   corrected parameter lists for m_send()/m_receive().  dmr
+
+
+For the second assignment you will be extending your existing system, and
+also creating some threads of your own.  The extensions which you will be
+making to your system are inter-thread communication (ITC) support, command
+processing and job spooling, and a file system.
+
+Inter-thread Communication
+--------------------------
+
+You will need to provide the following ITC functions:
+	void m_send (t, m) TID t; Buffer m; {}
+	void m_receive (t, m) TID t; Buffer m; {}
+m_send() has two parameters; the first is the TId of the thread which is to
+receive the message, and the second is the Buffer that should be copied to
+a receiving area for the receiving thread.  m_receive() also requires two
+parameters.  The first is the TId of the sending thread, and the second is
+the memory area which the message is to be copied into.  You will need to use
+your semaphores to cause threads to wait for messages if they don't have any.
+You are not to force a thread to receive messages, it will receive them as it
+wishes to.  Keep in mind that the time ordering of messages must be preserved.
+Also, you still need to treat Buffers as resources which have limited
+instances.
+
+NOTE:  use your OS, not lwp.
+
+
+
+Your OS should then create the following threads to get the system running:
+
+
+Master Thread
+-------------
+
+This thread creates the output spooler thread, the input spooler thread, and
+then waits for work from the input spooler thread.  It creates command
+processor threads as required by the input job stream.  It accepts
+create_task messages from the input spooler when it needs to do this, and
+replies with the TID of the newly created command processor.
+
+
+Input Spooler Thread
+-------------------- 
+
+The input spooler thread reads from an input file the input job stream.  The
+name of this file should be called "INPUT" and will be in the current working
+directory, which means you should not have to prompt for a filename or take
+the filename as a commandline parameter.
+
+As the text of each job is read, the input spooler creates and appends the
+job to a separate job file for each job.  It then requests that a command
+processor thread be created, and sends the name of the job file to the new
+command processor.  These job files should be placed in the current working
+directory, using a filename of your choice.
+
+
+
+Command Processor Threads
+---------------------------
+
+Each command processor thread processes the job commands in its job file,
+the name of which was sent to it by the input spooler in a message.  As it
+performs the commands in the job file, it appends the results to an output
+file.  Once it has completed this, it sends a completion message which
+contains the name of the job file to the output spooler.
+
+Some jobs will have a specific name attached to them.  If this is the case,
+then when the command processor completes the job it should print the name
+of the job to Unix's stderr and indicate that it has completed that job.
+Note, this message does not go to the output spooler.
+
+The command processor should t_destroy() itself when it is done.
+
+
+Output Spooler Thread
+---------------------
+
+The output spooler thread receives output job file names from command
+processors, and appends the output job file to the output stream.  The
+output stream should be a file called "OUTPUT" and should be placed in the
+current working directory.
+
+
+
+File System
+-----------
+
+You are to implement a file system that has a directory structure which is
+global to the system.  When the system first starts up, there are no files
+in the directory.  This means that between runs you must clean up the
+remaining files created by your command processors, if they have not done
+so.  You should do this when you terminate your system.
+
+There should be a 24 character limit on the names of files.  The number of
+files allowed in a directory should be limited to 1000.  If a file name
+exceeds the limit, truncate the name.
+
+
+
+Job Control Language
+--------------------
+
+The following describes the job control language which you are to support.
+
+Each job in the input job stream begins with //JOB, and ends with /*.  These
+both begin in the first column of the line containing them.
+
+Sometimes the job will have a name, then it will begin with //JOB job_name
+and will end with /*.
+
+The commands that the command processors understand are the following:
+
+DIR - list the directory of files known to the system.
+CREATE f - create a new file, adding it to the directory.  The text for
+	the new file comes from the input job stream for that particular
+	job, and is appended to the new file until a // is found alone on a
+	line in the input job.  If the file exists, the operation should not
+	succeed, and the command processor should append a message to its
+	output file stating this.
+DEL f - delete file f.  This should fail if the file does not exist, and the
+	command processor should append an error message to its output file.
+COPY f1 f2 - copy f1 to f2, appending the text of f1 to f2.  This fails if
+	f2 already exists, and the command processor should append an error
+	message to its output file.
+CAT f - display the contents of file f.  An appropriate error message
+	should be appended to the output file if the file to CAT does not
+	exist.
+
+Note: All output from these commands are part of the Command Processor's
+results and should end up in the OUTPUT file.  They should not be printed to
+Unix's stdout or stderr.  All files which these commands operate on are to
+exist in your OS's filesystem, not in the Unix filesystem.
+
+
+All of these commands begin in the first column.  Here is an example input
+job stream containing two jobs:
+
+//JOB
+DIR
+CREATE f1
+This text should be in f1.
+//
+DIR
+CAT f1
+/*
+//JOB j2
+DIR
+COPY f1 f2
+DIR
+DEL f1
+DIR
+/*
+
+This job stream might result in error messages, or be successful, depending
+on the timing of events.  Here is what the first job looks like after the
+input spooler processes it and puts it into an individual job file.
+
+DIR
+CREATE f1
+This text should be in f1.
+//
+DIR
+CAT f1
+
+Supplied Job Streams
+--------------------
+
+Two job streams that you are to run through your system will be supplied.
+The job streams will be supplied in ~roehrich/cs475/assign2/tlib/js1 and
+~roehrich/cs475/assign2/tlib/js2.
+
+
+Helpful Hints
+-------------
+
+1. Since a UNIX process is limited to 20 open files at one time, you must
+limit the level of multiprogramming.  You should use one of your semaphores
+to do this.  Remember also that command processors can have more than one
+file open at a time.  You should set the limit so that deadlock cannot
+occur (prevent it rather than detect it).
+
+2. Suggested file naming conventions for Command Processor job streams:
+	INxxx - individual job text file; xxx starts at 000, and wraps
+		around once 999 is reached (goes back to 000).
+	OUTxxx - output for a particular command processor thread. xxx should
+		match the input xxx.
+
+3. Make sure that all temporary files are closed and destroyed when you have
+finished with them.
+

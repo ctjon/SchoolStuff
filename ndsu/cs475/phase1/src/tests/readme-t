@@ -1,0 +1,46 @@
+CS475 - Operating System Design
+Assignment 1
+Thread Group 3
+Spring 1990
+Last modified on Sunday, April 15.
+
+This thread group uses your buffer management functions to extend the thread
+group 2 resource sharing threads.  The same types of threads are created,
+but they use your buffers.
+
+Required Functions and Resources
+
+These threads need your b_get() and b_release() functions.  In addition, they
+also need the following functions:
+	t_create(), t_destroy(), t_ready(), s_create(), s_open(), s_close(),
+	s_wait(), s_signal()
+No additional resources are necessary.
+
+Initialization
+
+To set this thread group up, create a thread using the function tg3 as the
+entry point.  This thread then will take care of the rest.  It will create
+and ready 10 resource sharing threads.  After it has done this it destroys
+itself.  The threads have the following behavior.
+
+Group 1 threads first identify themselves.  After this, they each will
+attempt to acquire 5 buffers and then release them.  This is repeated 10
+times.  After this has been completed, each of the Group 1 threads destroys
+itself.  Once all of these threads have run to completion, your system
+should terminate.
+
+You should set the size of your buffer pool to 20 for the thread group.
+Notice that you don't have enough to satisfy all the requests at once, which
+is expected.
+
+The expected result is that the thread tg3 will correctly create and ready
+the Group 1 threads, and then destroy itself, running to completion.  Each
+of the Group 1 threads will then repeatedly get and release buffers and
+destroy themselves.  As this occurs, your system should allocate and
+deallocate buffers to the threads such that the limitation on the buffer
+resource is enforced.  Each Group 1 thread also prints the current buffer
+allocation count as they get and release, which they keep track of using a
+shared variable (hence the need for your semaphores).
+
+You may wish to use the header file tg.h in your code, since it declares
+a few things for you.

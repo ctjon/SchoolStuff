@@ -1,0 +1,4 @@
+rm errors.log client.n supply.n InvLists CLCITYDR SPCITYDR
+cp  client.orig client.m
+cp  supply.orig supply.m
+asgn2

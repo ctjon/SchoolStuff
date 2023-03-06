@@ -1,0 +1,17 @@
+[PROJECT]
+Name=FunnySteps
+Location=C:\MIKESFILES\BOOKJ11\C6.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+FunnySteps.java=1
+FunnySteps.html=1
+
+[Visualforms]
+FunnySteps.java=1
+FunnySteps.html=0

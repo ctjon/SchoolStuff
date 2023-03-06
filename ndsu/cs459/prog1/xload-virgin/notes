@@ -1,0 +1,3 @@
+Use Mkfmk to produce a makefile from and Imakefile.  However, DO NOT
+do that again here, because the Makefile has been carefully handcrafted
+by Ryan Schlecht and now works.  Bob

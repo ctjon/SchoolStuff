@@ -1,0 +1,128 @@
+18
+130
+16
+99
+UNIT ASSIGNMENT 30A                                                             
+                          EXTERNAL IN_INT,OUT_INT,INCNT                       
+                          PUBLIC COUNT,INPTR,OUTPTR                           
+                              BUFSIZE  EQU   40                   ;I/O BUFFER 
+    SET_VECT MACRO PSW,X,PC,Y           ;MACRO FOR SETTING UP AN              
+               MOVH  PSW,X              ;INTERRUPT VECTOR                     
+               MOVH  PC,Y                                                     
+             ENDM                                                             
+                                       ORG   10H                              
+                            PROGRAM MAIN30                                    
+0010                          STACK    DH    20H                  ;STACK DEFIN
+0050                          N        DB    1                    ;NO. OF CHAR
+0052                          COUNT    DB    1                    ;I/O DIFFERE
+0054                          IDLECNT  DB    1                    ;COUNT FOR F
+0056        005A      R       INPTR    DH    BUFFER               ;INPUT BUFFE
+0058        005A      R       OUTPTR   DH    BUFFER               ;OUTPUT BUFF
+005A                   N      BUFFER   DB    BUFSIZE              ;I/O BUFFER 
+0082   0010                   START    INTF  0                    ;DISABLES IN
+                                       SET_VECT #0,8,#OUT_INT,10  ;SETS UP OUT
+0084   EEBB 0000 0008   X                MOVH  #0,8                           
+008A   EEBB 017E 000A E X                MOVH  #OUT_INT,10                    
+                                       SET_VECT #0,0CH,#IN_INT,0EH;SETS UP INP
+0090   EEBB 0000 000C   X                MOVH  #0,0CH                         
+0096   EEBB 014A 000E E X                MOVH  #IN_INT,0EH                    
+009C   F0C0 0020              TSTSTAT1 INPB  20H,R0               ;INPUTS THE 
+00A0   3680 0002                       TSTB  #2,R0                ;CHARACTERS 
+00A4   073E FFF4                       BREQ  TSTSTAT1             ;IN I/O - FI
+00A8   F0C0 0022                       INPB  22H,R0                           
+00AC   9E80 0030                       SUBB  #30H,R0                          
+00B0   3C80 000A                       MULB  #10,R0                           
+00B4   F0C8 0020              TSTSTAT2 INPB  20H,R1               ;SECOND DIGI
+00B8   3688 0002                       TSTB  #2,R1                            
+00BC   073E FFF4                       BREQ  TSTSTAT2                         
+00C0   F0C8 0022                       INPB  22H,R1                           
+00C4   9E88 0030                       SUBB  #30H,R1                          
+00C8   5008                            ADDB  R0,R1                            
+00CA   DE88 0000                       CMPB  #0,R1                ;IF COUNT IS
+00CE   073E 0074                       BREQ  EXIT                             
+00D2   E23B      0148 E                MOVH  R1,INCNT                         
+00D6   F0C0 0020              TSTSTAT3 INPB  20H,R0               ;INPUTS FIRS
+00DA   3680 0002                       TSTB  #2,R0                            
+00DE   073E FFF4                       BREQ  TSTSTAT3                         
+00E2   FE83 0033 0026                  OUTB  #33H,26H                         
+00E8   EED0 0056      R                MOVH  INPTR,R2                         
+00EC   F0D5 0022                       INPB  22H,[R2]+                        
+00F0   E43B      0056 R                MOVH  R2,INPTR                         
+00F4   9EBB 0001 0148 E                SUBB  #1,INCNT             ;DECREMENTS 
+00FA   FEBB 0000 0052 R                MOVB  #0,COUNT                         
+0100   EED0 0058      R                MOVH  OUTPTR,R2            ;OUTPUTS FIR
+0104   F543      0024                  OUTB  [R2]+,24H                        
+0108   E43B      0058 R                MOVH  R2,OUTPTR                        
+010C   DEBB 0000 0148 E                CMPB  #0,INCNT                         
+0112   073E 0030                       BREQ  EXIT                             
+0116   DEBB 0028 0148 EN               CMPB  #BUFSIZE,INCNT       ;IF IN COUNT
+011C   057E 0026                       BUGT  EXIT                 ;THEN EXIT  
+0120   001B                            INTF  0BH                  ;ENABLE INTE
+0122   DEBB 0000 0148 E       IDLE0    CMPB  #0,INCNT             ;IDLE LOOP F
+0128   053E FFF6                       BRNE  IDLE0                ;AND OUTPUTT
+012C   DEBB 0000 0052 R       IDLE1    CMPB  #0,COUNT             ;IDLE LOOP F
+0132   053E FFF6                       BRNE  IDLE1                ;REMAINING C
+0136   FEBB 0014 0054 R                MOVB  #20,IDLECNT          ;IDLE LOOP F
+013C   9EBB 0001 0054 R       IDLE2    SUBB  #1,IDLECNT           ;THE LAST CH
+0142   053E FFF6                       BRNE  IDLE2                ;OUTPUT DEVI
+0146   0003                   EXIT     RETN                                   
+                            ENDP                                              
+END                                                                             
+UNIT ASSIGNMENT 30B                                                             
+                          EXTERNAL  COUNT,INPTR,OUTPTR                        
+                          PUBLIC  IN_INT,OUT_INT,INCNT                        
+                            PROCEDURE  IN_INT            ;INPUT INTERRUPT ROUT
+0148                          INCNT    DB    1           ;INPUT COUNTER       
+014A   E437                   IN_INT   PSHH  R2          ;SAVES R2            
+014C   EED0 0056      E                MOVH  INPTR,R2                         
+0150   F0D5 0022                       INPB  22H,[R2]+   ;INPUTS A CHARACTER A
+0154   E43B      0056 E                MOVH  R2,INPTR    ;UPDATES INPUT POINTE
+0158   4EBB 0001 0052 E                ADDH  #1,COUNT    ;INCREMENTS I/O DIFFE
+015E   9EBB 0001 0148 R                SUBB  #1,INCNT    ;DECREMENT INPUT COUN
+0164   20B6 00EF 0004                  ANDH  #0EFH,4[SP] ;DISABLES INTERRUPTS 
+016A   DEBB 0000 0148 R                CMPB  #0,INCNT    ;IF INPUT COUNT IS 0 
+0170   053E 0006                       BRNE  CONT        ;THEN DISABLE INPUT I
+0174   FE83 0013 0026                  OUTB  #13H,26H    ;AT INTERFACE        
+017A   ED50                   CONT     POPH  R2          ;RESTORES R2         
+017C   0007                            IRET                                   
+                            ENDP                                              
+                            PROCEDURE  OUT_INT           ;OUTPUT INTERRUPT ROU
+017E   E437                   OUT_INT  PSHH  R2          ;SAVES R2            
+0180   DEBB 0000 0052 E                CMPB  #0,COUNT    ;IF COUNT DIFFERENCE 
+0186   073E 001C                       BREQ  EXIT        ;THEN EXIT           
+018A   EED0 0058      E                MOVH  OUTPTR,R2                        
+018E   F543      0024                  OUTB  [R2]+,24H   ;OUTPUTS A CHARACTER 
+0192   E43B      0058 E                MOVH  R2,OUTPTR   ;UPDATES OUTPUT POINT
+0196   9EBB 0001 0052 E                SUBB  #1,COUNT    ;DECREMENTS I/O DIFFE
+019C   053E 0006                       BRNE  EXIT        ;EXITS WHEN 0        
+01A0   22B6 0030 0004                  IORH  #30H,4[SP]  ;OTHERWISE, ENABLES I
+                                                         ;INTERRUPTS          
+01A6   ED50                   EXIT     POPH  R2          ;RESTORES R2         
+01A8   0007                            IRET                                   
+                            ENDP                                              
+END                                                                             
+282
+$C008 $8020 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $8001 $0000 
+$8001 $0000 $8001 $0000 $420F $005A $4210 $005A $8014 $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0212 $0010 $0614 $EEBB $0000 $0008 $6615 
+$EEBB $017E $000A $0617 $EEBB $0000 $000C $6618 $EEBB $014A $000E $0419 
+$F0C0 $0020 $041A $3680 $0002 $041B $073E $FFF4 $041C $F0C0 $0022 $041D 
+$9E80 $0030 $041E $3C80 $000A $041F $F0C8 $0020 $0420 $3688 $0002 $0421 
+$073E $FFF4 $0422 $F0C8 $0022 $0423 $9E88 $0030 $0224 $5008 $0425 $DE88 
+$0000 $0426 $073E $0074 $1C27 $E23B $0148 $0428 $F0C0 $0020 $0429 $3680 
+$0002 $042A $073E $FFF4 $062B $FE83 $0033 $0026 $242C $EED0 $0056 $042D 
+$F0D5 $0022 $0C2E $E43B $0056 $1E2F $9EBB $0001 $0148 $0E30 $FEBB $0000 
+$0052 $2431 $EED0 $0058 $0432 $F543 $0024 $0C33 $E43B $0058 $1E34 $DEBB 
+$0000 $0148 $0435 $073E $0030 $1E36 $DEBB $0028 $0148 $0437 $057E $0026 
+$0238 $001B $1E39 $DEBB $0000 $0148 $043A $053E $FFF6 $0E3B $DEBB $0000 
+$0052 $043C $053E $FFF6 $163D $FEBB $0014 $0054 $163E $9EBB $0001 $0054 
+$043F $053E $FFF6 $0240 $0003 $8001 $0000 $0248 $E437 $6449 $EED0 $0056 
+$044A $F0D5 $0022 $1C4B $E43B $0056 $1E4C $4EBB $0001 $0052 $0E4D $9EBB 
+$0001 $0148 $064E $20B6 $00EF $0004 $0E4F $DEBB $0000 $0148 $0450 $053E 
+$0006 $0651 $FE83 $0013 $0026 $0252 $ED50 $0253 $0007 $0256 $E437 $1E57 
+$DEBB $0000 $0052 $0458 $073E $001C $6459 $EED0 $0058 $045A $F543 $0024 
+$1C5B $E43B $0058 $1E5C $9EBB $0001 $0052 $045D $053E $0006 $065E $22B6 
+$0030 $0004 $0260 $ED50 $0261 $0007 

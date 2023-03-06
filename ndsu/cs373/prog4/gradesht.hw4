@@ -1,0 +1,59 @@
+Fall 1993                     EE / CS 373               Gammill
+                             Home Work #4
+                             Grading Sheet
+
+                                        Name:__________________
+
+        ITEM                                       POINTS
+        ----                                 -------------------
+                                               Maximum   Score
+1. Written Description
+
+        Overview (Problem Description):          5 pts
+                                                        --------
+
+        Problem Solution and Verification:       5 pts
+          (and operating instructions)                  --------
+
+2. Program Design and Documentation 
+
+  a) Flowchart  (clean, readable, appropriate   10 pts
+                degree of detail)                       --------
+      
+  b) Stack Frame calling method used with       10 pts
+        conformity to all required standards            --------
+        and function value returned in D0.
+
+  c) Passing of comparelt function address as   10 pts
+     argument and calling through A register.           -------- 
+
+  d) Program Listing
+
+        Clarity (good names and readability)    10 pts
+          (main program structure correct)              --------
+
+
+        Comments (brief, relevant, readable)    10 pts
+                                                        --------
+
+
+3. Program Results (TESTING!)
+
+        Basic Results (minium correctness)      20 pts
+              (at least one correct test)               --------
+
+        Completeness: (varied testing)
+
+                (examples: effects of FIX on    10 pts
+                 sort order, larger arrays)             --------
+
+4. Miscellaneous (appearance and readability)   10 pts
+        e.g. grammar, folder, etc.                      --------
+
+                                       ----------------------------
+
+                                       TOTAL:  100 pts
+                                                        --------
+
+
+

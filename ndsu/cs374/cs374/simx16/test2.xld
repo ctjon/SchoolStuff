@@ -1,0 +1,54 @@
+9
+106
+16
+39
+UNIT DEMONSTRATION 2A                                                           
+                          EXTERNAL INPUT, OUTPUT        ;REFERENCES TO I/O PRO
+                              N      EQU   28           ;NUMBER OF CHARACTERS 
+                                     ORG   10H                                
+                            PROGRAM IOTEST                                    
+0010                          STACK  DH    10H          ;STACK DEFINITION     
+0030        0032      R       BUFPTR DH    BUFFER       ;POINTER TO CURRENT BU
+0032                   N      BUFFER DH    N            ;BUFFER USED TO STORE 
+006A   FE83 0083 0026         START  OUTB  #83H,26H     ;ENABLE PARITY CHECKIN
+0070   FE88 001C       N             MOVB  #N,R1        ;INITIALIZATION OF INP
+0074   EED0 0030      R              MOVH  BUFPTR,R2                          
+0078   0002 009A      E       INBUF  CALL  INPUT        ;LOOP FOR INPUTTING CH
+007C   9E88 0001                     SUBB  #1,R1                              
+0080   053E FFF4                     BRNE  INBUF                              
+0084   FE88 001C       N             MOVB  #N,R1        ;INITIALIZATION OF OUT
+0088   EED0 0030      R              MOVH  BUFPTR,R2                          
+008C   0002 00AC      E       OUTBUF CALL  OUTPUT       ;LOOP FOR OUTPUTTING C
+0090   9E88 0001                     SUBB  #1,R1                              
+0094   053E FFF4                     BRNE  OUTBUF                             
+0098   0003                          RETN               ;RETURN TO OPERATING S
+                            ENDP                                              
+END                                                                             
+UNIT DEMONSTRATION 2B                                                           
+                          PUBLIC  INPUT, OUTPUT        ;PERMISSION TO ACCESS I
+                            PROCEDURE  INPUT                                  
+009A   F0C0 0020              INPUT  INPB  20H,R0      ;IDLE LOOP WAITING FOR 
+009E   3680 0002                     TSTB  #2,R0                              
+00A2   073E FFF4                     BREQ  INPUT                              
+00A6   F0D5 0022                     INPB  22H,[R2]+   ;INPUTS CHARACTER, UPDA
+00AA   0003                          RETN              ;RETURN TO CALLING PROG
+                            ENDP                                              
+                            PROCEDURE  OUTPUT                                 
+00AC   F0C0 0020              OUTPUT INPB  20H,R0      ;IDLE LOOP WAITING FOR 
+00B0   3680 0001                     TSTB  #1,R0       ;TO BE TAKEN           
+00B4   073E FFF4                     BREQ  OUTPUT                             
+00B8   F543      0024                OUTB  [R2]+,24H   ;OUTPUTS CHARACTER, UPD
+00BC   0003                          RETN              ;RETURN TO CALLING PROG
+                            ENDP                                              
+END                                                                             
+113
+$C008 $8010 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0000 $4207 $0032 $801C $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 
+$0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 $0000 
+$0000 $0609 $FE83 $0083 $0026 $040A $FE88 $001C $440B $EED0 $0030 $640C 
+$0002 $009A $040D $9E88 $0001 $040E $053E $FFF4 $040F $FE88 $001C $4410 
+$EED0 $0030 $6411 $0002 $00AC $0412 $9E88 $0001 $0413 $053E $FFF4 $0214 
+$0003 $041A $F0C0 $0020 $041B $3680 $0002 $041C $073E $FFF4 $041D $F0D5 
+$0022 $021E $0003 $0421 $F0C0 $0020 $0422 $3680 $0001 $0423 $073E $FFF4 
+$0424 $F543 $0024 $0225 $0003 

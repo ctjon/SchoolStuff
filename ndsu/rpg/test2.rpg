@@ -1,0 +1,95 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100
+@PASSWD 110975                                    
+@RPG,IS SOURCE,REL           
+01010H**************************************************************************
+01020H* CHRISTOPHER C. TJON                                                    *
+01030H* 110975-8                                                               *
+01040H* 8 MAY 90                                                               *
+01050H* TEST NUMBER 2                                                          *
+01060H**************************************************************************
+02010FCARDSIN IP  F      80            READ005SYSIPT
+02020FREPORT  O   F     132     OF     PRINTERSYSLST
+03010I**************************************************************************
+03020I*****< INPUT SECTION >****************************************************
+03030I**************************************************************************
+03040ICARDSIN AA  01  80 C1                                     
+03050I                                        1   3 NUMBERL1  
+03060I                                        4  26 NAME
+03070I                                       27  49 ADDRES
+03080I                                       50  64 CITY
+03090I                                       65  66 STATE
+03100I                                       67  71 ZIP
+03110I                                       72  792PREBAL
+03120I        02NO02  80 C2
+03130I                                        1   3 NUMBER
+03140I                                        4  18 DESCR
+03150I                                       19  252AMOUNT
+03160I        AA  **  
+03170I                                       80  80 CODE
+04010C**************************************************************************
+04020C*****< CALCULATION SECTION >**********************************************
+04030C**************************************************************************
+04040C   21                SETON                     OF
+04050C   21                SETOF                     21
+04060C   22                SETOF                     22
+04070C   01      CODE      COMP '1'                  23  24
+04080C   01                MOVE UDATE     NDATE   60
+04090C   01      NDATE     ADD  10000     NDATE
+04100C   01      NDATE     COMP 130000               25  25
+04110C   25      NDATE     ADD  1         NDATE      
+04120C   25      NDATE     SUB  120000    NDATE
+04130C   23      TOTALD    ADD  AMOUNT    TOTALD  92
+04140C   23      CODE      COMP '2'                  22
+04150CL1         TOTALD    ADD  PREBAL    TOTALD  92
+04155CL1         TOTALB    ADD  TOTALD    TOTALB  92
+04160CL1                   SETON                     21
+05010O**************************************************************************
+05020O*****< OUTPUT SECTION >***************************************************
+05030O**************************************************************************
+05040OREPORT  H  201   01
+05050O       OR        OF
+05060O                                   34 'BILL'
+05070O        H  1     01
+05080O       OR        OF
+05090O                                   22 'BILLING DATE:'
+05100O                         UDATE Y   31
+05110O                                   43 'DATE DUE:'
+05120O                         NDATE Y   52
+05130O        D 21     01
+05140O                         NUMBER     3
+05150O                         NAME      33
+05160O        D  1     01
+05170O                         ADDRES    33
+05180O        D  1     01 
+05190O                         CITY      25
+05200O                                   26 ','
+05210O                         STATE     29
+05220O                         ZIP       35
+05230O        D 21     01
+05240O                                   17 'PREVIOUS BALANCE:'
+05250O                         PREBALJB  28
+05260O        D  1     01
+05270O                                   21 'DESCRIPTION'
+05280O                                   36 'AMOUNT'
+05290O        D  1     02 
+05300O       OR        22
+05310O                 22                25 'NO ACTIVITY'
+05320O                 02      DESCR  B  25
+05330O                 02      AMOUNTJB  39
+05340O        T 21     L1
+05350O                                   20 'TOTAL DUE:'
+05360O                         TOTALDJB  39
+05370O        T 21     L1 LR
+05380O                                   13 'TOTAL BILLED:'
+05390O                         TOTALBJ   25
+@XQT
+111TOMS PIZZA             123 FAIR ROAD          HERE           TX       1000001
+111NEW PIZZA       100000                                                      2
+111MORE PIZZA      100000                                                      2
+222JAKE'S GARAGE          456 HELLS BEND         SOMEWHERE      AZ       1000001
+222TOOLS           100000                                                      2
+222OIL             100000                                                      2
+222GAS             100000                                                      2
+@FIN
+        
+

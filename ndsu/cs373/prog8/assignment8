@@ -1,0 +1,36 @@
+        Fall 1993                   CS/EE 373                  R. Gammill
+
+
+
+        Homework #8: due at class on Wednesday December 1, 1993
+                        (NO LATE HOMEWORK WITHOUT A WRITTEN EXCUSE)
+
+        Write a filter "prep" which splits its text input into words, one
+        word  per  line,  all  alphabetic  characters translated to lower
+        case, and puts this result on its standard output.   You  are  to
+        write  the  program  in C using getchar for input and putchar for
+        output.  This program will be tested by using it with sort,  uniq
+        and  pr  to  produce  a  three to five column output (exactly one
+        page) of how many occurrences of different words  there  were  in
+        the    text    of    this    homework    assignment   (found   in
+        ~gammill/373/hmwrk8).  The definition of what a "word" is follows
+        the paper "Statistical Text Processing" pp. 2137-2154 in the Bell
+        System Technical Journal, July-August 1978.  To  summarize  those
+        conventions,  all punctuation and white space (made up of blanks,
+        tabs \t and newlines \n) separates words.  Hyphens are also  word
+        separators.   Apostrophes  in  the interior of a word are part of
+        the word (e.g. cat's and don't), but apostrophes before or  after
+        a  word are not (e.g. 'tis and Chris').  Numeric digit characters
+        are not parts of words and numbers are not words.
+
+        Your output will be produced by the command sequence:
+
+          prep < ~gammill/373/hmwrk8 | sort | uniq -c | sort -n -r | pr
+
+        However, you will need to give pr some arguments to get three  to
+        five  column format (the least number of colums to get everything
+        on one page) and a nice heading indicating who you are  and  what
+        is  being  done.   Be  sure  the comments at the beginning of the
+        source listing of your program contain  identifying  information.
+        Turn  your source code (with pr heading) and output of the run in
+        on eight and 1/2 by eleven inch paper.

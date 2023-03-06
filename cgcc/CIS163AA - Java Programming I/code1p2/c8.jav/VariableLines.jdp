@@ -1,0 +1,17 @@
+[PROJECT]
+Name=VariableLines
+Location=C:\MIKES FILES\BOOKJ11\C8.JAV
+Applet=1
+Unitcount=2
+Time=0
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+VariableLines.java=1
+VariableLines.html=1
+
+[Visualforms]
+VariableLines.java=1
+VariableLines.html=0

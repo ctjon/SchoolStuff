@@ -1,0 +1,57 @@
+*** makefile	Wed Jan 26 00:11:23 1994
+--- Makefile.orig	Wed Jan 26 00:16:00 1994
+***************
+*** 229,254 ****
+          DEPLIBS = $(DEPXAWLIB) $(DEPXMULIB) $(DEPXTOOLLIB) $(DEPXLIB)
+  LOCAL_LIBRARIES = $(XAWLIB) $(XMULIB) $(XTOOLLIB) $(XLIB)
+  
+!            SRCS = xusers.c get_uload.c
+!            OBJS = xusers.o get_uload.o
+   OSMAJORVERSION = 5
+   OSMINORVERSION = 0
+        DEFINES = -DOSMAJORVERSION=$(OSMAJORVERSION) -DOSMINORVERSION=$(OSMINORVERSION)
+  
+! all:: xusers
+  
+! xusers: $(OBJS) $(DEPLIBS)
+  	$(RM) $@
+! 	$(CC) -o $@ $(OBJS) $(LDOPTIONS) $(LOCAL_LIBRARIES) $(LDLIBS) $(EXTRA_LOAD_FLAGS)
+  
+  clean::
+! 	$(RM) xusers
+  
+! install:: xusers
+! 	$(INSTALL) -c $(INSTPGMFLAGS) $(INSTKMEMFLAGS) xusers $(BINDIR)
+  
+! install.man:: xusers.man
+! 	$(INSTALL) -c $(INSTMANFLAGS) xusers.man $(MANDIR)/xusers.n
+  
+  install:: XLoad.ad
+  	$(INSTALL) -c $(INSTAPPFLAGS) XLoad.ad $(XAPPLOADDIR)/XLoad
+--- 229,254 ----
+          DEPLIBS = $(DEPXAWLIB) $(DEPXMULIB) $(DEPXTOOLLIB) $(DEPXLIB)
+  LOCAL_LIBRARIES = $(XAWLIB) $(XMULIB) $(XTOOLLIB) $(XLIB)
+  
+!            SRCS = xload.c get_load.c
+!            OBJS = xload.o get_load.o
+   OSMAJORVERSION = 5
+   OSMINORVERSION = 0
+        DEFINES = -DOSMAJORVERSION=$(OSMAJORVERSION) -DOSMINORVERSION=$(OSMINORVERSION)
+  
+! all:: xload
+  
+! xload: $(OBJS) $(DEPLIBS)
+  	$(RM) $@
+! 	$(CC) -o $@ $(OBJS) $(LDOPTIONS) $(LOCAL_LIBRARIES) $(LDLIBS) NullParameter $(EXTRA_LOAD_FLAGS)
+  
+  clean::
+! 	$(RM) xload
+  
+! install:: xload
+! 	$(INSTALL) -c $(INSTPGMFLAGS) $(INSTKMEMFLAGS) xload $(BINDIR)
+  
+! install.man:: xload.man
+! 	$(INSTALL) -c $(INSTMANFLAGS) xload.man $(MANDIR)/xload.n
+  
+  install:: XLoad.ad
+  	$(INSTALL) -c $(INSTAPPFLAGS) XLoad.ad $(XAPPLOADDIR)/XLoad

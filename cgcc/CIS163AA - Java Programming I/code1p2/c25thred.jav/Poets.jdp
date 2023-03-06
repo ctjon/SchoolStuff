@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Poets
+Location=C:\MIKES FILES\BOOKJ11\C25THRED.JAV
+Applet=1
+Unitcount=2
+Time=44
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Poets.java=1
+Poets.html=1
+
+[Visualforms]
+Poets.java=1
+Poets.html=0

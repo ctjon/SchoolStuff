@@ -1,0 +1,60 @@
+        Fall 1992             CS 474 - OS Concepts             R. Gammill
+
+
+        Homework #4: due at class time on Friday, October 16, 1992
+
+        Use  your source code for the filter named prep from homework #1,
+        which takes the  text  of  this  assignment  as  its  input,  and
+        produces   an   output  which  gives  one  word  per  line,  with
+        punctuation eliminated.  Recall that your  routine  was  used  as
+        follows:
+
+              prep < hmwrk4 | sort | uniq -c | sort -n -r | pr -5 > file
+
+        Your  assignment  is to modify prep to do exactly the same set of
+        operations (leave off pr -5, which can still be done at the shell
+        level), but do them by making system calls on  pipe(2),  execl(2)
+        and  fork(2) and running sort and uniq via execl, with the inputs
+        and outputs connected appropriately by pipes.
+
+                   freq < hmwrk4 | pr -5 > file         produces word list
+
+        To do the sorting you are NOT to add a sort routine, but  instead
+        you are to start up the processes "prep | sort | uniq -c | sort -
+        n  -r"  from within freq.  To do this assignment you will need to
+        use  system  calls  fork,  exec,  pipe,  dup  and  close.    This
+        assignment  should be trickier than any you have done before, ie.
+        harder to debug if you do it wrong, so  be  sure  you  understand
+        what  you're  doing before you wander off!  However, that doesn't
+        mean it needs to be long.  Not over one page of  code  should  be
+        turned  in!   Modularize,  but do it WELL!  To do this assignment
+        you must fork off sub-processes after opening pipes to  establish
+        communication  between  them.   The  complicated part is that you
+        must get the appropriate pipe file descriptors  renumbered  as  0
+        and  1  (standard input and output) for the sub-processes.  To do
+        this you must close(0) or close(1), to free up that  table  entry
+        and  then dup the desired pipe file descriptor to get it inserted
+        in the (now free) 0 or 1 slot in open-files table.  Also, be sure
+        to close any non-essential file descriptors (other end  of  pipe)
+        as   it   is  very  easy  to  overload  the  system  with  unused
+        descriptors, and if  you  fail  to  close  some  pipe-input  file
+        descriptor,  then the process waiting to read an EOF on the pipe-
+        output file descriptor will wait forever!  Start simple with  the
+        "prep  | sort" sub-processes only, to make sure you can get it to
+        work!  You are now beginning to do systems programming, and  that
+        can  be  much  harder.  Do it slowly and carefully and you should
+        have no trouble.
+
+        WATCH OUT FOR ZOMBIES!  New versions of UNIX have taken  care  of
+        the  ZOMBIE  problem,  but  originally UNIX parent processes were
+        expected to use wait(2) to await the  termination  (death)  of  a
+        child   process.   Any  child  process  dying  without  a  parent
+        "wait"ing for it was doomed to wander the backroads of UNIX until
+        a wizzard took pity and killed it.   Learn  how  to  use  the  ps
+        command to check how many processes you own.
+
+
+
+
+
+                                      - 1 -

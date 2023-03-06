@@ -1,0 +1,53 @@
+CS475 - Operating System Design
+Assignment 1
+Thread Group 2
+Spring 1990
+Last modified on Saturday, April 14.
+
+This thread group is a test of your semaphore functions.  It creates several
+semaphores, and uses them for two tasks: a producer-consumer pair of threads
+with a bounded buffer, and a group of threads sharing a common resource.
+
+Required Functions and Resources
+
+These threads require your s_create(), s_destroy(), s_open(), s_close(),
+s_wait(), and s_signal functions.  They also require the following functions:
+	t_create(), t_destroy(), t_ready()
+They require no additional resources beyond these.
+
+Initialization
+
+To initialize this thread group, you need to create a thread called tg2.
+This thread then will take care of the creation and destruction of the other
+threads.  It creates and readies the producer-consumer pair first, then
+creates and readies the second group.  After this is done, tg2 destroys
+itself.  These groups act as follows.
+
+Group 1 is the producer-consumer pair.  The producer puts alphabetical
+characters into a buffer and signals the consumer as it does.  The consumer
+takes these characters out of the buffer and prints them on the screen.
+The producer goes through the alphabet 5 times, and then destroys itself.
+The consumer never gets destroyed.  These two threads print their status as
+they run.  You do not need to declare the buffer for this.
+
+Group 2 threads share a common hypothetical resource.  This resource doesn't
+actually exist, so all these threads do is enter and exit a critical section
+repeatedly.  The threads do this for 20 iterations and then destroy
+themselves.  4 of these threads get created by tg2.  They print their
+status as they run.
+
+The expected result for the producer-consumer pair is that the characters
+come out of the buffer in the same order as they go into it, namely
+alphabetical order.  Only one of the Group 2 threads should be allowed to
+enter the critical section at a time; this should be visible through what
+they print.  Each thread will print a message when they first enter it, and
+when they are ready to exit.  None of the other Group 2 threads should be
+printing the enter message until the thready currently in the critical
+section at least prints a message stating that it is about to exit (although
+the thread could exit and print a message saying it has before any other
+threads enter).
+
+Again, your system will end in a deadlock condition.
+
+You may want to use tg.h in your code since it declares the function tg2
+for you.

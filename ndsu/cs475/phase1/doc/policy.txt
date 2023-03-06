@@ -1,0 +1,65 @@
+Programming Assignments
+CS475 - Operating Systems Design
+
+
+Deliverables
+------------
+
+Assignments must be turned in on 8-12" x 11" paper.
+Burst all printed output.  Every step includes the following items:
+
+1. Header Page
+
+One page specifying the assignment number and the names of the group members.
+
+2. Design Document
+
+(The format for this item is described in ~roehrich/cs475/doc/design.txt.)
+
+3. Source Code
+
+This must be documented in a clear style.  This means comments at the start
+of the main program, each function, and the beginning of each section of
+code.  The function comments specify the purpose, input, output, and
+algorithm.  The section comments specify what is being done in that section.
+Use right margin comments for anything that is not obvious about your code.
+
+Verbose and redundant documentation is just as bad as no documentation.  On
+the other hand, good documentation is not an excuse for bad code.  The code
+itself should be clearly written.
+
+4. Test Output
+
+This includes any changes you found necessary to make to the source code
+and/or input data.  The tests must show that every specification in the
+assignment is met.  Include tests of extreme cases such as when a loop is not
+executed or a limit is exceeded.
+
+The purpose, input, output, and results of each test should be clearly
+specified.  Part of this is described in your design document.  You should
+also annotate your test output by hand in a way which makes it clear what is
+happening.
+
+5. Makefile
+
+Include a copy of the makefile you used to run the program.  Split your
+source code into modules to decrease the time it takes to compile and print
+your source code.
+
+Using the LWP Library
+---------------------
+
+You can use the Lightweight Process Library freely in the system portion of
+your code, but you may not use it in the user code.  This means that if you
+need to create a thread, you can use the LWP function lwp_create() in your
+t_create function, but lwp_create cannot be used in any user threads.  In
+a sense, you will be providing an interface between user threads and the LWP
+library.
+
+Grading
+-------
+
+Each member of the group will receive the same grade as the other members for
+each assignment.  Information from the programming assignments will be on
+the exams.  In addition, your source code will be graded against your design
+document for correct implementation based on the design you have specified.

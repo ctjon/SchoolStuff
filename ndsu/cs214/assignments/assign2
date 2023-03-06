@@ -1,0 +1,65 @@
+  CS214
+  PROGRAM 2       DUE: On or before Friday Apr. 6, 1990 at 5 PM
+
+  Write  a  program to take a C program as input and substitute different key
+  words for all its reserved words.  Be sure not to change any reserved words
+  which occur in comments or in quoted text.  You must demonstrate that  this
+  has been accomplished.
+
+  INPUT FILE
+
+  One  line  for  each  keyword.   First the keyword  then one or more blanks
+  followed by the word to be substituted.  The last line of these words is to
+  be followed by a line containing just the character '$'.  This is  then  to
+  be followed by the program.  e.g.
+
+     int     integer
+     if      ifyouwantto
+     for     because
+     $
+     main()
+     {         /* Be sure to check comments containing int don't change */
+       int i;
+       for (i=0,i < 26,i++) if(i == 2) printf("for what if %d n",i);
+     }
+
+  PROGRAM NOTES
+
+  For  this  program it is enough to show that your program can convert about
+  10 distinct C keywords into your 'new language'.  Use a small  but  through
+  test set (say about 10 to 20 lines of selected C).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     - 1 -
+
+
+
+
+
+
+
+

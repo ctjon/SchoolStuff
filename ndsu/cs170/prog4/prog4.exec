@@ -1,0 +1,9 @@
+/*PROG4 exec*/
+set msg off
+cons start
+type prog4 exec a
+type cnvrtrmn mod a
+modw cnvrtrmn mod a
+run cnvrtrmn text a
+cons stop
+set msg on

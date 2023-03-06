@@ -1,0 +1,172 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100
+@PASSWD 110975                                    
+@RPG,IS SOURCE,REL 
+01010H**************************************************************************
+01020H*                                                                        *
+01030H*  PROGRAMMING ASSIGNMENT 3                                              *
+01040H*  WRITTEN BY CHRISTOPHER C. TJON                                        *
+01050H*  FOR CS170                                                             *
+01060H*  ID# 110975-8                                                          *
+01070H*  5 APR 1990                                                            *
+01080H*                                                                        *
+01090H**************************************************************************
+01100H*                                                                        *
+01110H*  VARIABLE DEFINITIONS                                                  *
+01120H*                                                                        *
+01130H*    ITEMNO = ITEM NUMBER                                                *
+01140H*    VENDOR = VENDOR NAME                                                *
+01150H*    DTOPAY = DATE TO PAY                                                *
+01160H*    DUEDAT = DUE DATE                                                   *
+01170H*    DISDAT = DISCOUNT DATE                                              *
+01180H*    AMTDUE = AMOUNT DUE                                                 *
+01190H*    PERDIS = PERCENTAGE DISCOUNT                                        *
+01200H*    QTYDIS = QUANTITY DISCOUNT                                          *
+01210H*    PAYDIS = PAYMENT DISCOUNT FOR EARLY PAYMENT                         *
+01220H*    PAYPEN = PAYMENT PENALTY FOR LATE PAYMENTS                          *
+01230H*    CHKAMT = CHECK AMOUNT                                               *
+01240H*    TAMTDU = TOTAL AMOUNT DUE                                           *
+01250H*    TQDISC = TOTAL QUANTITY DISCOUNT                                    *
+01260H*    TPADIS = TOTAL PAYMENT DISCOUNT                                     *
+01270H*    TPAPEN = TOTAL PAYMENT PENALTY                                      *
+01280H*    TOTCHK = TOTAL OF ALL THE CHECK AMOUNTS                             *
+01290H*    DTPAYR = YEAR VALUE OF DATE TO PAY                                  *
+01300H*    DTPMON = MONTH VALUE OF DATE TO PAY                                 *
+01301H*    DTPDAY = DAY VALUE OF DATE TO PAY                                   *
+01310H*    DUEDYR = YEAR VALUE OF THE DUE DATE                                 *
+01320H*    DUEDMO = MONTH VALUE OF THE DUE DATE                                *
+01321H*    DUEDDA = DAY VALUE OF THE DUE DATE                                  *
+01330H*    DISCYR = YEAR VALUE OF THE DISCOUNT DATE                            *
+01340H*    DISCMO = MONTH VALUE OF THE DISCOUNT DATE                           *
+01341H*    DISCDA = DAY VALUE OF THE DISCOUNT DATE                             *
+01350H*                                                                        *
+01360H**************************************************************************
+01370H                                               
+02010FCARDSIN IP  F      80            READ005SYSIPT
+02020FREPORT  O   F     132            PRINTERSYSLST
+03001I**************************************************************************
+03002I*  GET INPUT DATA                                                        *
+03003I**************************************************************************
+03010ICARDSIN AA  01                                       
+03020I                                        1   5 ITEMNO
+03030I                                        6  25 VENDOR
+03040I                                       26  310DTOPAY
+03050I                                       30  310DTPAYR
+03060I                                       26  270DTPMON
+03061I                                       28  290DTPDAY
+03070I                                       32  370DUEDAT
+03080I                                       36  370DUEDYR
+03090I                                       32  330DUEDMO
+03091I                                       34  350DUEDDA
+03100I                                       38  430DISDAT
+03110I                                       42  430DISCYR
+03120I                                       38  390DISCMO
+03130I                                       40  410DISCDA
+03070I                                       44  463PERDIS
+03080I                                       47  532AMTDUE
+04001C**************************************************************************
+04002C*****< PERFORM CALCULATIONS >*********************************************
+04003C**************************************************************************
+04004C*  CALCULATE QUANTITY DISCOUNT                                           *
+04005C**************************************************************************
+04006C   01      CHKAMT    ADD  AMTDUE    CHKAMT  82H
+04010C   01      AMTDUE    COMP 5000.00              20  20
+04011C   20      AMTDUE    MULT 0.01      QTYDIS  82H
+04012C   20      CHKAMT    SUB  QTYDIS    CHKAMT
+04013C**************************************************************************
+04014C*  CALCULATE PAYMENT PENALTY                                             *
+04015C**************************************************************************
+04018C   01      PAYPEN    MULT 0         PAYPEN  82H
+04020C   01      DTPAYR    COMP DUEDYR               39  23   
+04021C   23      DTPMON    COMP DUEDMO               39  24
+04022C   24      DTPDAY    COMP DUEDDA               39
+04023C   39      CHKAMT    MULT 0.05      PAYPEN  
+04024C   39      CHKAMT    ADD  PAYPEN    CHKAMT
+04025C*************************************************************************
+04026C*  CALCULATE PAYMENT DISCOUNT                                           *
+04027C************************************************************************* 
+04030C   01      DISCYR    COMP DTPAYR               40  25                 
+04090C   25      DISCMO    COMP DTPMON               40  26
+04091C   26      DISCDA    COMP DTPDAY               40  40
+04100C   40N39 25CHKAMT    MULT PERDIS    PAYDIS  82H
+04110C   40N39 25CHKAMT    SUB  PAYDIS    CHKAMT  
+04112C*************************************************************************
+04113C*  CALCULATE TOTALS                                                     *
+04114C*************************************************************************
+04120C   01      TAMTDU    ADD  AMTDUE    TAMTDU  82H
+04130C   01      TQDISC    ADD  QTYDIS    TQDISC  82H
+04140C   01      TPADIS    ADD  PAYDIS    TPADIS  82H
+04150C   01      TPAPEN    ADD  PAYPEN    TPAPEN  82H 
+04160C   01      TOTCHK    ADD  CHKAMT    TOTCHK  82H
+04161C*************************************************************************
+04162C*  DETERMINE IF ZERO'S AND CR'S ARE TO BE PRINTED                       *
+04163C*************************************************************************
+04170C   01      QTYDIS    COMP 0                    303838
+04180C   01      PAYDIS    COMP 0                    313838
+04190C   01      PAYPEN    COMP 0                    323838
+05001O*************************************************************************
+05002O*  GENERATE REPORT                                                      *
+05003O*************************************************************************
+05010OREPORT  H  201   1P
+05020O       OR        OF
+05030O                         UDATE Y    8                                   
+05040O                                   50 'A C C 0 U N T S'
+05050O                                   66 'P A Y A B L E'
+05060O                                   84 'R E G I S T E R'
+05070O                         PAGE  Z  122
+05080O        H  1     1P
+05090O       OR        OF
+05100O                                    4 'ITEM'
+05110O                                   38 'DATE TO'
+05120O                                   47 'DUE'
+05130O                                   61 'DISCOUNT'
+05140O                                   72 'AMOUNT'
+05150O                                   84 'QUANTITY'
+05160O                                   97 'PAYMENT'
+05170O                                  111 'PAYMENT'
+05180O                                  121 'CHECK'
+05190O        H  2     1P                            
+05200O       OR        OF                            
+05210O                                    4 'NO.'
+05220O                                   20 'VENDOR'
+05230O                                   38 'BE PAID'
+05240O                                   48 'DATE'
+05250O                                   59 'DATE'
+05260O                                   70 'DUE'
+05270O                                   84 'DISCOUNT'
+05280O                                   98 'DISCOUNT'
+05290O                                  111 'PENALTY'
+05300O                                  122 'AMOUNT' 
+05310O        D  1     01                                
+05320O                         ITEMNO     5     
+05330O                         VENDOR    28      
+05340O                         DTOPAYY   39
+05350O                         DUEDATY   50
+05360O                         DISDATY   61
+05370O                         AMTDUEJB  73
+05380O                 01 30   QTYDISJB  84            
+05390O                 01 30             86 'CR'
+05400O                 01 31   PAYDISJB  98
+05410O                 01 31            100 'CR'
+05420O                 01 32   PAYPENJB 111
+05430O                         CHKAMTJB 123
+05440O        T 3      LR
+05450O                                   61 'FINAL TOTALS'
+05460O                         TAMTDUJ   73 '$'
+05470O                         TQDISCJ   84 '$' 
+05480O                                   86 'CR'
+05490O                         TPADISJ   98 '$'
+05500O                                  100 'CR'
+05510O                         TPAPENJ  111 '$'
+05520O                         TOTCHKJ  123 '$'
+@XQT
+00336HARLAN HARDWARE     0217760301760219760301300000
+10754JANITOR SUPPLIES    0217760219761231750400050000
+17233STEEL CO.           0218760215761231750603322541
+25442PENCIL CO.          0218760218760115760200000500
+27738PAPER MILLS, INC.   0218760401760302760150001000
+36651PRESS CO.           0218760315760218760201800000
+44211HEALTH AIDS, CO.    0218761215751114750350010000
+55176FORMS DESIGN CO.    0219760219760219760200020000
+@FIN
+        
+

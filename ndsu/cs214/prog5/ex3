@@ -1,0 +1,4 @@
+This is the file ex3.
+$0:m$2,ex2.incl,:
+$2=ex4=$1  call file ex4
+This is the file ex3 (via return from ex4).

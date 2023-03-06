@@ -1,0 +1,60 @@
+        Spring 1994       CS 459 - Local Area Networks         R. Gammill
+
+
+        Homework #2: due at class time on Wednesday, Feb. 2, 1994
+
+        Compile  and  run inettime as shown in chapter 10 of the text and
+        as  found   in   /keeper/doc/networking/netprog/inettime.    This
+        program  collects two kinds of time from a server, using both TCP
+        and UDP.  As written, the code aborts as soon as a  server  fails
+        to  properly handle its request, often failing to try other forms
+        of the request which would have succeeded.  In  particular,  this
+        happens  with  vm1.nodak.edu.   Fix  this  problem, and any other
+        problems you may find.  Also,  make  sure  the  output  from  the
+        program  is  explicit  in  identifying  what problem arose from a
+        particular request.  Be sure to document exactly what you had  to
+        do  to  libraries and code to get the program to compile and work
+        properly.  This is to simulate what you would have to do  on  the
+        job  to  document  for  the  next  systems  jock how you modified
+        things.  Test inettime on a number of kinds of servers  (such  as
+        Solbourne, Sun, IBM mainframe, AT&T 3B2, HP 300, AS400, etc.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     - 1 - 

@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>tracker</title>
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#tracker">tracker</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#options">OPTIONS</a></li>
+	<li><a href="#files">FILES</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="tracker">tracker</a></h1>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>Web-Based Time Tracking Program</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>This program will be a web based time tracking program.  A user will simply direct his or her web browser to a URL to use the program.  The user will be authenticated in order to gain access to the system.  Then the user will be allowed to enter a new record into the system, edit an existing record, or create a report for time records for themselves.</p>
+<p>This program will require a web front end and a SQL Database on the backend.  My plan is to use the PerlLWP and Perl DBI modules to build a CGI that can be loaded to do this work.  For the database, I plan to use MySQL although I suspect the program could be easily adapted to use Oracle or SQL Server 2000.  I will include the create table SQL and the sample start data in the documentation for the program.</p>
+<p>There will also need to be a manager role.  The manager role will have the ability to create a report for the whole group as well as each individual.  Further, the manager will have the ability to add and delete users from the system.</p>
+<p><table cellspacing="0" cellpadding="0"><tr><td>This system will require 3 database tables to work correctly:
+<tr><td><td>1) a user table:  this table will be a simple list of users of the system to be managed by the manager
+<tr><td><td>participant varchar(32);<td># names of people on the team - Primary Key
+<tr><td><td>2) an event name table: this table will be a simple list of event names which represent things that may have occurred.  The field will be 
+<tr><td><td>event_name varchar2(32);<td># names of events that occur - Primary Key
+<tr><td><td>3) a time records table:  this table will be a list of records which represent the detail data submitted by the users.  Each record will contain the following fields:  
+<tr><td><td>event_name varchar2(32);<td># Foreign Key which much exist in the event table
+<tr><td><td>participant varchar(32);<td># Foreign Key will will tie back to the user table
+<tr><td><td>problem_space char(2);<td># one of [MF, NW, DS] which mean, Mainframe, Network, or distributed systems
+<tr><td><td>event_date date;<td># date of event
+<tr><td><td>duration <code>number(2)</code><td># duration in hours
+<tr><td><td>event_type char2(2);<td># type of event, TL=techline, TIR=tech incident review, OT=Other</table></p>
+<p>The following subroutines will be required:</p>
+<pre>
+        validate_user(participant);
+        logoff_user(participant);
+        add_user(participant)*
+        change_user(participant)*
+        delete_user(participant)*
+        add_event(event_name)
+        change_event(event_name)
+        delete_event(event_name)
+        add_record(event_name, participant, problem_space, event_date, duration, event_type)
+        change_record (event_name, participant, problem_space, event_date, duration, event_type)
+        delete_record (event_name, participant, problem_space, event_date, duration, event_type)
+        show_record(record_id)
+        report_by_individual(participant, start_date, end_date)
+        report_by_team(start_date, end_date)
+        report_by_event(event_name, start_date, end_date)</pre>
+<pre>
+        subroutines denoted by (*) will only be allowed to be performed by the manager.</pre>
+<p>The program will use the following logic to accomplish its work:</p>
+<pre>
+        startup
+        validate_user(participant);
+        prompt user for what they would like to do:
+        if prompt = add_user then adduser(participant)
+        if prompt = change_user then change_user(participant)*
+        if prompt = delelte_user then delete_user(participant)*
+        if prompt = add_event then  add_event(event_name)
+        if prompt = change_event then change_event(event_name)
+        if prompt = delete_event then delete_event(event_name)
+        if prompt = add_record then add_record(event_name, participant, problem_space, event_date, duration, event_type)
+        if prompt = change_record then change_record (event_name, participant, problem_space, event_date, duration, event_type)
+        if prompt = delete_record then delete_record (event_name, participant, problem_space, event_date, duration, event_type)
+        if prompt = show_record then show_record(record_id)
+        if prompt = report_by_individual then report_by_individual(participant, start_date, end_date)
+        if prompt = report_by_team then report_by_team(start_date, end_date)
+        if prompt = report_by event then report_by_event(event_name, start_date, end_date)
+        if prompt = logoff then logoff_user(participant);
+        prompt again</pre>
+<p>
+</p>
+<hr />
+<h1><a name="options">OPTIONS</a></h1>
+<p>Optional upgrades may include the use of stylesheets, pull down menus, and active directory authentication</p>
+<p>
+</p>
+<hr />
+<h1><a name="files">FILES</a></h1>
+<p>tracker.pl</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Chris Tjon</p>
+
+</body>
+
+</html>

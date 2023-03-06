@@ -1,0 +1,17 @@
+[PROJECT]
+Name=StringDemo
+Location=C:\MIKESFILES\BOOKJ11\C15.JAV
+Applet=1
+Unitcount=2
+Time=217
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+StringDemo.java=1
+StringDemo.html=1
+
+[Visualforms]
+StringDemo.java=1
+StringDemo.html=0

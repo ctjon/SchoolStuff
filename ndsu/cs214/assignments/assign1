@@ -1,0 +1,31 @@
+        Erickson                CS214: Self Paced C
+
+	DUE: on or before Friday March 23, 1990 at 5 PM
+
+        ASSIGNMENT: Program 1
+
+        Write  a  program  that  processes  the  following  commands (the
+        command is designated by a number).
+
+          0.  exit program
+
+          1.  read a list of up to 100 integers.  The values are preceded
+             by the number of integers in the set.
+
+          2.  display the list sorted in order largest to smallest
+
+          3.  display the list sorted in order smallest to largest
+
+          4.  display the average of the values
+
+          5.  list the values in current order each followed by how  much
+             it differs from average.
+
+        Programming note:
+
+        A  good  way to write this program is to write and debug the main
+        routine calling stubs.  A stub is routine that does no processing
+        but just lists the message 'stub for routine xxx'.
+
+	NOTE: Be sure to read the file "complete" in this directory which
+	tells what must be turned into the grader for a complete program.

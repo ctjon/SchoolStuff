@@ -1,0 +1,156 @@
+From forseth Fri Jan 22 23:39:58 1993
+Received: by plains.NoDak.edu; Fri, 22 Jan 1993 23:39:56 -0600
+Date: Fri, 22 Jan 1993 23:39:56 -0600
+From: Bill Forseth <forseth>
+Message-Id: <199301230539.AA26513@plains.NoDak.edu>
+To: perrizo
+Subject: Shareware Info
+Status: R
+
+1/23/93
+
+Dr. Perrizo -
+
+In regards to the discussion in class about Shareware, here is a very
+partial list of major shareware vendors, (and in general what they
+look for in submissions), that you might want to pass along. Hopefully
+this will be of help to those who are looking for outlets for their
+software. These companies carry many thousands of programs, from very
+small single purpose utilities to multi-disk do-all programs. One
+should write or call and ask for a catalog before submitting anything,
+to get a feel for what they carry. (Some of them charge $1.00 or so
+for their catalogs).
+
+
+Public Brand Software           Public (Software) Library
+3750 Kentucky Ave.              PO Box 35705
+Indianapolis, IN                Houston, TX
+46241                           77235
+1-800-426-3475                  1-713-665-7017
+
+
+The Software Labs               Association of Shareware Professionals
+3767 Overland Ave., #112        545 Grover Rd.
+Los Angeles, CA                 Muskegon, MI 49442
+90034                           (NOT a marketing company - and NOT
+1-800-569-7900                   a requirement for Shareware authors).
+
+
+
+The minimum requirements for software submissions to these companies
+are usually:
+
+   1. Each program should have a like-named document file (ie:
+      speedup.com - speedup.doc). The doc file should be drool proof
+      (even an idiot would understand it), and should be viewable by
+      any ascii viewer (LIST, DR, MORE, etc). Name a doc file
+      README and it'll get lost in the shuffle.
+
+   2. One program (and supporting files) per submission is usually
+      requested.
+
+   3. Each submission should be on otherwise empty 360k disks, no
+      sub-directories, no surprises. It goes almost without saying
+      that we're dealing with DOS here.
+
+   4. If the program is compressed it should be decompressable by
+      PKUNZIP or PKUNPAK. ZOO, DWC, ARJ, LHA and some of the more
+      exotic compressors are not in very common use at this point (as
+      far as these companies are concerned). Also, PKARC has had
+      (legal) problems, but ARC files would probably be accepted.
+      LZ-ing or PKLITE-ing files is, as far as I know, OK. Microsoft's
+      EXEPACK is not cool (LZ sneers when it comes across it). Making
+      self-extracting compressed files should be OK, too.
+
+   5. As for the quality of the software, programs that crash on
+      incorrect input, abort without explanation, alter screen colors,
+      erase data without warning, leave hidden files, quit without
+      restoring the cursor, etc. are frowned upon. As are TSR's that
+      hog memory or freeze machines. Also, it is bad form to hard code
+      directory / drive names into a program, although it's still done
+      sometimes. It is extremely poor taste to write code that will
+      alter a user's autoexec.bat or config.sys files without their
+      knowledge or permission.
+
+      In general the world does not need another file finder, file
+      lister, TSR notepad, bad TSR clock, tree pruner, lowercase to
+      uppercase filter, etc. - although if one were to write one
+      faster / smaller / flashier / friendlier it might go over.
+      Reason is that this puts the vendor into a conflict - which of
+      the many, many like programs should they push?? So chances are
+      that if a program is but a duplication of another one it might
+      get "carried" by the vendor - but not put in the catalog, (which
+      means that almost nobody would know about it). If you can whip
+      up something that is size proportional to the number of
+      different things it can do, is reasonably pretty and mighty
+      friendly, and does something unique but sensible (as in "Why
+      didn't I think of that?") you're pretty much assured that it'll
+      get carried. My first useful Shareware program was one that did
+      nothing (at first) but list all the files in the path. Took a
+      whole afternoon to write. It's now a standard utility in PBS's
+      catalog. Thing is that nobody had ever thought of it before (or
+      considered it worth coding up). I'm not sure if anyone's
+      actually using it, but it's stayed in the catalog, I think, just
+      because it's the only one around. A bit of practical advice - if
+      you write something that you want to submit, polish it up as
+      much as you can, then sit on it for a bit. Don't get
+      over-anxious. I recalled my very first Shareware submission
+      because I had left debugging output in it. I was very
+      embarassed.
+
+   6. It is preferred that the executable files are compiled to run on
+      8086 machines, take minimal memory to run, not require extensive
+      graphic capabilities or math coprocessors. These rules can be
+      relaxed, though, if the program has a way of detecting if it's
+      running on a machine without these goodies.  This is not to say
+      that flash is unacceptable - just that it should be available to
+      everyone.
+
+   7. It usually takes about 2 to 6 months from the time of submission
+      until one sees their name in lights - ie: a 2-3 line blurb in
+      the catalog - if they find it acceptable. (Be careful what you
+      say about your program in any 2-3 line description, as they
+      usually just cut and paste something from the doc file into the
+      catalog). Some, but not all, vendors will send back an evaluation
+      form. If your program does get listed, updates will insure that
+      it'll stay listed, especially if they really are updates.
+
+   8. As far as copyrighting - who knows? But, from what I understand,
+      it does no harm to include something like: (c) 1993 Bob Smith.
+      If one were to come up with, say, a better file copy method (and
+      better here means faster and smaller) I'd definitely look into
+      getting a real down home Washington type copyright. As far as
+      price, the cheaper the better. At least until one gets to a
+      higher version. Also, it's cheesy to label one's first beta
+      release something like v2.00 (although I've heard that it gets
+      done occasionally). As far as virus checking - yes, check before
+      you send. Shareware companies, though, take great pains (and are
+      quick to talk about) the lengths they go to insure that their
+      disks are virus-free. One persistent rumor and a multi-million
+      dollar vendor could get wiped out.
+
+   9. Some of the companies are more likely to list your software if
+      the source code is included. This is a good way for a programmer
+      to develop a name, and prospective employers might be impressed.
+      Most, if not all, of the companies run their own BBS's, about
+      which I know nothing except that, yes, there's usually a charge
+      to join, and it's long distance call.
+
+
+If one writes a swell program and would like to get a quicker and more
+controlled distribution there are many BBS's in the local area, and
+many, many more in the country, where you can upload your product for
+free. Listings of locals can be found in or around ~root/keeper/pc, I
+believe.
+
+If anyone has any other addresses, tips, corrections to the above,
+horror or success stories in regards to Shareware marketing, you could
+send it to me via e-mail. If there's any kind of response I'll open up
+a public directory containing all information I get in:
+
+	/student/mnt/cf0a/ndsu/91/forseth/shareware.public
+
+
+                             Bill Forseth
+                            forseth@plains
+

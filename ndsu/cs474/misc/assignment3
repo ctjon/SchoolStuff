@@ -1,0 +1,16 @@
+This is your third assignment for CS 474.
+Do anonymous ftp (be sure you can spell it) on VM1 and retrieve the file
+RFC1118.TXT onto plains.  Be sure to do a directory exam while there (either
+ls or dir).  To do anonymous ftp you use the command "ftp vm1" on plains
+(see man ftp for more information).  When it askes for your login, say
+anonymous.  When it asks for a password, give it your actual name and home
+computer, e.g. gammill at plains.  Now do a dir.  Then do a "get rfc1118.txt"
+and the file will show up in the directory from which you called ftp.  Now
+use a text editor and select me out the 1000-th line of this file and send
+that to me to show that you have completed the assignment.  Be sure to use
+a Subject: CS474 line to keep me happy.  You should also use the help command
+inside ftp, to be sure you know how to get at it.  Knowing how to use help
+commands is VERY important.   Good luck.   Bob
+P.S. There are thousands of host machines where you can do anonymous ftp.
+You might find it fun to find someplace off campus where you can pick up
+files.  Ask a friend for a suggestion.  Also, read some of the RFC.

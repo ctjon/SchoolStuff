@@ -1,0 +1,40 @@
+*** dgsendrecv.c	Tue Feb  1 12:05:10 1994
+--- ../libnet.orig/dgsendrecv.c	Tue Feb  1 12:08:27 1994
+***************
+*** 28,36 ****
+  				/* can be 0, if datagram socket is connect'ed */
+  int		destlen;	/* sizeof(destaddr) */
+  {
+! 	int	n, value_result;
+  	int	to_alarm();		/* our alarm() signal handler */
+- 	struct sockaddr x;		/* RCG - provide a return struct */
+  
+  	if (rttfirst == 1) {
+  		rtt_init(&rttinfo);	/* initialize first time we're called */
+--- 28,35 ----
+  				/* can be 0, if datagram socket is connect'ed */
+  int		destlen;	/* sizeof(destaddr) */
+  {
+! 	int	n;
+  	int	to_alarm();		/* our alarm() signal handler */
+  
+  	if (rttfirst == 1) {
+  		rtt_init(&rttinfo);	/* initialize first time we're called */
+***************
+*** 52,58 ****
+  	tout_flag = 0;			/* for signal handler */
+  	alarm(rtt_start(&rttinfo));	/* calc timeout value & start timer */
+  
+! 	n = recvfrom(fd, inbuff, inbytes, 0, &x, &value_result);
+  	if (n < 0) {
+  		if (tout_flag) {
+  			/*
+--- 51,58 ----
+  	tout_flag = 0;			/* for signal handler */
+  	alarm(rtt_start(&rttinfo));	/* calc timeout value & start timer */
+  
+! 	n = recvfrom(fd, inbuff, inbytes, 0,
+! 			(struct sockaddr *) 0, (int *) 0);
+  	if (n < 0) {
+  		if (tout_flag) {
+  			/*

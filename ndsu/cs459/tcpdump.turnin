@@ -1,0 +1,396 @@
+							Chris Tjon
+							CS459
+							TCPDUMP Assignment
+							30 March 1993
+
+
+Steps taken to accomplish this assignment:
+
+1) start an X session with at least two active xterms
+2) clear the arp cache on our machine (bourne.cs.ndsu.nodak.edu)
+3) script <output> to capture output
+4) tcpdump -x -v host bourne or host joy or host nic.funet.fi
+5) from a different xterm initiate a ping of the remote system
+6) when ready terminate the ping
+7) return to the first xterm and terminate tcpdump
+8) type "exit" to terminate the script
+
+
+The following output was obtained for a ping of bourne.cs.ndsu.nodak.edu from
+bourne.cs.ndsu.nodak.edu:(notice that there are no echo requests as when 
+bourne figures out it is talking to itself the ethernet interface is no
+longer used)
+
+Script started on Wed Mar 30 00:39:07 1994
+bourne# arp -a
+bourne# tcpdump -x -v host bourne or host joy
+tcpdump: listening on ed0
+00:39:56.327413 arp who-has joy.cs.ndsu.NoDak.edu tell bourne.cs.ndsu.NoDak.edu
+			 0100 0008 0604 0100 0000 c0de f886 8681
+			 7dc4 0000 0000 0000 8681 7dc0
+00:39:56.327780 arp reply joy.cs.ndsu.NoDak.edu is-at 0:0:c0:d8:31:48
+			 0100 0008 0604 0200 0000 c0d8 3148 8681
+			 7dc0 0000 c0de f886 8681 7dc4 0001 0100
+			 0001 0000 0000 0000 0662 6f75 726e 6502
+			 6373
+00:39:56.327922 bourne.cs.ndsu.NoDak.edu.1324 > joy.cs.ndsu.NoDak.edu.domain: 1+ (60) (ttl 30, id 741)
+			 4500 5800 e502 0000 1e11 9129 8681 7dc4
+			 8681 7dc0 2c05 3500 4400 f008 0100 0100
+			 0100 0000 0000 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.329069 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1324: 1 NXDomain* 0/1/0 (120) (ttl 30, id 31676)
+			 4500 9400 bc7b 0000 1e11 1816 8681 7dc0
+			 8681 7dc4 3500 2c05 8000 2ce9 0100 8583
+			 0100 0000 0100 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.329776 bourne.cs.ndsu.NoDak.edu.1325 > joy.cs.ndsu.NoDak.edu.domain: 2+ (57) (ttl 30, id 742)
+			 4500 5500 e602 0000 1e11 912b 8681 7dc4
+			 8681 7dc0 2d05 3500 4100 27ae 0200 0100
+			 0100 0000 0000 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.330823 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1325: 2 NXDomain* 0/1/0 (117) (ttl 30, id 31677)
+			 4500 9100 bd7b 0000 1e11 1818 8681 7dc0
+			 8681 7dc4 3500 2d05 7d00 8276 0200 8583
+			 0100 0000 0100 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.331445 bourne.cs.ndsu.NoDak.edu.1326 > joy.cs.ndsu.NoDak.edu.domain: 3+ (52) (ttl 30, id 743)
+			 4500 5000 e702 0000 1e11 912f 8681 7dc4
+			 8681 7dc0 2e05 3500 3c00 316c 0300 0100
+			 0100 0000 0000 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.332447 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1326: 3 NXDomain* 0/1/0 (112) (ttl 30, id 31678)
+			 4500 8c00 be7b 0000 1e11 181c 8681 7dc0
+			 8681 7dc4 3500 2e05 7800 7654 0300 8583
+			 0100 0000 0100 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.333010 bourne.cs.ndsu.NoDak.edu.1327 > joy.cs.ndsu.NoDak.edu.domain: 4+ (42) (ttl 30, id 744)
+			 4500 4600 e802 0000 1e11 9138 8681 7dc4
+			 8681 7dc0 2f05 3500 3200 49bc 0400 0100
+			 0100 0000 0000 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.333916 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1327: 4* 1/0/0 (58) (ttl 30, id 31679)
+			 4500 5600 bf7b 0000 1e11 1851 8681 7dc0
+			 8681 7dc4 3500 2f05 4200 af40 0400 8580
+			 0100 0100 0000 0000 0662 6f75 726e 6502
+			 6373 046e 6473
+00:39:56.981674 bourne.cs.ndsu.NoDak.edu.1328 > joy.cs.ndsu.NoDak.edu.domain: 3+ (46) (ttl 30, id 747)
+			 4500 4a00 eb02 0000 1e11 9131 8681 7dc4
+			 8681 7dc0 3005 3500 3600 ffa8 0300 0100
+			 0100 0000 0000 0000 0331 3936 0331 3235
+			 0331 3239 0331
+00:39:56.982643 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1328: 3* 1/0/0 (84) (ttl 30, id 31680)
+			 4500 7000 c07b 0000 1e11 1836 8681 7dc0
+			 8681 7dc4 3500 3005 5c00 024b 0300 8580
+			 0100 0100 0000 0000 0331 3936 0331 3235
+			 0331 3239 0331
+00:39:56.983592 bourne.cs.ndsu.NoDak.edu.1329 > joy.cs.ndsu.NoDak.edu.domain: 4+ (46) (ttl 30, id 748)
+			 4500 4a00 ec02 0000 1e11 9130 8681 7dc4
+			 8681 7dc0 3105 3500 3600 ffaa 0400 0100
+			 0100 0000 0000 0000 0331 3932 0331 3235
+			 0331 3239 0331
+00:39:56.984532 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1329: 4* 1/0/0 (81) (ttl 30, id 31681)
+			 4500 6d00 c17b 0000 1e11 1838 8681 7dc0
+			 8681 7dc4 3500 3105 5900 6134 0400 8580
+			 0100 0100 0000 0000 0331 3932 0331 3235
+			 0331 3239 0331
+^C
+14 packets received by filter
+0 packets dropped by kernel
+bourne# exit
+Script done on Wed Mar 30 00:39:52 1994
+
+The following output was obtained for a ping of plains.nodak.edu from
+bourne.cs.ndsu.nodak.edu:
+
+Script started on Wed Mar 30 00:32:56 1994
+bourne# tcpdump -x -v host plains or host joy or host bourne
+tcpdump: listening on ed0
+00:33:56.431657 arp who-has joy.cs.ndsu.NoDak.edu tell bourne.cs.ndsu.NoDak.edu
+			 0100 0008 0604 0100 0000 c0de f886 8681
+			 7dc4 0000 0000 0000 8681 7dc0
+00:33:56.432014 arp reply joy.cs.ndsu.NoDak.edu is-at 0:0:c0:d8:31:48
+			 0100 0008 0604 0200 0000 c0d8 3148 8681
+			 7dc0 0000 c0de f886 8681 7dc4 0003 0100
+			 0001 0000 0000 0000 036a 6f79 0263 7304
+			 6e64
+00:33:56.432114 bourne.cs.ndsu.NoDak.edu.1314 > joy.cs.ndsu.NoDak.edu.domain: 1+ (52) (ttl 30, id 727)
+			 4500 5000 d702 0000 1e11 913f 8681 7dc4
+			 8681 7dc0 2205 3500 3c00 2f80 0100 0100
+			 0100 0000 0000 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.433213 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1314: 1 NXDomain* 0/1/0 (112) (ttl 30, id 31662)
+			 4500 8c00 ae7b 0000 1e11 182c 8681 7dc0
+			 8681 7dc4 3500 2205 7800 7468 0100 8583
+			 0100 0000 0100 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.433867 bourne.cs.ndsu.NoDak.edu.1315 > joy.cs.ndsu.NoDak.edu.domain: 2+ (49) (ttl 30, id 728)
+			 4500 4d00 d802 0000 1e11 9141 8681 7dc4
+			 8681 7dc0 2305 3500 3900 6725 0200 0100
+			 0100 0000 0000 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.434872 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1315: 2 NXDomain* 0/1/0 (109) (ttl 30, id 31663)
+			 4500 8900 af7b 0000 1e11 182e 8681 7dc0
+			 8681 7dc4 3500 2305 7500 c9f5 0200 8583
+			 0100 0000 0100 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.435476 bourne.cs.ndsu.NoDak.edu.1316 > joy.cs.ndsu.NoDak.edu.domain: 3+ (44) (ttl 30, id 729)
+			 4500 4800 d902 0000 1e11 9145 8681 7dc4
+			 8681 7dc0 2405 3500 3400 70e3 0300 0100
+			 0100 0000 0000 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.436462 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1316: 3 NXDomain* 0/1/0 (104) (ttl 30, id 31664)
+			 4500 8400 b07b 0000 1e11 1832 8681 7dc0
+			 8681 7dc4 3500 2405 7000 bdd3 0300 8583
+			 0100 0000 0100 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.437004 bourne.cs.ndsu.NoDak.edu.1317 > joy.cs.ndsu.NoDak.edu.domain: 4+ (34) (ttl 30, id 730)
+			 4500 3e00 da02 0000 1e11 914e 8681 7dc4
+			 8681 7dc0 2505 3500 2a00 8933 0400 0100
+			 0100 0000 0000 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.437826 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1317: 4* 1/0/0 (50) (ttl 30, id 31665)
+			 4500 4e00 b17b 0000 1e11 1867 8681 7dc0
+			 8681 7dc4 3500 2505 3a00 fd3b 0400 8580
+			 0100 0100 0000 0000 0670 6c61 696e 7305
+			 6e6f 6461 6b03
+00:33:56.450408 bourne.cs.ndsu.NoDak.edu > plains.NoDak.edu: icmp: echo request (ttl 255, id 731)
+			 4500 5400 db02 0000 ff01 bec6 8681 7dc4
+			 8681 6f40 0800 22d2 8801 0000 541d 992d
+			 6ede 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:56.452307 plains.NoDak.edu > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 253, id 26216)
+			 4500 5400 6866 0000 fd01 5d39 8681 6f40
+			 8681 7dc4 0000 2ad2 8801 0000 541d 992d
+			 6ede 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:56.721672 bourne.cs.ndsu.NoDak.edu.1318 > joy.cs.ndsu.NoDak.edu.domain: 5+ (46) (ttl 30, id 732)
+			 4500 4a00 dc02 0000 1e11 9140 8681 7dc4
+			 8681 7dc0 2605 3500 3600 ffb0 0500 0100
+			 0100 0000 0000 0000 0331 3936 0331 3235
+			 0331 3239 0331
+00:33:56.722657 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1318: 5* 1/0/0 (84) (ttl 30, id 31666)
+			 4500 7000 b27b 0000 1e11 1844 8681 7dc0
+			 8681 7dc4 3500 2605 5c00 0253 0500 8580
+			 0100 0100 0000 0000 0331 3936 0331 3235
+			 0331 3239 0331
+00:33:56.723600 bourne.cs.ndsu.NoDak.edu.1319 > joy.cs.ndsu.NoDak.edu.domain: 6+ (46) (ttl 30, id 733)
+			 4500 4a00 dd02 0000 1e11 913f 8681 7dc4
+			 8681 7dc0 2705 3500 3600 ffb2 0600 0100
+			 0100 0000 0000 0000 0331 3932 0331 3235
+			 0331 3239 0331
+00:33:56.724538 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1319: 6* 1/0/0 (81) (ttl 30, id 31667)
+			 4500 6d00 b37b 0000 1e11 1846 8681 7dc0
+			 8681 7dc4 3500 2705 5900 613c 0600 8580
+			 0100 0100 0000 0000 0331 3932 0331 3235
+			 0331 3239 0331
+00:33:56.805625 bourne.cs.ndsu.NoDak.edu.1320 > joy.cs.ndsu.NoDak.edu.domain: 7+ (45) (ttl 30, id 734)
+			 4500 4900 de02 0000 1e11 913f 8681 7dc4
+			 8681 7dc0 2805 3500 3500 3cae 0700 0100
+			 0100 0000 0000 0000 0236 3403 3131 3103
+			 3132 3903 3133
+00:33:56.806569 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1320: 7* 1/0/0 (75) (ttl 30, id 31668)
+			 4500 6700 b47b 0000 1e11 184b 8681 7dc0
+			 8681 7dc4 3500 2805 5300 8cb7 0700 8580
+			 0100 0100 0000 0000 0236 3403 3131 3103
+			 3132 3903 3133
+00:33:57.450357 bourne.cs.ndsu.NoDak.edu > plains.NoDak.edu: icmp: echo request (ttl 255, id 735)
+			 4500 5400 df02 0000 ff01 bec2 8681 7dc4
+			 8681 6f40 0800 28d2 8801 0100 551d 992d
+			 66de 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:57.452231 plains.NoDak.edu > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 253, id 26261)
+			 4500 5400 9566 0000 fd01 5d0c 8681 6f40
+			 8681 7dc4 0000 30d2 8801 0100 551d 992d
+			 66de 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:58.450358 bourne.cs.ndsu.NoDak.edu > plains.NoDak.edu: icmp: echo request (ttl 255, id 736)
+			 4500 5400 e002 0000 ff01 bec1 8681 7dc4
+			 8681 6f40 0800 2dd2 8801 0200 561d 992d
+			 5fde 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:58.460224 plains.NoDak.edu > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 253, id 26303)
+			 4500 5400 bf66 0000 fd01 5ce2 8681 6f40
+			 8681 7dc4 0000 35d2 8801 0200 561d 992d
+			 5fde 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:59.450353 bourne.cs.ndsu.NoDak.edu > plains.NoDak.edu: icmp: echo request (ttl 255, id 737)
+			 4500 5400 e102 0000 ff01 bec0 8681 7dc4
+			 8681 6f40 0800 2cd2 8801 0300 571d 992d
+			 5ede 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+00:33:59.452252 plains.NoDak.edu > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 253, id 26374)
+			 4500 5400 0667 0000 fd01 5c9b 8681 6f40
+			 8681 7dc4 0000 34d2 8801 0300 571d 992d
+			 5ede 0600 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+^C
+106 packets received by filter
+0 packets dropped by kernel
+bourne# exit
+Script done on Wed Mar 30 00:34:40 1994
+
+
+
+The following output was obtained for a ping of nic.funet.fi:
+
+Script started on Tue Mar 29 23:45:20 1994
+bourne# tcpdump -x -v host bourne or host joy or host nic.funet.fi
+tcpdump: listening on ed0
+23:46:15.922080 arp who-has joy.cs.ndsu.NoDak.edu tell bourne.cs.ndsu.NoDak.edu
+			 0100 0008 0604 0100 0000 c0de f886 8681
+			 7dc4 0000 0000 0000 8681 7dc0
+23:46:15.922433 arp reply joy.cs.ndsu.NoDak.edu is-at 0:0:c0:d8:31:48
+			 0100 0008 0604 0200 0000 c0d8 3148 8681
+			 7dc0 0000 c0de f886 8681 7dc4 0005 0100
+			 0001 0000 0000 0000 036e 6963 0566 756e
+			 6574
+23:46:15.922533 bourne.cs.ndsu.NoDak.edu.1150 > joy.cs.ndsu.NoDak.edu.domain: 1+ (48) (ttl 30, id 317)
+			 4500 4c00 3d01 0000 1e11 92dd 8681 7dc4
+			 8681 7dc0 7e04 3500 3800 df29 0100 0100
+			 0100 0000 0000 0000 036e 6963 0566 756e
+			 6574 0266 6902
+23:46:15.923623 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1150: 1 NXDomain* 0/1/0 (108) (ttl 30, id 31454)
+			 4500 8800 de7a 0000 1e11 1900 8681 7dc0
+			 8681 7dc4 3500 7e04 7400 2816 0100 8583
+			 0100 0000 0100 0000 036e 6963 0566 756e
+			 6574 0266 6902
+23:46:15.924279 bourne.cs.ndsu.NoDak.edu.1151 > joy.cs.ndsu.NoDak.edu.domain: 2+ (45) (ttl 30, id 318)
+			 4500 4900 3e01 0000 1e11 92df 8681 7dc4
+			 8681 7dc0 7f04 3500 3500 16cf 0200 0100
+			 0100 0000 0000 0000 036e 6963 0566 756e
+			 6574 0266 6904
+23:46:15.925277 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1151: 2 NXDomain* 0/1/0 (105) (ttl 30, id 31455)
+			 4500 8500 df7a 0000 1e11 1902 8681 7dc0
+			 8681 7dc4 3500 7f04 7100 7da3 0200 8583
+			 0100 0000 0100 0000 036e 6963 0566 756e
+			 6574 0266 6904
+23:46:15.925886 bourne.cs.ndsu.NoDak.edu.1152 > joy.cs.ndsu.NoDak.edu.domain: 3+ (40) (ttl 30, id 319)
+			 4500 4400 3f01 0000 1e11 92e3 8681 7dc4
+			 8681 7dc0 8004 3500 3000 208d 0300 0100
+			 0100 0000 0000 0000 036e 6963 0566 756e
+			 6574 0266 6905
+23:46:15.926849 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1152: 3 NXDomain* 0/1/0 (100) (ttl 30, id 31456)
+			 4500 8000 e07a 0000 1e11 1906 8681 7dc0
+			 8681 7dc4 3500 8004 6c00 7181 0300 8583
+			 0100 0000 0100 0000 036e 6963 0566 756e
+			 6574 0266 6905
+23:46:15.927402 bourne.cs.ndsu.NoDak.edu.1153 > joy.cs.ndsu.NoDak.edu.domain: 4+ (30) (ttl 30, id 320)
+			 4500 3a00 4001 0000 1e11 92ec 8681 7dc4
+			 8681 7dc0 8104 3500 2600 38dd 0400 0100
+			 0100 0000 0000 0000 036e 6963 0566 756e
+			 6574 0266 6900
+23:46:15.928797 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1153: 4 2/3/4 (209) (ttl 30, id 31457)
+			 4500 ed00 e17a 0000 1e11 1898 8681 7dc0
+			 8681 7dc4 3500 8104 d900 5c2f 0400 8180
+			 0100 0200 0300 0400 036e 6963 0566 756e
+			 6574 0266 6900
+23:46:15.933218 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 321)
+			 4500 5400 4101 0000 ff01 3d45 8681 7dc4
+			 80d6 f806 0800 cd7f 0501 0000 2712 992d
+			 6c3c 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:16.451671 bourne.cs.ndsu.NoDak.edu.1154 > joy.cs.ndsu.NoDak.edu.domain: 7+ (46) (ttl 30, id 322)
+			 4500 4a00 4201 0000 1e11 92da 8681 7dc4
+			 8681 7dc0 8204 3500 3600 0053 0700 0100
+			 0100 0000 0000 0000 0331 3936 0331 3235
+			 0331 3239 0331
+23:46:16.452661 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1154: 7* 1/0/0 (84) (ttl 30, id 31458)
+			 4500 7000 e27a 0000 1e11 1914 8681 7dc0
+			 8681 7dc4 3500 8204 5c00 02f5 0700 8580
+			 0100 0100 0000 0000 0331 3936 0331 3235
+			 0331 3239 0331
+23:46:16.453599 bourne.cs.ndsu.NoDak.edu.1155 > joy.cs.ndsu.NoDak.edu.domain: 8+ (46) (ttl 30, id 323)
+			 4500 4a00 4301 0000 1e11 92d9 8681 7dc4
+			 8681 7dc0 8304 3500 3600 0055 0800 0100
+			 0100 0000 0000 0000 0331 3932 0331 3235
+			 0331 3239 0331
+23:46:16.454545 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1155: 8* 1/0/0 (81) (ttl 30, id 31459)
+			 4500 6d00 e37a 0000 1e11 1916 8681 7dc0
+			 8681 7dc4 3500 8304 5900 61de 0800 8580
+			 0100 0100 0000 0000 0331 3932 0331 3235
+			 0331 3239 0331
+23:46:16.561088 bourne.cs.ndsu.NoDak.edu.1156 > joy.cs.ndsu.NoDak.edu.domain: 9+ (44) (ttl 30, id 324)
+			 4500 4800 4401 0000 1e11 92da 8681 7dc4
+			 8681 7dc0 8404 3500 3400 3b80 0900 0100
+			 0100 0000 0000 0000 0136 0332 3438 0332
+			 3134 0331 3238
+23:46:16.562505 joy.cs.ndsu.NoDak.edu.domain > bourne.cs.ndsu.NoDak.edu.1156: 9 1/2/3 (195) (ttl 30, id 31460)
+			 4500 df00 e47a 0000 1e11 18a3 8681 7dc0
+			 8681 7dc4 3500 8404 cb00 2d6e 0900 8180
+			 0100 0100 0200 0300 0136 0332 3438 0332
+			 3134 0331 3238
+23:46:16.722000 nic.funet.fi > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 236, id 24203)
+			 4500 5400 8b5e 0000 ec01 f2fa 80d6 f806
+			 8681 7dc4 0000 d57f 0501 0000 2712 992d
+			 6c3c 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:16.930333 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 325)
+			 4500 5400 4501 0000 ff01 3d41 8681 7dc4
+			 80d6 f806 0800 e68a 0501 0100 2812 992d
+			 5131 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:17.759905 nic.funet.fi > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 236, id 24338)
+			 4500 5400 125f 0000 ec01 f273 80d6 f806
+			 8681 7dc4 0000 ee8a 0501 0100 2812 992d
+			 5131 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:17.930321 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 326)
+			 4500 5400 4601 0000 ff01 3d40 8681 7dc4
+			 80d6 f806 0800 ef8a 0501 0200 2912 992d
+			 4631 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:18.739787 nic.funet.fi > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 236, id 24422)
+			 4500 5400 665f 0000 ec01 f21f 80d6 f806
+			 8681 7dc4 0000 f78a 0501 0200 2912 992d
+			 4631 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:18.930321 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 327)
+			 4500 5400 4701 0000 ff01 3d3f 8681 7dc4
+			 80d6 f806 0800 f08a 0501 0300 2a12 992d
+			 4331 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:19.930336 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 328)
+			 4500 5400 4801 0000 ff01 3d3e 8681 7dc4
+			 80d6 f806 0800 e28a 0501 0400 2b12 992d
+			 4f31 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:20.930329 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 329)
+			 4500 5400 4901 0000 ff01 3d3d 8681 7dc4
+			 80d6 f806 0800 e28a 0501 0500 2c12 992d
+			 4d31 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:21.710242 nic.funet.fi > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 236, id 24756)
+			 4500 5400 b460 0000 ec01 f0d1 80d6 f806
+			 8681 7dc4 0000 ea8a 0501 0500 2c12 992d
+			 4d31 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:21.930317 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 330)
+			 4500 5400 4a01 0000 ff01 3d3c 8681 7dc4
+			 80d6 f806 0800 ea8a 0501 0600 2d12 992d
+			 4331 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:22.759378 nic.funet.fi > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 236, id 24839)
+			 4500 5400 0761 0000 ec01 f07e 80d6 f806
+			 8681 7dc4 0000 f28a 0501 0600 2d12 992d
+			 4331 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:22.930324 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 331)
+			 4500 5400 4b01 0000 ff01 3d3b 8681 7dc4
+			 80d6 f806 0800 e68a 0501 0700 2e12 992d
+			 4531 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:23.695321 nic.funet.fi > bourne.cs.ndsu.NoDak.edu: icmp: echo reply (ttl 236, id 24907)
+			 4500 5400 4b61 0000 ec01 f03a 80d6 f806
+			 8681 7dc4 0000 ee8a 0501 0700 2e12 992d
+			 4531 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+23:46:23.930326 bourne.cs.ndsu.NoDak.edu > nic.funet.fi: icmp: echo request (ttl 255, id 332)
+			 4500 5400 4c01 0000 ff01 3d3a 8681 7dc4
+			 80d6 f806 0800 dd8a 0501 0800 2f12 992d
+			 4c31 0e00 0809 0a0b 0c0d 0e0f 1011 1213
+			 1415 1617 1819
+^C
+31 packets received by filter
+0 packets dropped by kernel
+bourne# exit
+Script done on Tue Mar 29 23:46:16 1994

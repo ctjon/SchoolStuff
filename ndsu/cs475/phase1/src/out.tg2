@@ -1,0 +1,384 @@
+tg2: creating and readying Group 2 thread 1
+consumer: identifying self thread_t=425768
+consumer: opening semaphore
+consumer: beginning to empty buffer
+producer: produced a
+producer: produced b
+producer: produced c
+producer: produced d
+producer: produced e
+producer: produced f
+producer: produced g
+producer: produced h
+producer: produced i
+producer: produced j
+producer: produced k
+producer: produced l
+producer: produced m
+producer: produced n
+producer: produced o
+producer: produced p
+producer: produced q
+producer: produced r
+producer: produced s
+producer: produced t
+producer: produced u
+producer: produced v
+producer: produced w
+producer: produced x
+producer: produced y
+producer: produced z
+producer: produced a
+producer: produced b
+producer: produced c
+producer: produced d
+producer: produced e
+producer: produced f
+producer: produced g
+producer: produced h
+producer: produced i
+producer: produced j
+producer: produced k
+producer: produced l
+producer: produced m
+producer: produced n
+producer: produced o
+producer: produced p
+producer: produced q
+producer: produced r
+producer: produced s
+producer: produced t
+producer: produced u
+producer: produced v
+producer: produced w
+producer: produced x
+producer: produced y
+producer: produced z
+producer: produced a
+producer: produced b
+producer: produced c
+producer: produced d
+producer: produced e
+producer: produced f
+producer: produced g
+producer: produced h
+producer: produced i
+producer: produced j
+producer: produced k
+producer: produced l
+producer: produced m
+producer: produced n
+producer: produced o
+producer: produced p
+producer: produced q
+producer: produced r
+producer: produced s
+producer: produced t
+producer: produced u
+producer: produced v
+producer: produced w
+producer: produced x
+producer: produced y
+producer: produced z
+producer: produced a
+producer: produced b
+producer: produced c
+producer: produced d
+producer: produced e
+producer: produced f
+producer: produced g
+producer: produced h
+producer: produced i
+producer: produced j
+producer: produced k
+producer: produced l
+producer: produced m
+producer: produced n
+producer: produced o
+producer: produced p
+producer: produced q
+producer: produced r
+tg2: creating and readying Group 2 thread 2
+consumer: got character a
+consumer: got character b
+consumer: got character c
+consumer: got character d
+consumer: got character e
+consumer: got character f
+consumer: got character g
+consumer: got character h
+consumer: got character i
+consumer: got character j
+consumer: got character k
+consumer: got character l
+consumer: got character m
+consumer: got character n
+consumer: got character o
+consumer: got character p
+consumer: got character q
+consumer: got character r
+consumer: got character s
+consumer: got character t
+consumer: got character u
+consumer: got character v
+consumer: got character w
+consumer: got character x
+consumer: got character y
+consumer: got character z
+consumer: got character a
+consumer: got character b
+consumer: got character c
+consumer: got character d
+consumer: got character e
+consumer: got character f
+consumer: got character g
+consumer: got character h
+consumer: got character i
+consumer: got character j
+consumer: got character k
+consumer: got character l
+consumer: got character m
+consumer: got character n
+consumer: got character o
+consumer: got character p
+consumer: got character q
+consumer: got character r
+consumer: got character s
+consumer: got character t
+consumer: got character u
+consumer: got character v
+consumer: got character w
+consumer: got character x
+consumer: got character y
+consumer: got character z
+consumer: got character a
+consumer: got character b
+consumer: got character c
+consumer: got character d
+consumer: got character e
+consumer: got character f
+consumer: got character g
+consumer: got character h
+consumer: got character i
+consumer: got character j
+consumer: got character k
+consumer: got character l
+consumer: got character m
+consumer: got character n
+consumer: got character o
+consumer: got character p
+consumer: got character q
+consumer: got character r
+consumer: got character s
+consumer: got character t
+consumer: got character u
+consumer: got character v
+consumer: got character w
+consumer: got character x
+consumer: got character y
+consumer: got character z
+consumer: got character a
+consumer: got character b
+consumer: got character c
+consumer: got character d
+consumer: got character e
+consumer: got character f
+consumer: got character g
+consumer: got character h
+consumer: got character i
+consumer: got character j
+consumer: got character k
+consumer: got character l
+consumer: got character m
+consumer: got character n
+consumer: got character o
+consumer: got character p
+consumer: got character q
+consumer: got character r
+producer: produced s
+producer: produced t
+producer: produced u
+producer: produced v
+producer: produced w
+producer: produced x
+producer: produced y
+producer: produced z
+producer: produced a
+producer: produced b
+producer: produced c
+producer: produced d
+producer: produced e
+producer: produced f
+producer: produced g
+producer: produced h
+producer: produced i
+producer: produced j
+producer: produced k
+producer: produced l
+producer: produced m
+producer: produced n
+producer: produced o
+producer: produced p
+producer: produced q
+producer: produced r
+producer: produced s
+producer: produced t
+producer: produced u
+producer: produced v
+producer: produced w
+producer: produced x
+producer: produced y
+producer: produced z
+producer: all done
+G2 thread: identifying self thread_t=474920
+G2 thread_t=474920 opening semaphore
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920 all done
+tg2: creating and readying Group 2 thread 3
+tg2: creating and readying Group 2 thread 4
+tg2: done, destroying self
+consumer: got character s
+consumer: got character t
+consumer: got character u
+consumer: got character v
+consumer: got character w
+consumer: got character x
+consumer: got character y
+consumer: got character z
+consumer: got character a
+consumer: got character b
+consumer: got character c
+consumer: got character d
+consumer: got character e
+consumer: got character f
+consumer: got character g
+consumer: got character h
+consumer: got character i
+consumer: got character j
+consumer: got character k
+consumer: got character l
+consumer: got character m
+consumer: got character n
+consumer: got character o
+consumer: got character p
+consumer: got character q
+consumer: got character r
+consumer: got character s
+consumer: got character t
+consumer: got character u
+consumer: got character v
+consumer: got character w
+consumer: got character x
+consumer: got character y
+consumer: got character z
+G2 thread: identifying self thread_t=507688
+G2 thread_t=507688 opening semaphore
+G2 thread_t=507688: attempting to enter critical section
+G2 thread_t=507688: in critical section
+G2 thread_t=507688: exiting critical section
+G2 thread_t=507688 out of critical section
+G2 thread_t=507688: attempting to enter critical section
+G2 thread_t=507688: in critical section
+G2 thread_t=507688: exiting critical section
+G2 thread_t=507688 out of critical section
+G2 thread_t=507688: attempting to enter critical section
+G2 thread_t=507688: in critical section
+G2 thread_t=507688: exiting critical section
+G2 thread_t=507688 out of critical section
+G2 thread_t=507688: attempting to enter critical section
+G2 thread_t=507688: in critical section
+G2 thread_t=507688: exiting critical section
+G2 thread_t=507688 out of critical section
+G2 thread_t=507688: attempting to enter critical section
+G2 thread_t=507688: in critical section
+G2 thread_t=507688: exiting critical section
+G2 thread_t=507688 out of critical section
+G2 thread_t=507688 all done
+G2 thread: identifying self thread_t=474920
+G2 thread_t=474920 opening semaphore
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920: attempting to enter critical section
+G2 thread_t=474920: in critical section
+G2 thread_t=474920: exiting critical section
+G2 thread_t=474920 out of critical section
+G2 thread_t=474920 all done
+G2 thread: identifying self thread_t=450344
+G2 thread_t=450344 opening semaphore
+G2 thread_t=450344: attempting to enter critical section
+G2 thread_t=450344: in critical section
+G2 thread_t=450344: exiting critical section
+G2 thread_t=450344 out of critical section
+G2 thread_t=450344: attempting to enter critical section
+G2 thread_t=450344: in critical section
+G2 thread_t=450344: exiting critical section
+G2 thread_t=450344 out of critical section
+G2 thread_t=450344: attempting to enter critical section
+G2 thread_t=450344: in critical section
+G2 thread_t=450344: exiting critical section
+G2 thread_t=450344 out of critical section
+G2 thread_t=450344: attempting to enter critical section
+G2 thread_t=450344: in critical section
+G2 thread_t=450344: exiting critical section
+G2 thread_t=450344 out of critical section
+G2 thread_t=450344: attempting to enter critical section
+G2 thread_t=450344: in critical section
+G2 thread_t=450344: exiting critical section
+G2 thread_t=450344 out of critical section
+G2 thread_t=450344 all done
+DEADLOCK - HALTING ON ERROR CONDITION 3
+current process scheduling subsystem status
+--------------------------------------------------------
+   created  completed      ready    blocked
+         7          6          0          1
+	The following threads remain on blocked queue
+	tid2 
+
+current semaphore subsystem status
+--------------------------------------------------------
+       SID    InitCnt    CurrCnt       Name     #opens
+         2          1          1        200          0
+	blocked ->
+
+--------------------------------------------------------
+       SID    InitCnt    CurrCnt       Name     #opens
+         0         20         20          1          0
+	blocked ->
+
+--------------------------------------------------------
+       SID    InitCnt    CurrCnt       Name     #opens
+         1          0         -1        150          1
+	blocked -> tid2 

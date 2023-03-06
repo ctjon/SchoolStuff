@@ -1,0 +1,173 @@
+      EE/CS 373        Using the Motorola 68000               Gammill
+                        Educational Computer Board          
+
+
+      The  following  is  a  general  guide  to  starting up the ECB and 
+      using  a  few  of  the  basic  instructions.   For  more  detailed  
+      information refer to the ECB manual found in EEE218.  
+
+      Getting Started  
+
+      The  ECB  must be operated via a terminal.  The terminal should be 
+      set at 2400 baud.  Only upper case letters are recognized  by  the 
+      ECB.   The ECB's are currently connected to class    31 and    32.
+      To enter the ECB environment, turn on the PACX  box and  hit <CR>.
+      IBM 3270 terminal's will not work.   When  you  are  prompted with
+      "enter class", respond with   31 or   32, then <CR>.   You will be
+      dropped immediately into the ECB  environment.  The  display  will 
+      show "TUTOR 1.X >", where the X denotes the version number.  
+      
+      Using the ECB  
+
+      From  the ECB's prompt,  any valid command can be entered.  Only a 
+      few  of  these  will  be  discussed  in  this  introduction.   Any 
+      manipulation  of  memory  must occur in user RAM.  The user ram is 
+      from $000900 to $007FFF.  
+
+      MS <address> <data...> <CR>                         "Memory Store"
+           
+           Values  for  the  address  and  data  should  be  entered  in 
+           hexidecimal.   A  space  should  separate  each entry.   More 
+           than  one  data  item   can  be specified.  The address shows 
+           where the first data item should be stored.  Each  additional 
+           data item is stored after its predecessor.
+
+           EX:  MS 900 23 24 25 <CR> will put 23 in location 900,  24 in 
+           location  901,  and  25  in  location  902.   These  are  all
+           hexidecimal numbers.  
+
+      MD <address> <count> ;<option> <CR>               "Memory Display"
+
+           This command will display the contents  of  memory  from  the 
+           specified address, for the count specified,  in blocks of 16.  
+           The option specifies whether or not you want  a  disassembled 
+           version  of  the  output.  That  option  is  specified by the 
+           typing DI after the ';' in the command line.  
+
+           EX:  MD 900 3 would show data contained in  location  900  to 
+           910.  By  typing  in  "MD  900  3  ;DI"  you  would  see  the 
+           equivalent mnemonic  and  operands  for  the  memory  in  the 
+           specified locations.  
+
+      BR <address> ;<count> <CR>                            "BReakpoint"
+
+           This  command  allows  you  to insert breakpoints to halt the 
+           execution and return the user to  the  TUTOR  prompt.  Up  to 
+           eight breakpoints can be entered (they  MUST  be at even word
+
+
+
+
+
+
+
+
+
+
+      EE/CS 373         Using the Motorola 68000               Gammill  
+      Page 2            Educational Computer Board          
+
+           boundaries).   By typing  in just  BR the  user  can  display 
+           all active  breakpoints.  The count option allows the user to 
+           specify how many times the breakpoint  should  be  passed  by 
+           before it should become active and halt the execution.  
+
+      NOBR <address...> <CR>                             "NO BReakpoint"
+
+           This  command  clears  active  breakpoints.  If  just NOBR is 
+           typed  all  breakpoints  are  cleared.   Otherwise  only  the 
+           breakpoints at the specified addresses are cleared.  
+
+      .A0 - .A7 <expression> <CR>         "Address register display/set"
+
+           This  command  allows  the user to see or set the contents of 
+           the specified register.  If no expression is included in  the 
+           command  line  the  contents  are  displayed.  Otherwise  the 
+           specified register is set to the value of the expression. The 
+           expression should be entered in hexidecimal format.  
+
+           EX: .A0 will display the contents  of  address  register  A0,  
+           and .A1 45 will set register A1 to 00000045 (hexidecimal).
+
+      .D0 - .D7 <expression> <CR>            "Data register display/set"
+      .PC <expression> <CR>                "Program Counter display/set"
+      .US <expression> <CR>                     "User Stack display/set"
+
+           All of these commands are similar to  the  commands described 
+           above. The register affected is all that changes.  
+
+      TR <count> <CR>                                            "TRace"
+
+           This  command  causes  execution  to  begin from the location 
+           pointed to by the PC in a incremental fashion for the  number 
+           of  steps  specified  by  count.  If  just  TR is entered the 
+           program is executed in a single step mode  from  the  current 
+           location  in  the PC.  Each time the <CR> is pressed the next 
+           instruction is executed.  After each instruction is executed, 
+           the  contents  of  the  registers are displayed.  To exit the 
+           single step mode simply enter another valid command.  
+
+           EX:  TR 3 will execute 3 instructions from the current  value 
+           of the PC.  
+
+      GO <address> <CR>
+
+           The  GO  command  causes  the  program  to  execute.    If no 
+           address is specified,  execution proceeds  from  the  current 
+           value  in the PC.  Otherwise it begins at the value specified 
+           in the command line.  
+
+           Suggestion:  
+
+           It  is  recommended  that  a  breakpoint  be  entered  at the 
+           location of an ending loop (a self branching loop) when using 
+           the GO, so you will know when the program is done executing.
+      
+
+
+
+
+
+
+
+      EE/CS 373          Using the Motorola 68000                Gammill
+      Page 3            Educational Computer Board
+
+      TM                                             "Transparent Mode"
+
+           This command puts the ECB into a mode where all input from
+           the terminal port is passed out through the backend port to
+           the remote computer (HP-UX on the 9040 for us). For all of
+           this to work you need to be at 1200 bits per second.  This
+           command only connects you to the PACX, where you must tell
+           it that you want class 4-hp and then login on the 9040.  Be
+           sure when you are all done that you logout from the 9040
+           again (by entering TM again) or the next student using the
+           ECB and TM may trash everything in your directories.
+      
+      LG <filename>                           "Log session in filename"
+
+           This command is used after the TM command and login on the
+           HP 9040 and then returning to the ECB by hitting ctrl-A.
+           It tells the ECB to send all subsequent interactions to the
+           9040 and store them in the given filename as a log of the
+           session.  For LG to work the computer reached via TM must
+	   have "ecbrec" (in this directory) in a directory reachable
+	   from the users $PATH string (use set to see this).
+
+      NOLG                            "Quit logging and close log file"
+
+           This command (to the ECB) stops logging and closes the file
+           where the log has been stored on the remote computer (making
+           it safe from subsequent trash).
+
+      PD                                         "host Port Disconnect"
+
+           Disconnects the remote host port on the ECB.  This MAY cause
+           the PACX to inform the 9040 that you have gone away, but it
+           doesn't always work.  I suggest you use TM and logout then 
+           hit ctrl-A and do this command to be sure.   
+
+      PS                                                "Print Status"
+
+           Prints out remote host port status on the ECB.

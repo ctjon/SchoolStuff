@@ -1,0 +1,17 @@
+[PROJECT]
+Name=Max
+Location=C:\MIKES FILES\BOOKJ11\C7.JAV
+Applet=1
+Unitcount=2
+Time=247
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+Max.java=1
+Max.html=1
+
+[Visualforms]
+Max.java=1
+Max.html=0

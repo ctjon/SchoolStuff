@@ -1,0 +1,120 @@
+    Fall 1993                 EE/CS 373 - Program #7                  Gammill
+
+
+    Due: At class on Wednesday, November 17, 1993.
+
+        (NO LATE HOMEWORK WITHOUT A WRITTEN DELAY CONTRACT)
+
+    You  are  provided  a  fragment  of code (attached) which initializes the
+    Motorola MC68230 Parallel Interface/Timer (PI/T) chip on the ECB to allow
+    you to control a stepper motor and infra-red interrupter  (like  a  photo
+    cell).   Your  task is to make the motor rotate smoothly (using the timer
+    interrupt to change the voltages to the coils) and reverse the  direction
+    of the motor when the infra-red device sees the slot in the disk attached
+    to  the  motor, and brings the H1 handshake line low (causing a different
+    interrupt).  Your main program will have nothing to do, once the  stepper
+    motor  begins  running  (since  all  changes  are  handled  by  interrupt
+    routines), so it will use the TAS instruction to wait for  an  indication
+    from  the timer interrupt routine that the run is done (when a total step
+    COUNT has been reduced to zero).  The main program  should  also  keep  a
+    count of how many times it runs the TAS loop (idle time).  No PRINT calls
+    should  be  made until the motor run is completely over.  Then a print of
+    the total loops through the main program (idle  time),  number  of  motor
+    reversals  and  the  H1  interrupts which were ignored will be displayed.
+    Ignoring H1 interrupts will be necessary for 8  steps  after  each  motor
+    reversal  because,  although  the  H1  interrupt  is  edge  triggered, we
+    sometimes get more than one per entry into the slot.  The solution is not
+    to reverse the motor due to any H1 interrupts that  occur  during  the  8
+    steps  after  the  first  H1  interrupt (a hysteresis period).  NOTE: The
+    delay between  changes  in  motor  coil  values  needs  to  be  around  2
+    milliseconds  when the motor is being started or reversed, but once it is
+    up to speed, shorter delays (higher speeds) can be used.  The  hysteresis
+    period  can  be  used  to "ramp up" the speed by gradually shortening the
+    delay.  I will give 5 points of extra credit if you can hit  some  higher
+    speeds.   Be  sure to annotate this feature if you do it.  When your main
+    program is done calling PRINT, it will return to TUTOR by putting 228  in
+    the low byte of D7 and executing a TRAP #14.
+
+    All  counts  for  this program may be kept in registers, because the main
+    program and interrupt routines are written to work together, and are  not
+    really  separate processes.  This means that your interrupt routines (two
+    of them) don't need to use MOVEM to save registers,  as  would  interrupt
+    routines  working with a program whose register usage is unknown (such as
+    our user processes in programs 5 and 6).  However, each interrupt routine
+    DOES have the responsibility for resetting its  interrupt  (acknowledging
+    to  the  interrupt circuitry that the interrupt has been "serviced").  To
+    reset the timer interrupt you must write a  "1"  to  bit  0  of  location
+    $10035.   To reset the H1 handshake interrupt you must write a "1" to bit
+    0 of location $1001B.
+
+    All registers of the 68230 are 8 bits wide, and located at odd  locations
+    starting  at $10001 in the ECB.  One critical register is the output data
+    register ($10011) which we will use to control the coils of  the  stepper
+    motor.   The  four low order bits of this register control the four coils
+    of our motor.  USE CARE because if all 4 coils are left on for any length
+    of time, we may blow a fuse on the power  supply.   A  zero  in  location
+    $10011  gives all coils turned off (the way we want things between runs),
+    and a $0F gives all coils on (which we NEVER want).
+
+
+                                      - 1 -
+    Fall 1993                 EE/CS 373 - Program #7                  Gammill
+
+
+    TUTOR provides a nice command "MM" (memory modify) which we  can  use  to
+    manually  control  the  value  in location $10011 by typing "MM 10011;O".
+    Try typing this command and then inputting "1=", then  "2=",  then  "4=",
+    then  "8=" (and then repeat with "1=" etc. if desired).  Finally, input a
+    "0=" to turn the coils off.  Be sure to watch the 4 LEDs  and  the  motor
+    position  as  you do this.  NOTE: The 68230 is initialized by TUTOR to be
+    in double-buffered mode which will cause all sorts of  weird  results  if
+    you  try  to  do  manual  setting of the coil values, so you must set the
+    68230 to unbuffered mode before doing the above.   For  clarification  of
+    this  and  other issues you may not understand about TUTOR, the 68230 and
+    the ECB, be sure to check the "MC68000 Educational Computer Board  User's
+    Manual" and the 68230 manual, both of which are on the shelf in EEE218.
+
+
+    There  are  two  other registers which you will have to set in the 68230.
+    These must be set during initialization and they are the Timer  Interrupt
+    Vector  Register  (TIVR)  ($10023) and the Port Interrupt Vector Register
+    (PIVR) ($1000B).  In these registers  you  must  put  the  vector  number
+    (machine  address  divided by 4) where you will put your interrupt vector
+    address.  There are MANY other registers involved in this program, but we
+    will try to explain those in class.
+
+    The report on this problem consists of:
+      - written description (problem description, solution to the problem)
+      - flowchart
+      - program listing
+      - a run of your program on an ECB.  Do this by downloading your  object
+        file S-records to the ECB (see Info/download.ecb).  Be sure to use LG
+        to  provide a hardcopy of your run showing the results output by your
+        PRINT subroutine.
+      - a copy of your assembly language file mailed to  the  grader  on  the
+        HP9040.   To mail this to the grader you must previously have run the
+        "register" command and followed the directions it  gives.   Then  use
+        the  "handin  373.s1  hw7"  command to submit your source file, which
+        must be named hw7 in the preceding command.  Use "mv source.asm  hw7"
+        before using the command.  The grader will use m68ka to assemble your
+        code and will run a brief test on the ECB and stepper motor hardware.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      - 2 -

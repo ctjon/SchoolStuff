@@ -1,0 +1,57 @@
+Fall 1993                    EE / CS 373                Gammill
+                             Home Work #3
+                             Grading Sheet
+
+                                        Name:__________________
+
+        ITEM                                       POINTS
+        ----                                 -------------------
+                                               Maximum   Score
+1. Written Description
+
+        Overview (Problem Description):          5 pts
+                                                        --------
+
+        Problem Solution and Verification:       5 pts
+          (and operating instructions)                  --------
+
+2. Program Design and Documentation 
+
+  a) Flowchart  (clean, readable, appropriate   10 pts
+                degree of detail)                       --------
+      
+  b) Program Listing
+
+        Clarity (good names and readability)    10 pts
+          (main program structure correct)              --------
+
+
+        Comments (brief, relevant, readable)    10 pts
+                                                        --------
+
+
+3. Program Results (TESTING!)
+
+        Basic Results (minium correctness)      15 pts
+              (at least one correct test)               --------
+
+        Completeness: (all tests)
+
+                (correct FIX overflow test)     15 pts
+                (including carry bit set/clr)           --------
+
+                All required tests run.         15 pts
+                   (see Info/floatfix.data)
+                                                        --------
+                Non-required good tests.         5 pts
+                                                        --------
+
+4. Miscellaneous (appearance and readability)   10 pts
+        e.g. grammar, folder, etc.                      --------
+
+                                       ----------------------------
+
+                                       TOTAL:  100 pts
+                                                        --------
+
+

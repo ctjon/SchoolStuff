@@ -1,0 +1,66 @@
+
+  CS214
+  PROGRAM 3       DUE: On or before Friday Apr. 20, 1990 at 5 PM
+
+  This  program  will  build and manage a binary sorted tree.  There are four
+  commands: ADD, PRINT, DEL and INIT.  The command name starts in column  one
+  and is followed by one blank.
+
+     1. The command INIT will initialize the tree to empty.
+
+     2.  The  command  PRINT  will  print out the entire tree in alphabetical
+        order.
+
+     3. The command ADD will cause a new node to be entered  into  the  tree.
+        The  value  for  the node is the text (up to 80 characters) after the
+        command and its following blank.  This value will be  placed  in  the
+        tree at the correct point.  For any node, if the given value precedes
+        the  node's  value the value is to be placed in the left subtree.  If
+        the value follows (or is equal) it is  to  be  placed  in  the  right
+        subtree.
+
+     4.  The command DEL will find the first occurrence in the tree of a line
+        starting the same as the text following the command and its blank and
+        delete that node from the tree.  It may be necessary to  rebuild  the
+        tree to delete the node.
+
+  You are to use recursive routines for all of the commands.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     - 1 -
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+UNIT TEST 10
+;
+; Program to test binary recognition.
+;
+FUN   EQU   101B
+;
+PROGRAM  TEST10
+STACK   DH    8       ;DEFINE STACK
+X1    DH    (10)     
+X2    DH    (5)      
+;
+START MOVH    FUN,R0
+      MOVH    X2[R2],R0 
+      MOVH    X2+1011B[R2],R0 
+      MOVH    10B[R2],R0 
+      MOVH    10B,R0 
+ENDP 
+END 

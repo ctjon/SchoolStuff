@@ -1,0 +1,205 @@
+DEFINITION MODULE DynamArr; (* Dynamic Arrays      *)
+                            (* D. Bruce Erickson   *)
+                            (* 10/04/87            *)
+(* Dynamic Arrays are arrays indexed by integers
+   from lowbound to highbound with lowbound <= highbound+1.
+
+   This module defines the TYPEs:
+    DynamicRealArray, DynamicIntegerArray, DynamicCardinalArray,
+    DynamicBooleanArray, and DynamicCharArray;
+    It contains the operations:
+       RCreate, RDestroy, RLow, RHigh, RAssign, RFetch
+       ICreate, IDestroy, ILow, IHigh, IAssign, IFetch
+       CACreate, CADestroy, CALow, CAHigh, CAAssign, CAFetch
+       BCreate, BDestroy, BLow, BHigh, BAssign, BFetch
+       CHCreate, CHDestroy, CHLow, CHHigh, CHAssign, CHFetch
+
+*)
+TYPE
+   DynamicRealArray ;
+   DynamicIntegerArray;
+   DynamicCardinalArray;
+   DynamicBooleanArray;
+   DynamicCharArray;
+
+PROCEDURE RCreate ( low,high: INTEGER ) : DynamicRealArray;
+(* REQUIRES low <= high + 1.
+   EFFECTS creates a Dynamic Real Array indexed from low to high
+*)
+
+PROCEDURE RDestroy ( A : DynamicRealArray );
+(* REQUIRES A has been RCreated
+   MODIFIES A
+   EFFECTS Destroys A returning the space to the system.
+*)
+
+PROCEDURE RLow( A : DynamicRealArray ) : INTEGER;
+(* REQUIRES A has been RCreated
+   EFFECTS returns the Low bound of A
+*)
+
+PROCEDURE RHigh( A : DynamicRealArray ) : INTEGER;
+(* REQUIRES A has been RCreated
+   EFFECTS returns the High bound of A
+*)
+PROCEDURE RAssign( A : DynamicRealArray;
+                   i : INTEGER;
+                   v : REAL );
+(* REQUIRES A has been RCreated, and  RLow(A) <= i <= RHigh(A)
+   MODIFIES A
+   EFFECTS assigns v to position i in array A
+*)
+
+
+PROCEDURE RFetch(A : DynamicRealArray; i : INTEGER): REAL;
+(* REQUIRES A has been RCreated, position i has been assigned a value,
+            and RLow(A) <= i <= RHigh(A)
+   EFFECTS returns the value stored in position i of array A
+*)
+
+
+PROCEDURE ICreate ( low,high: INTEGER ) : DynamicIntegerArray;
+(* REQUIRES low <= high + 1.
+   EFFECTS creates a Dynamic Integer Array indexed from low to high
+*)
+
+PROCEDURE IDestroy ( A : DynamicIntegerArray );
+(* REQUIRES A has been ICreated
+   MODIFIES A
+   EFFECTS IDestroys A returning the space to the system.
+*)
+
+PROCEDURE ILow( A : DynamicIntegerArray ) : INTEGER;
+(* REQUIRES A has been ICreated
+   EFFECTS returns the Low bound of A
+*)
+
+PROCEDURE IHigh( A : DynamicIntegerArray ) : INTEGER;
+(* REQUIRES A has been ICreated
+   EFFECTS returns the High bound of A
+*)
+PROCEDURE IAssign( A : DynamicIntegerArray;
+                   i : INTEGER;
+                   v : INTEGER );
+(* REQUIRES A has been ICreated, and  ILow(A) <= i <= IHigh(A)
+   MODIFIES A
+   EFFECTS assigns v to position i in array A
+*)
+
+
+PROCEDURE IFetch(A : DynamicIntegerArray; i : INTEGER): INTEGER;
+(* REQUIRES A has been ICreated, position i has been assigned a value,
+            and ILow(A) <= i <= High(A)
+   EFFECTS returns the value stored in position i of array A
+*)
+
+
+PROCEDURE CACreate ( low,high: INTEGER ) : DynamicCardinalArray;
+(* REQUIRES low <= high + 1.
+   EFFECTS creates a Dynamic Cardinal Array indexed from low to high
+*)
+
+PROCEDURE CADestroy ( A : DynamicCardinalArray );
+(* REQUIRES A has been CACreated
+   MODIFIES A
+   EFFECTS Destroys A returning the space to the system.
+*)
+
+PROCEDURE CALow( A : DynamicCardinalArray ) : INTEGER;
+(* REQUIRES A has been CACreated
+   EFFECTS returns the Low bound of A
+*)
+
+PROCEDURE CAHigh( A : DynamicCardinalArray ) : INTEGER;
+(* REQUIRES A has been CACreated
+   EFFECTS returns the High bound of A
+*)
+PROCEDURE CAAssign( A : DynamicCardinalArray;
+                   i : INTEGER;
+                    v : CARDINAL );
+(* REQUIRES A has been CACreated, and  CALow(A) <= i <= CAHigh(A)
+   MODIFIES A
+   EFFECTS assigns v to position i in array A
+*)
+
+
+PROCEDURE CAFetch(A : DynamicCardinalArray; i : INTEGER): CARDINAL;
+(* REQUIRES A has been CACreated, position i has been assigned a value,
+            and CALow(A) <= i <= CAHigh(A)
+   EFFECTS returns the value stored in position i of array A
+*)
+
+
+PROCEDURE BCreate ( low,high: INTEGER ) : DynamicBooleanArray;
+(* REQUIRES low <= high + 1.
+   EFFECTS creates a Dynamic Boolean Array indexed from low to high
+*)
+
+PROCEDURE BDestroy ( A : DynamicBooleanArray );
+(* REQUIRES A has been BCreated
+   MODIFIES A
+   EFFECTS Destroys A returning the space to the system.
+*)
+
+PROCEDURE BLow( A : DynamicBooleanArray ) : INTEGER;
+(* REQUIRES A has been BCreated
+   EFFECTS returns the Low bound of A
+*)
+
+PROCEDURE BHigh( A : DynamicBooleanArray ) : INTEGER;
+(* REQUIRES A has been BCreated
+   EFFECTS returns the High bound of A
+*)
+PROCEDURE BAssign( A : DynamicBooleanArray;
+                   i : INTEGER;
+                   v : BOOLEAN );
+(* REQUIRES A has been BCreated, and  BLow(A) <= i <= BHigh(A)
+   MODIFIES A
+   EFFECTS assigns v to position i in array A
+*)
+
+
+PROCEDURE BFetch(A : DynamicBooleanArray; i : INTEGER): BOOLEAN;
+(* REQUIRES A has been BCreated, position i has been assigned a value,
+            and BLow(A) <= i <= BHigh(A)
+   EFFECTS returns the value stored in position i of array A
+*)
+
+
+PROCEDURE CHCreate ( low,high: INTEGER ) : DynamicCharArray;
+(* REQUIRES low <= high + 1.
+   EFFECTS creates a Dynamic Char Array indexed from low to high
+*)
+
+PROCEDURE CHDestroy ( A : DynamicCharArray );
+(* REQUIRES A has been CHCreated
+   MODIFIES A
+   EFFECTS Destroys A returning the space to the system.
+*)
+
+PROCEDURE CHLow( A : DynamicCharArray ) : INTEGER;
+(* REQUIRES A has been CHCreated
+   EFFECTS returns the Low bound of A
+*)
+
+PROCEDURE CHHigh( A : DynamicCharArray ) : INTEGER;
+(* REQUIRES A has been CHCreated
+   EFFECTS returns the High bound of A
+*)
+PROCEDURE CHAssign( A : DynamicCharArray;
+                   i : INTEGER;
+                   v : CHAR );
+(* REQUIRES A has been CHCreated, and  CHLow(A) <= i <= CHHigh(A)
+   MODIFIES A
+   EFFECTS assigns v to position i in array A
+*)
+
+
+PROCEDURE CHFetch(A : DynamicCharArray; i : INTEGER): CHAR;
+(* REQUIRES A has been CHCreated, position i has been assigned a value,
+            and CHLow(A) <= i <= CHHigh(A)
+   EFFECTS returns the value stored in position i of array A
+*)
+
+
+END DynamArr.

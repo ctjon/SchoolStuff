@@ -1,0 +1,41 @@
+For testing the FLOAT and FIX functions use the following data.
+
+For FLOAT: N = 1
+                    integer .L         IEEE float      floating pt  TRUNC
+          decimal   hexidecimal        hexidecimal     decimal val
+                0 ( 00 00 00 00 ) -> ( 00 00 00 00 )           0.0
+                1 ( 00 00 00 01 ) -> ( 3F 80 00 00 )           1.0
+               -1 ( FF FF FF FF ) -> ( BF 80 00 00 )          -1.0
+             1023 ( 00 00 03 FF ) -> ( 44 7F C0 00 )        1023.0
+          8388609 ( 00 80 00 01 ) -> ( 4B 00 00 01 )     8388609.0
+        -16777215 ( FF 00 00 01 ) -> ( CB 7F FF FF )   -16777215.0
+         33554433 ( 02 00 00 01 ) -> ( 4C 00 00 00 )    33554432.0   *
+       2147483647 ( 7F FF FF FF ) -> ( 4E FF FF FF )  2147483520.0   *
+      -2147483647 ( 80 00 00 01 ) -> ( CE FF FF FF ) -2147483520.0   *
+      -2147483648 ( 80 00 00 00 ) -> ( CF 00 00 00 ) -2147483648.0
+
+For FIX: N = 2
+
+      floating pt   IEEE float         integer .L
+      decimal val   hexidecimal        hexidecimal       decimal
+              0.0 ( 00 00 00 00 ) -> ( 00 00 00 00 )           0
+              3.0 ( 40 40 00 00 ) -> ( 00 00 00 03 )           3
+            -15.0 ( C1 70 00 00 ) -> ( FF FF FF F1 )         -15
+           1025.0 ( 44 80 20 00 ) -> ( 00 00 04 01 )        1025
+        -131074.0 ( C8 00 00 80 ) -> ( FF FD FF FE )     -131074
+       16777214.0 ( 4B 7F FF FE ) -> ( 00 FF FF FE )    16777214
+      -16777215.0 ( CB 7F FF FF ) -> ( FF 00 00 01 )   -16777215
+     2147483520.0 ( 4E FF FF FF ) -> ( 7F FF FF 80 )  2147483520
+     2147483648.0 ( 4F 00 00 00 ) -> OVERFLOW ( SET CARRY BIT and N TO -1 )
+    -2147483648.0 ( CF 00 00 00 ) -> ( 80 00 00 00 ) -2147483648
+
+N = 3:
+
+       2147483647 ( 7F FF FF FF ) -> ( 7F FF FF 80 )  2147483520    *
+      -2147483648 ( 80 00 00 00 ) -> ( 80 00 00 00 ) -2147483648
+N = 4:
+
+      -16777215.0 ( CB 7F FF FF ) -> ( CB 7F FF FF ) -16777215.0
+
+
+

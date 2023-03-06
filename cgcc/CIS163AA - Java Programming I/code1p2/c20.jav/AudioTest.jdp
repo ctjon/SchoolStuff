@@ -1,0 +1,17 @@
+[PROJECT]
+Name=AudioTest
+Location=C:\MIKES FILES\BOOKJ11\C20.JAV
+Applet=1
+Unitcount=2
+Time=85
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+AudioTest.java=1
+AudioTest.html=1
+
+[Visualforms]
+AudioTest.java=1
+AudioTest.html=0

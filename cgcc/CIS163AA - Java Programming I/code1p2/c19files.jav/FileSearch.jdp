@@ -1,0 +1,15 @@
+[PROJECT]
+Name=FileSearch
+Location=C:\MIKES FILES\BOOKJ11\C19FILES.JAV
+Applet=0
+Unitcount=1
+Time=40
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+FileSearch.java=1
+
+[Visualforms]
+FileSearch.java=1

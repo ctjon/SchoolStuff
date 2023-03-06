@@ -1,0 +1,43 @@
+        Fall 1993          EE/CS 373 Assembly Language            Gammill
+
+
+        Homework #9: due at class on Wednesday December 8, 1993.
+
+        Write  a  program  to  take  a  C program as input and substitute
+        different key words for all its reserved words.  Be sure  not  to
+        change  any  reserved  words which occur in comments or in quoted
+        text.  You must demonstrate that this has been accomplished.
+
+        INPUT FILE
+
+        One line for each keyword.  First the keyword  then one  or  more
+        blanks  followed by the word to be substituted.  The last line of
+        these words is to be followed  by  a  line  containing  just  the
+        character '$'.  This is then to be followed by the program.  e.g.
+
+           int     integer
+           if      ifyouwantto
+           for     because
+           $
+           main()
+           {   /* for sure check if comments containing int don't change */
+             int i;
+             for (i=0,i < 26,i++) if(i == 2) printf("for what if %d n",i);
+           }
+
+        PROGRAM NOTES
+
+        For  this  program  it  is  enough  to show that your program can
+        convert about 10 distinct C keywords into  your  'new  language'.
+        Use  a  small  but  through test set (say about 10 to 20 lines of
+        selected C).
+
+        REQUIREMENTS
+
+        You should get some experience using pointers, so you must  store
+        your  dictionary (reserved word, substitution string) pairs using
+        pointers to strings where the  space  for  the  string  has  been
+        allocated using malloc (or similar function).  Arrays of pointers
+        to  strings,  where the arrays are allocated at compile time, but
+        the strings are allocated  at  runtime  are  suggested.   Helpful
+        hint: malloc(strlen(s)+1);

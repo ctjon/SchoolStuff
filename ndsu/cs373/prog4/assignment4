@@ -1,0 +1,59 @@
+    Fall 1993                 EE/CS 373 - Program #4                  Gammill
+
+
+    Due: At class on Wednesday, October 13, 1993. 
+         (LATE HOMEWORK ONLY IF YOU TURN IN A WRITTEN DELAY CONTRACT)
+
+    Write  three  function  subprograms  to  be  called  as shown, completely
+    conforming to "Calling Conventions for EE/CS 373."
+
+      last-array-value = sort(array,array-length,logical-compare-fcn)
+
+      index-of-element = select(array,sub-array-length,logical-compare-fcn)
+
+      logicval = comparelt(floatval1, floatval2)
+
+      NOTE: main CALLS sort CALLS select CALLS comparelt CALLS fix
+
+    In addition, comparelt will call your FIX function from homework  #3,  on
+    each  of  its  floating  point arguments, to convert them to fixed point,
+    before comparing the first argument to the second.  This step  is  really
+    unnecessary,  since  floating point values compare easily, but I want you
+    to get totally involved in using deeply nested functions.
+
+    Your sort routine will sort the array of long words it is given  into  an
+    order  specified  by  its logical-compare-function argument (in this case
+    decreasing order, since you will be passing it the address of comparelt).
+
+    The sort routine will do its task  by  working  on  the  array,  and  its
+    subarrays  (down  to  size 2, and all starting at the same spot), in each
+    case using the select function to find the selected (by compare-function,
+    in this case the smallest) value, whose index position (from  0  to  sub-
+    array-length - 1) it returns.  Actual movement of array values (swapping)
+    is  to be done ONLY by the sort routine.  Although sort has this swapping
+    responsibility, this does NOT mean  that  the  array  should  be  located
+    inside  the  routine.   The  main  program  has responsibility for owning
+    arrays and passing the address of a particular array to the sort  routine
+    to be sorted.
+
+    The  select  function will call the comparelt function (whose address has
+    been passed to it as an argument) to  compare  numbers.   Comparelt  will
+    convert  its  two  arguments (passed to it by select) to fixed point form
+    (by calling FIX on each) and return a logical value (1 for  true,  0  for
+    false)  to  indicate if the desired relation between its two arguments is
+    true (in this case, arg1 in fixed pt is less-than arg2 in fixed pt form).
+
+    The report on this problem consists of:
+      - written description (problem description, solution  to  the  problem,
+        verification)
+      - a set of carefully designed test cases
+      - flowchart
+      - program listing
+      -  program  results (a listing of the simulator output with all results
+        underlined and annotated).
+      - a run of your program on an ECB.  Do this by downloading your  object
+        file S-records to the ECB (see ~gammill/373/download.ecb). Be sure to
+        use LG to provide a hardcopy of your run.
+
+
+

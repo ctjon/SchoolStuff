@@ -1,0 +1,19 @@
+*** hosterror.c	Tue Feb  1 12:05:11 1994
+--- ../libnet.orig/hosterror.c	Tue Feb  1 12:08:27 1994
+***************
+*** 5,11 ****
+  
+  int	h_errno;		/* host error number */
+  int	h_nerr;			/* # of error message strings */
+! static char *h_errlist[300];	/* the error message table */
+  
+  char *
+  host_err_str()
+--- 5,11 ----
+  
+  int	h_errno;		/* host error number */
+  int	h_nerr;			/* # of error message strings */
+! char	*h_errlist[];		/* the error message table */
+  
+  char *
+  host_err_str()

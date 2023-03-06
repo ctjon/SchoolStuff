@@ -1,0 +1,53 @@
+Fall 1993                     EE / CS 373               Gammill
+                             Home Work #5
+                             Grading Sheet
+
+                                        Name:__________________
+
+        ITEM                                       POINTS
+        ----                                 -------------------
+                                               Maximum   Score
+1. Written Description
+
+        Overview (Problem Description):          5 pts
+                                                        --------
+
+        Problem Solution and Verification:       5 pts
+          (and operating instructions)                  --------
+
+2. Program Design and Documentation 
+
+  a) PRINT program uses stack frame calling     10 pts
+        method as per 373 standards.                    -------- 
+
+  c) Program Listings (two versions)
+
+        Clarity (good names and readability)    10 pts
+          (PRINT subroutine, user processes             --------
+           and TRAP #0 vectoring clear)
+
+        Comments (brief, relevant, readable)    10 pts
+                                                        --------
+
+
+3. Program Results (TESTING!)
+
+        First version (minium correctness)      20 pts
+         (trace file shows register values              --------
+          for BOTH user processes and for
+          scheduler).
+
+        Second version (alternating print
+          outs by each user process)            30 pts
+                                                        --------
+
+
+4. Miscellaneous (appearance and readability)   10 pts
+        e.g. grammar, folder, etc.                      --------
+
+                                       ----------------------------
+
+                                       TOTAL:  100 pts
+                                                        --------
+
+

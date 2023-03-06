@@ -1,0 +1,39 @@
+UNIT TEST 1
+;       
+; Program to test DD,DW,DH,DB 
+; in the list and object file.
+; Test1 will check the directives 
+; reserving memory, and declaring 
+; constants.
+;
+PROGRAM  TEST1
+STACK   DH    8       ;DEFINE STACK
+;
+; Test the DB directive
+;
+B1    DB      3        
+B2    DB      (1,24,24H,16,15H)  
+B3    DB      (30,30H,44H,55H,66H,77H,88H,99H,11H,22H,33H) 
+; 
+; Test the DH directive
+;
+H1    DH      3       
+H2    DH      (100,100H,200H)  
+H3    DH      (111H,222H,333H,444H,555H)
+; 
+; Test the DW directive
+;
+W1    DW      3
+W2    DW      (100,100H,200H)
+;
+; Test the DD directive
+;
+D1    DD      3
+D2    DD      (11111,11111H)
+;
+Y     DH      (0)     
+START MOVH    B1,Y     ;MOVE X1 TO Y
+      RETN 
+ENDP 
+END 
+

@@ -1,0 +1,98 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100                          
+@PASSWD 110975                                                            
+@RPG,IS SOURCE,REL                                                        
+01000H*************************************************************************
+01010H*                                                                       *
+01020H* CHRISTOPHER C. TJON                                                   *
+01030H* 110975-8                                                              *
+01040H* PROGRAM 7                                                             *
+01050H* 10 MAY 1990                                                           *
+01060H*                                                                       *
+01070H*************************************************************************
+01080H*                                                                       *
+01090H* PROGRAM TO CALCULATE DEPRECEATION ON EQUIMENT                         *
+01100H*                                                                       *
+01110H*************************************************************************
+02010FCARDSIN IP  F      80            READ005SYSIPT                      
+02020FREPORT  O   F     132     OF     PRINTERSYSLST
+03000I*************************************************************************
+03010I*****< INPUT SECTION >***************************************************
+03020I*************************************************************************
+03030ICARDSIN AA  01            
+03040I                                        1   50ITEMNO  L1
+03050I                                        6  20 DESC
+03060I                                       21  260DATE
+03070I                                       21  260LDATE
+03080I                                       25  260YEAR
+03090I                                       27  332EXPENS
+03100I                                       34  350LIFE
+04000C*************************************************************************
+04010C*****< CALCULATION SECTION >*********************************************
+04020C*************************************************************************
+04030C   01      EXPENS      DIV  LIFE      DEPR  72H     
+04040C           EXPENS      SUB  DEPR      VALU  72H    
+04050C           1         ADD  YEAR      YEAR           
+04060C                     MOVE YEAR      DATE
+04070C           LOOP      TAG
+04080C                     EXCPT
+04090C   21                SETOF                     21OF
+04100C   OF                SETON                     21
+04110C                     SETOF                     L1
+04120C           1         ADD  YEAR      YEAR         
+04130C                     MOVE YEAR      DATE          
+04140C           LIFE      COMP 2                    22  23
+04150C           CVALUE     SUB  DEPR    CVALUE            
+04160C           LIFE      SUB  1         LIFE             
+04170C   22                                                
+04180COR 23                GOTO LOOP
+05000O*************************************************************************
+05010O*****< OUTPUT SECTION >**************************************************
+05020O*************************************************************************
+05030OREPORT  H  201   1P                                                 
+05040O       OR        OF               
+05050O                         UDATE Y    8                               
+05060O                                   50 'SCHEDULE OF'            
+05070O                                   64 'DEPRIATION'
+05080O                                   96 'PAGE'               
+05090O                         PAGE  Z  101                               
+05100O        H  1     1P                                                
+05110O       OR        OF
+05120O                                    5 'ITEMNO'
+05130O                                   22 'ITEMNO'
+05140O                                   36 'DATE'
+05150O                                   50 'ORIGINAL'
+05160O                                   62 'ESTIMATED'
+05170O                                   73 'ANNUAL'
+05180O                                   87 'YEAR-END'
+05190O                                  101 'DEPRIATED'               
+05200O        H  2     1P
+05210O       OR        OF                                                 
+05220O                                    6 'NUMBER'
+05230O                                   25 'DESCRIPTION'
+05240O                                   38 'ACQUIRED'
+05250O                                   48 'EXPENS'
+05260O                                   59 'LIFE'
+05270O                                   76 'DEPRIATION'
+05280O                                   85 'DATE'
+05290O                                   98 'CVALUE'
+05300O        EF 1     01
+05310O                 L1      ITEMNO       6
+05320O                 L1      DESC    27
+05330O                 L1      LDATE Y   38
+05340O                 L1      EXPENS  1   50
+05350O                 L1      LIFE      58
+05360O                 L1      DEPR1   76
+05370O                 OF      ITEMNO       6
+05380O                 OF      DESC    27
+05390O                 OF      LDATE Y   38
+05400O                 OF      EXPENS  1   50
+05410O                 OF      LIFE      58
+05420O                 OF      DEPR1   76
+05430O                         DATE  Y   87
+05440O                         CVALUE 1  100
+@XQT
+13224PRESS          061376360000036
+12273CRANE          051476400000020
+13778BUILDING       051776850000040
+14297AUTOMOBILE     060276190000006
+@FIN                                                                      

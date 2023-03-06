@@ -1,0 +1,27 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100
+@PASSWD 110975                                    
+@RPG,IS SOURCE,REL                                
+01010H                                               
+02010FCARDSIN IP  F      80            READ005SYSIPT
+02020FREPORT  O   F     132            PRINTERSYSLST
+03010ICARDSIN AA  01                                       
+03020I                                        1   6 SSN1  
+03030I                                        7   9 SSN2 
+03040I                                       10  13 NAME1   
+03050I                                       14  30 NAME2
+04010OREPORT  D  1     01                                 
+04020O                         SSN1      11       
+04030O                         SSN2      14     
+04040O                         NAME1     24 
+04050O                         NAME2     41 
+04060O                         NAME1     64 
+04070O                         SSN2      67
+@XQT
+555314282ANGLE,WILLIAM R.
+908334210SHERMAN,ROBERT C.
+442483051MACKEY,JAMES D.
+762901407LOVELAND,ARNOLD A.
+320794337WAXER,WILMA L.
+@FIN
+        
+

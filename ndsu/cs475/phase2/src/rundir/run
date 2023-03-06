@@ -1,0 +1,18 @@
+#!/bin/sh
+rm IN* OUT* 2>/dev/null
+case "$1" in
+	"js1")
+		echo "running js1 as INPUT"
+		ln -s js1 INPUT
+		os4u I
+		;;
+	"js2")
+		echo "running js2 as INPUT"
+		ln -s js2 INPUT
+		os4u I
+		;;
+	*) 
+		echo "Usage: run job stream"
+		exit 1
+		;;
+esac

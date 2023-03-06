@@ -1,0 +1,84 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100
+@PASSWD 110975                                    
+@RPG,IS SOURCE,REL                                
+01010H                                               
+02010FCARDSIN IP  F      80            READ005SYSIPT
+02020FREPORT  O   F     132            PRINTERSYSLST
+03010ICARDSIN AA  01                                       
+03020I                                        1   40CUSNO
+03030I                                        5  20 DESCRI
+03040I                                       21  260DATEOP
+03050I                                       27  322PURPRI
+03060I                                       33  382DNPAMT
+04010C   01      18.00     DIV  100.00    INRATE  22
+04030C   01      PURPRI    SUB  DNPAMT    AMTFIN  82
+04040C   01      AMTFIN    MULT INRATE    FINCHG  62
+04050C   01      FINCHG    ADD  AMTFIN    AMTDUE  72
+04060C   01      AMTDUE    DIV  12        MONPAY  52
+05010OREPORT  H  201   1P
+05020O       OR        OF
+05040O                                   41 'S E L E C T'
+05050O                                   51 'U S E D'
+05060O                                   61 'A U T O'
+05070O                                   73 'S A L E S' 
+05080O                                   99 'PAGE'
+05090O                         PAGE  Z  104 
+05100O        H 2      1P
+05110O       OR        OF
+05120O                                   48 'CUSTOMER'
+05130O                                   56 'PAYMENT'
+05140O                                   63 'REPORT'
+05150O        H 21     1P
+05160O       OR        OF 
+05170O                                   45 'WEEK'
+05180O                                   52 'ENDING'
+05190O                         UDATE Y   61
+05200O        H 11     1P 
+05210O       OR        OF        
+05220O                                    4 'CUST'
+05230O                                   18 'AUTOMOBILE'
+05240O                                   28 'DATE'
+05250O                                   41 'PURCHASE'
+05260O                                   48 'DOWN'
+05270O                                   59 'AMOUNT'                    
+05280O                                   67 'INTR.'
+05290O                                   76 'FINANCE'
+05300O                                   85 'AMOUNT'
+05310O                                   92 'NO.'
+05320O                                  104 'MONTHLY'
+05330O        H  2     1P
+05340O       OR        OF
+05350O                                    4 ' NO.'
+05360O                                   18 'DESCRIPTION'
+05370O                                   31 'PURCHASED'
+05380O                                   39 'PRICE'
+05390O                                   50 'PAYMENT'
+05400O                                   60 'FINANCED'
+05410O                                   66 'RATE'
+05420O                                   76 'CHARGE'
+05430O                                   84 'DUE'
+05440O                                   93 'PYMTS'
+05450O                                  105 'PAYMENTS' 
+05460O        D  1     01                 
+05470O                         CUSNO      4     
+05480O                         DESCRI    21      
+05490O                         DATEOPY   30
+05500O                         PURPRI1   41
+05510O                         DNPAMT1   50 
+05520O                         AMTFIN1   60 
+05530O                                   66 '18%'
+05540O                         FINCHG1   76
+05550O                         AMTDUE1   86
+05560O                                   92 '12'
+05570O                         MONPAY1  104
+@XQT
+2651CHEVROLET       020676250000050000
+2983FORD            020976315000031500
+3667PONTIAC         030176485000100000
+4479MERCEDES-BENZ   030576899999200000
+5576OLDSMOBILE      032676399999039999
+6689CONTINENTAL     032776725000500000
+7740DATSUN          032976215000050000
+@FIN
+        
+

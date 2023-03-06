@@ -1,0 +1,20 @@
+(***********************************************************************)
+(* DEFINITION MODULE WORDS                                             *)
+(*   WRITTEN BY CHRISTOPHER C. TJON                                    *)
+(*   NAID: 110975-8                                                    *)
+(*   5 NOV 1989                                                        *)
+(*                                                                     *)
+(*   THIS MODULE HIDES THE TYPE WORDTYPE AND ALLOWS THE CONSTANT       *)
+(*   MAXLENGTH TO BE CHANGED IN THE CONST DECLARATION                  *)
+(*                                                                     *)
+(*                                                                     *)
+(***********************************************************************)
+
+
+DEFINITION MODULE words;
+
+CONST MAXLENGTH = 20;
+
+TYPE WORDTYPE = ARRAY[0..(MAXLENGTH - 1)] OF CHAR;
+
+END words.

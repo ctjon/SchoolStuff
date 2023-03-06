@@ -1,0 +1,60 @@
+        Fall 1992            CS 474 - O.S. Concepts            R. Gammill
+
+
+        Homework #3: due at class time on Wednesday September 30, 1992
+
+        Do the following to the results of your second homework.
+
+             1)  Rewrite  it  to use pointers and recursion (if it didn't
+                already).   Also,  clean  it  up  and  make  it  elegant,
+                readable and very compact.
+
+             2)  Allow the predefined characters to be changed using argv
+                and argc.  If you want to  use  a  switch-case  statement
+                this  means  you must use an array for storing your chars
+                and a "for" match to produce an integer to switch on.
+
+             3) Add to your macro processor the ability  to  do  #include
+                operations,   like   the   C  compiler  does.   Form  is:
+                $2'filename'.
+
+        More specifically, add a new primitive that allows  the  contents
+        of  a  named  file  to  be  included  in  the input text, without
+        disrupting the flow of that text (i.e. it works like a subroutine
+        call).  This facility will be useful for providing files of macro
+        definitions  (libraries)  which  can  be   used   by   particular
+        application  files, without the necessity for including a copy of
+        the definitions  in  that  application  file.   Of  course,  this
+        technique  is  an important software engineering principle.  Make
+        your package able to nest calls on files to level 3 (a stack of 4
+        FILE  data  items).   NOTE:  The  top  FILE  item  needs  to   be
+        initialized to zero, so that it will provide you input from stdin
+        (which  is  the  0  file  descriptor).  No fopen is necessary for
+        stdin.  The required format for this is $2'filename'.  Use stream
+        input as described in getc(3S), putc(3S), and use  fopen(3S)  and
+        fclose(3S)  (and  also  in section 7.6 of Kernighan and Ritchie).
+        This package could be used again in other situations, so  package
+        it  nicely as a separate level of service routines (nxtfchr() and
+        flopen("filename"))  in  a  separate  source  code  file   called
+        macio.c, ie. an abstract data structure.
+
+        Demonstrate the generation of your macro system using the make(I)
+        command, that is, compile and link the latest versions of macro.c
+        and  macio.c.   BE  SURE  to  provide me with a copy of your make
+        file.  Knowledge of this command can be  critical  later  (during
+        your  projects) to keep track of source code updates.  Be sure to
+        demonstrate that your macro processor works correctly by  testing
+        it  on files ex2.incl and ex3 in ~gammill/cs474/mactst, comparing
+        the result to  the  results  from  my  version  of  macro.   Also
+        document  it  for easy use in the future.  This new functionality
+        should only make about a 20 line package of code (in macio.c) and
+        minimal changes in macro.c, so work carefully.
+
+        The following is optional, for extra credit.
+
+             4) Develop a special application  and  demonstrate  it.   An
+                example  is  code  to  control graphics characters on the
+                IBM-PC (or clone) using ANSI.SYS.
+
+
+                                     - 1 - 

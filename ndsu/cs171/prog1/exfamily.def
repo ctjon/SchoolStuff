@@ -1,0 +1,118 @@
+DEFINITION MODULE EXFAMILY;
+
+(***********************************************************************)
+(*                                                                     *)
+(*   PROGRAM 1                                                         *)
+(*   WRITTEN BY: CHRISTOPHER C. TJON                                   *)
+(*   FOR DR. ERICKSON'S CS171                                          *)
+(*   8 DEC 1989                                                        *)
+(*                                                                     *)
+(*                                                                     *)
+(*   THE PURPOSE OF THIS ASSIGNMENT WAS TO DEVELOPE A MODULE WHICH     *)
+(*   CAN BE USED FOR THE MANIPULATION OF FAMILIES.  MANY PROCEDURES    *)
+(*   HAVE BEEN CREATED HERE AND MANY MORE COULD BE INCLUDED.           *)
+(*   SUGGESTED ADDITIONS COULD BE A PROCEDURE TO LIST JUST THE MOTHERS *)
+(*   OR FATHERS OF EVERY FAMILY.  MOST OF THE ERROR CHECKING PROCEDURES*)
+(*   HAVE BEEN CREATED HERE FOR YOU. THE SYSTEM SHOULD PREVENT YOU     *)
+(*   FROM "MAKING A BAD CALL ".                                        *)
+(*                                                                     *)
+(*                                                                     *)
+(***********************************************************************)
+
+
+FROM Strings IMPORT String;
+
+TYPE FAMILY; (* OPAQUE TYPE *)
+
+TYPE NAME = String;
+
+PROCEDURE INITIALIZE(VAR F : FAMILY);
+
+
+PROCEDURE ADDFAMILY(VAR F : FAMILY) : CARDINAL;
+
+(* REQUIRES : STORAGE IS AVAILABLE FOR FAMILY AND FAMILY IS NOT        *)
+(*            ALREADY IN BLOCK OF FAMILIES                             *)
+(* MODIFIES : BLOCK OF FAMILIES                                        *)
+(* EFFECTS  : ADDS A FAMILY TO THE BLOCK OF FAMILIES                   *)
+
+
+
+PROCEDURE ARETHEREFAMILIES(F : FAMILY) : BOOLEAN;
+
+(* REQUIRES : NOTHING                                                  *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS FALSE IF HAVE BEEN ENTERED. OTHERWISE TRUE       *)
+
+
+
+PROCEDURE ROOMFORMOREFAMILIES(F : FAMILY) : BOOLEAN;
+
+(* REQUIRES : NOTHING                                                  *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS TRUE IF THERE IS STORAGE AVAILABLE FOR FAMILY.   *)
+(*            OTHERWISE FALSE                                          *)
+
+
+
+PROCEDURE REMOVEFAMILY(VAR F : FAMILY; LASTNAME:NAME);
+(* REQUIRES : FAMILY TO BE REMOVED IS IN BLOCK OF FAMILIES             *)
+(* MODIFIES : BLOCK OF FAMILIES                                        *)
+(* EFFECTS  : REMOVES FAMILY FROM THE LIST                             *)
+
+
+
+PROCEDURE FATHEROF(F : FAMILY; LASTNAME : NAME) : NAME;
+(* REQUIRES : INPUT OF A VALID FAMILY NAME                             *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS THE FATHER OF THE FAMILY                         *)
+
+
+
+PROCEDURE MOTHEROF(F : FAMILY; LASTNAME : NAME) : NAME;
+(* REQUIRES : INPUT OF A VALID FAMILY NAME                             *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS THE MOTHER OF THE FAMILY                         *)
+
+
+
+PROCEDURE CHILDOF(F : FAMILY; LASTNAME : NAME) ;
+(* REQUIRES : INPUT OF A VALID FAMILY NAME                             *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : WRITES OUT THE CHILDREN OF THE FAMILY                    *)
+
+
+
+PROCEDURE ISINFAMILY(F:FAMILY;VAR LASTNAME, FIRSTNAME : NAME) : BOOLEAN;
+(* REQUIRES : THE NAME ENTERED IS VALID                                *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS TRUE IF THE PERSON IS IN THE FAMILY.  OTHERWISE  *)
+(*            FALSE                                                    *)
+
+
+
+PROCEDURE DOESFAMILYHAVECHILDREN(F : FAMILY;LASTNAME:NAME) : BOOLEAN;
+
+(* REQUIRES : FAMILY SPECEFIED IS IN BLOCK OF FAMILIES                 *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : RETURNS TRUE IF THERE ARE CHILDREN IN GIVEN FAMILY       *)
+
+
+
+PROCEDURE ISCHILDINFAMILY(F:FAMILY;LASTNAME,FIRSTNAME : NAME) : BOOLEAN;
+
+(* REQUIRES :                                                          *)
+(* MODIFIES :                                                          *)
+(* EFFECTS  :                                                          *)
+
+
+
+PROCEDURE LISTFAMILIES(F : FAMILY ; NUMCHILD : CARDINAL);
+
+(* REQUIRES : THAT THERE ARE FAMILIES IN DATA BLOCK TO LIST            *)
+(* MODIFIES : NOTHING                                                  *)
+(* EFFECTS  : PRINTS FAMILIES STORED ON TO THE SCREEN                  *)
+
+
+
+END EXFAMILY.

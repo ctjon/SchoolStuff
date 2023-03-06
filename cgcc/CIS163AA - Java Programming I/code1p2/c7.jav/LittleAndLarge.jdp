@@ -1,0 +1,27 @@
+[PROJECT]
+Name=LittleAndLarge
+Location=C:\MIKES FILES\BOOKJ11\C7.JAV
+Applet=1
+Unitcount=2
+Time=173
+Version=610
+Convertfrom=0
+Convertto=0
+
+[Files]
+LittleAndLarge.java=1
+LittleAndLarge.html=1
+
+[Visualforms]
+LittleAndLarge.java=1
+LittleAndLarge.html=0
+
+[LittleAndLarge.java]
+Time=11
+Height=150
+Width=300
+
+[LittleAndLarge.html]
+Time=7
+Height=150
+Width=300

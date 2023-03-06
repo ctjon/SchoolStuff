@@ -1,0 +1,67 @@
+@RUN,A TJON,MHD170110975/CIS170011,CIS170,5,100
+@PASSWD 110975                                    
+@RPG,IS SOURCE,REL 
+01010H**************************************************************************
+01020H*                                                                        *
+01030H*  PROGRAMMING ASSIGNMENT 4                                              *
+01040H*  WRITTEN BY CHRISTOPHER C. TJON                                        *
+01050H*  FOR CS170                                                             *
+01060H*  ID# 110975-8                                                          *
+01070H*  12 APR 1990                                                           *
+01080H*                                                                        *
+01090H**************************************************************************
+01010H                                               
+02010FCARDSIN IP  F      80            READ005SYSIPT
+02020FREPORT  O   F     132            PRINTERSYSLST
+03010ICARDSIN AA  01                                       
+03020I                                        1   6 PARCELL1
+03030I                                        7  10 BIDNUM  
+03040I                                       11  30 BIDDER
+03050I                                       31  372BIDAMT
+04001C   01      TOTBID    ADD  1         TOTBID  40
+04010C   01      ALLBID    ADD  BIDAMT    ALLBID  82
+04020CL1         ALLBID    DIV  TOTBID    AVGBID  82H
+04030CL1         ALLBID    MULT 0         ALLBID  
+05010OREPORT  H  201   1P
+05020O       OR        OF                                 
+05030O                         UDATE Y    8     
+05040O                                   27 'B I D D I N G'
+05045O                                   41 '   R E P O R T'      
+05050O                         PAGE  Z   54
+05060O        H  1     1P
+05070O       OR        OF
+05080O                                    6 'PARCEL'
+05090O                                   14 'BID'
+05100O                                   33 'BIDDER'
+05110O                                   51 'BID'
+05120O        H  2     1P         
+05130O       OR        OF
+05140O                                    6 'NUMBER'
+05150O                                   16 'NUMBER'
+05160O                                   32 'NAME'
+05170O                                   53 'AMOUNT'          
+05210O        D  1     01
+05214O                 L1      PARCEL     6
+05220O                         BIDNUM    15
+05230O                         BIDDER    40 
+05240O                         BIDAMTJB  54
+05250O        T 22     L1
+05255O                                    8 'TOTAL '
+05256O                                   15 'NUMBER '
+05260O                                   18 'OF '
+05262O                                   23 'BIDS'
+05270O                         TOTBIDZB  28    
+05280O                                   42 'AVERAGE BID'
+05290O                         AVGBIDJB  54
+05300O        T 2      LR
+05310O                                   13 'END OF REPORT'
+@XQT
+0755442631ADAMSON             0123457
+0755442633BRYANT              0114544
+0755442711ZYGANT              0114500
+8812273112HAMESON             0005567
+8812273226MART                0112756
+8812273227JENKS               0117211
+@FIN
+        
+

@@ -1,0 +1,106 @@
+Computer Science 475 - Operating System Design
+Assignment 1
+Design Document due on 2/11/93
+Assignment due on 3/4/93
+last modified 1/30/93 dmr
+	corrected some path names.
+	references to SId changed to SID.
+
+For the first assignment you will be creating a thread scheduler, thread
+synchronization functions, and buffer management functions.  To do this you
+will need to use the Lightweight Process (LWP) library available on the NDSU
+Solbourne minicomputer.  There are manual pages available online for this
+(by typing man 3l intro at the shell prompt), in addition to an introductory
+document (found in ~roehrich/cs475/doc) and some example source code in
+~roehrich/cs475/lwp-examples.  Also supplied will be three groups of threads
+in the directory ~roehrich/cs475/assign1, which you'll use for the
+assignment as the user thread mixes.  Each directory there will have
+subdirectories containing the binaries for these thread groups, along with a
+Readme document describing what each group requires for resources.  Some of
+these thread groups make calls to functions you write, so be sure to follow
+the function definitions exactly when writing them.
+
+In your system you will need a parent thread for all the other threads.  This
+thread will be responsible for the thread management of the various user
+thread groups supplied for the assignment (creation, destruction, and the
+initial readying).
+
+
+Scheduler
+---------
+
+The scheduler will be a high priority thread that uses a ready list and a
+blocked list of threads to implement a round-robin policy.  You'll also need
+four additional functions, t_create(), t_destroy(), t_block(), and t_ready().
+Their definitions are the following (in C):
+	void scheduler (void) {}
+	TID t_create (f) void (*f)(); {}
+	int t_destroy (void) {}
+	int t_block (void) {}
+	int t_ready (t) TID t; {}
+	TID t_myid (void){}
+
+The type TID should be an integer (i.e., typedef int TID;).  The scheduler()
+function is the entry point for the scheduler thread.  The time quantum you
+decide on for the scheduler should be small enough so that it doesn't
+deteriorate to a first-come first-served scheduling algorithm, and should be
+large enough so threads run for a time greater than the decision time
+necessary for scheduling threads.  t_create() returns the TID of a new,
+blocked thread which runs the function f.  t_destroy() destroys the current
+thread, t_block() blocks the current thread, and t_ready() makes the thread
+with TID t ready.
+
+Synchronization
+---------------
+
+For the synchronization functions you will need s_create(), s_destroy(),
+s_open(), s_close(), s_signal() and s_wait().  These have the definitions:
+	int s_create (n, c) int n; int c {}
+	int s_destroy (n) int n; {}
+	SID s_open (n) int n; {}
+	int s_close (s) SID s; {}
+	int s_signal (s) SID s; {}
+	int s_wait (s) SID s; {}
+
+SID is an integer identifier that your synchronization functions use to
+identify the semaphore (i.e., typedef int SID;).  s_create() is an atomic
+operation which creates a new semaphore having the name n and an initial
+count of c.  Duplicate semaphore names are not allowed, you are free to
+handle this as you wish.  At the time the semaphore is created it is not in
+use by any thread.  s_destroy() is also an atomic operation; it destroys the
+semaphore having the name n.  This function can be tricky, since many
+problems exist when trying to destroy a semaphore that's in use.  s_open()
+"opens" the semaphore having the name n, and returns an SID which identifies
+the semaphore., thus binding the SID to the semaphore name.  s_close()
+"closes" the semaphore with an SID of s.  s_signal() is an atomic operation
+that signals the semaphore with SID s, releasing a waiting thread, if any.
+s_wait() is also an atomic operation that waits on the semaphore having
+SID's.  You will need to use the LWP semaphores to implement these functions
+to enforce some critical sections, but you cannot use these as the user
+semaphores in your implementation.
+
+Buffer Management
+-----------------
+
+The buffer management functions are the preliminary steps necessary for message
+passing between threads.  There are two functions necessary, b_get() and
+b_release().  They have the following definitions:
+	Buffer b_get (void) {}
+	int b_release (b) Buffer b; {}
+
+The Buffer type should be a pointer to a buffer so the user thread groups can
+use them, and the pointer should point to memory that is fully usable by the
+caller.  These two functions manage a fixed-size pool of buffers available to
+any thread.  The function b_get() returns to the caller an unused buffer, if
+there are any available, otherwise it causes the calling thread to stop
+executing until one is available.  b_release() releases buffer b, making it
+available to other threads.  Buffers are to be 64 bytes in size.
+
+Utility Function
+-----------------
+
+	char *my_malloc(s) size_t s; {}
+This function accepts one parameter, s, that is the size of the memory
+request.  It returns a pointer to a fully usable block of memory that can
+be used as necessary.  This is an atomic function.
+
